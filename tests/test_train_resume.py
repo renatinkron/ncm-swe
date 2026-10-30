@@ -27,6 +27,7 @@ def test_vqvae_train_resume(tmp_path):
     metrics = tmp_path / "m.jsonl"
     corpus = _tiny_corpus(tmp_path)
     base = [str(PY), str(REPO / "scripts/train_vqvae.py"),
+            "--config", str(REPO / "tests/fixtures/vqvae_tiny.yaml"),
             "--corpus-dir", str(corpus), "--bpe-path",
             str(tmp_path / "bpe.json"), "--out", str(out),
             "--ckpt", str(ckpt), "--metrics", str(metrics),
@@ -34,11 +35,11 @@ def test_vqvae_train_resume(tmp_path):
             "--save-every", "15", "--eval-every", "15",
             "--threads", "2"]
     # first run: 30 steps, saves at 15 and 30
-    r = subprocess.run(base, capture_output=True, text=True, timeout=900)
+    r = subprocess.run(base, capture_output=True, text=True, timeout=300)
     assert r.returncode == 0, r.stderr[-2000:]
     # second run with --steps 45 resumes from 30
     r2 = subprocess.run(base + ["--steps", "45"], capture_output=True,
-                        text=True, timeout=900)
+                        text=True, timeout=300)
     assert r2.returncode == 0, r2.stderr[-2000:]
     assert "from step 30" in r2.stdout
     rows = [json.loads(l) for l in metrics.read_text().splitlines()]

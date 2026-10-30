@@ -74,6 +74,17 @@ class LevelGenerator(nn.Module):
         self.register_buffer("attn_mask", m.reshape(1, 1, T + 1, T + 1),
                              persistent=False)
         self.register_buffer("lvl_ids", lvl_ids, persistent=False)
+        self.apply(self._init_weights)
+        nn.init.normal_(self.q0, std=0.02)
+
+    @staticmethod
+    def _init_weights(m):
+        if isinstance(m, nn.Linear):
+            nn.init.normal_(m.weight, std=0.02)
+            if m.bias is not None:
+                nn.init.zeros_(m.bias)
+        elif isinstance(m, nn.Embedding):
+            nn.init.normal_(m.weight, std=0.02)
 
     def _head_logits(self, h, level_idx):
         if self.shared_head:

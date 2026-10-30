@@ -35,6 +35,17 @@ class ARBaseline(nn.Module):
         self.register_buffer("rope_sin", sin, persistent=False)
         self.register_buffer("mask", causal_mask(context_length).reshape(
             1, 1, context_length, context_length), persistent=False)
+        self.apply(self._init_weights)
+        self.head.weight = self.wte.weight  # re-tie after init
+
+    @staticmethod
+    def _init_weights(m):
+        if isinstance(m, nn.Linear):
+            nn.init.normal_(m.weight, std=0.02)
+            if m.bias is not None:
+                nn.init.zeros_(m.bias)
+        elif isinstance(m, nn.Embedding):
+            nn.init.normal_(m.weight, std=0.02)
 
     def forward(self, ids, targets=None, past=None):
         B, T = ids.shape

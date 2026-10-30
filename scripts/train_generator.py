@@ -134,7 +134,7 @@ def main():
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step()
         if step % 10 == 0:
-            mlog.log(step=step, loss=round(float(loss), 4),
+            mlog.log(step=step, loss=round(float(loss.detach()), 4),
                      **{k: v for k, v in per.items()})
             print(f"[gen] step {step}/{steps} loss={float(loss):.4f}",
                   flush=True)

@@ -55,9 +55,8 @@ def load_ar(path):
                    rope_base=cfg.get("rope_base", 1e6),
                    bias=cfg.get("bias", True),
                    context_length=cfg.get("context_length", 128))
-    sd = ck["model"]
-    sd.pop("head.weight", None)  # tied to wte
-    m.load_state_dict(sd)
+    missing, unexpected = m.load_state_dict(ck["model"], strict=False)
+    assert set(missing) <= {"head.weight"}, missing  # tied to wte at init
     return m.eval(), cfg
 
 
@@ -102,7 +101,7 @@ def main():
 
     # --- AR: L sequential steps w/ KV cache ---
     torch.manual_seed(0)
-    prompt = torch.zeros(args.n, 1, dtype=torch.long)
+    prompt = torch.full((args.n, 1), bpe.bos_token_id, dtype=torch.long)
     t0 = time.time()
     out_ids = ar.generate(prompt, max_new_tokens=ctx - 1,
                           temperature=args.temperature, top_k=args.top_k)
