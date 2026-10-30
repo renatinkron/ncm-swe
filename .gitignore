@@ -1,0 +1,21 @@
+# experiment artifacts (checkpoints, corpus, benchmarks) — regenerable, large
+artifacts/
+
+# python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# local env / models
+.models/
+*.pt
+*.safetensors
+*.gguf
+/tmp/
+
+# editor
+.idea/
+.vscode/
