@@ -1,0 +1,51 @@
+{
+  "run_id": "RUN-001",
+  "plan_id": "PLAN-001",
+  "contract_id": "CONTRACT-001",
+  "target_environment": "dev",
+  "change_domain": "mixed",
+  "branch_strategy": {
+    "decision": "pending",
+    "confirmation_status": "pending",
+    "initial_branch": "",
+    "selected_branch": "pending",
+    "requested_at_utc": "",
+    "confirmed_at_utc": null,
+    "evidence_ref": "",
+    "gate_passed": false
+  },
+  "iteration": 1,
+  "overall_status": "planning",
+  "tasks": [
+    {
+      "id": "T001",
+      "domain": "mixed",
+      "target_environment": "dev",
+      "status": "pending",
+      "last_result": ""
+    }
+  ],
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable"
+  },
+  "github_issue": {
+    "number": null,
+    "url": null,
+    "status": "pending"
+  },
+  "history": [
+    {
+      "iteration": 1,
+      "phase": "planning",
+      "actor": "orchestrator",
+      "summary": "Run created, waiting for task decomposition.",
+      "target_environment": "dev",
+      "change_domain": "mixed",
+      "non_conformities": 0
+    }
+  ]
+}

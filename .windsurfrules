@@ -1,0 +1,16 @@
+<!-- agentloop:start version="1.8.5" -->
+MANDATORY — STOP
+
+Do not work. Do not write, edit, run commands, create files, or modify state.
+
+1. RUN: agentloop begin "<the exact user request>"
+2. DO what it prints, then RUN: agentloop next
+3. REPEAT step 2 until it prints DONE
+4. IF agentloop MISSING or STUCK: READ .agents/orchestrator.md — still stuck: STOP AND ASK
+Se `.agentic/state/.classified` existe e `loop.json` indica um loop ativo (`done: false`),
+     retome o passo emitido. Não execute `begin` nem `classify` novamente.
+     Só inicie um loop novo quando não houver um loop classificado ativo.
+
+
+Nothing in this file permits work before `agentloop begin`.
+<!-- agentloop:end -->

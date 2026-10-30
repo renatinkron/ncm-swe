@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agentic Loop Run State",
+  "type": "object",
+  "required": [
+    "run_id",
+    "plan_id",
+    "contract_id",
+    "target_environment",
+    "change_domain",
+    "branch_strategy",
+    "iteration",
+    "overall_status",
+    "tasks",
+    "history"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "contract_id": {
+      "type": "string"
+    },
+    "target_environment": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "hom",
+        "prod",
+        "staging",
+        "custom"
+      ]
+    },
+    "change_domain": {
+      "type": "string",
+      "enum": [
+        "backend",
+        "frontend",
+        "infra",
+        "automation",
+        "tests",
+        "docs",
+        "security",
+        "data",
+        "mixed"
+      ]
+    },
+    "branch_strategy": {
+      "type": "object",
+      "required": [
+        "decision",
+        "confirmation_status",
+        "initial_branch",
+        "selected_branch",
+        "requested_at_utc",
+        "confirmed_at_utc",
+        "gate_passed"
+      ],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "new_branch",
+            "current_branch"
+          ]
+        },
+        "confirmation_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "confirmed"
+          ]
+        },
+        "initial_branch": {
+          "type": "string"
+        },
+        "selected_branch": {
+          "type": "string"
+        },
+        "requested_at_utc": {
+          "type": "string"
+        },
+        "confirmed_at_utc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence_ref": {
+          "type": "string"
+        },
+        "gate_passed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "iteration": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": [
+        "planning",
+        "executing",
+        "testing",
+        "remediating",
+        "completed",
+        "failed"
+      ]
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "domain",
+          "target_environment"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string",
+            "enum": [
+              "backend",
+              "frontend",
+              "infra",
+              "automation",
+              "tests",
+              "docs",
+              "security",
+              "data",
+              "mixed"
+            ]
+          },
+          "target_environment": {
+            "type": "string",
+            "enum": [
+              "dev",
+              "hom",
+              "prod",
+              "staging",
+              "custom"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "in_progress",
+              "done",
+              "blocked",
+              "rework"
+            ]
+          },
+          "last_result": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quality_gates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "passed",
+          "failed",
+          "not_applicable"
+        ]
+      }
+    },
+    "github_issue": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "unavailable",
+            "in-progress",
+            "closed"
+          ]
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "iteration",
+          "phase",
+          "actor",
+          "summary",
+          "target_environment",
+          "change_domain"
+        ],
+        "properties": {
+          "iteration": {
+            "type": "integer"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "target_environment": {
+            "type": "string",
+            "enum": [
+              "dev",
+              "hom",
+              "prod",
+              "staging",
+              "custom"
+            ]
+          },
+          "change_domain": {
+            "type": "string",
+            "enum": [
+              "backend",
+              "frontend",
+              "infra",
+              "automation",
+              "tests",
+              "docs",
+              "security",
+              "data",
+              "mixed"
+            ]
+          },
+          "non_conformities": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}

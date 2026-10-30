@@ -1,0 +1,38 @@
+Contract checklist
+
+Before execution
+[ ] Contract references current task plan and spec
+[ ] Every task has acceptance_criteria, mandatory_tests, domain, target_environment
+[ ] Architecture rules and coding standards are explicit
+[ ] Quality gate commands are valid for the project
+[ ] Branch strategy decision is explicit (new_branch | current_branch)
+[ ] Initial and selected branch names recorded
+[ ] If new_branch: branch created and checked out before first code change
+[ ] Worktree start state recorded
+
+During execution
+[ ] Each code change mapped to task_id
+[ ] Evidence attached per acceptance criterion
+[ ] Mandatory tests executed and captured
+[ ] Changes stay within task and domain boundaries
+
+During testing
+[ ] Non-conformities classified by severity
+[ ] Compliance report maps findings to task_ids
+[ ] No forbidden patterns introduced
+
+After each iteration
+[ ] Historian entry appended with decisions, changes, compliance status
+
+If non-conformity exists
+[ ] Remediator generates minimal fix plan
+[ ] Only impacted tasks re-run
+[ ] Full gates re-run before closure
+
+Completion
+[ ] All tasks: done
+[ ] Non-conformities: 0
+[ ] Mandatory tests and quality gates: green
+[ ] Blind review: passed (.agentic/reviews/{run_id}-blind-review.md)
+[ ] Docs updated and traceable to task ids
+[ ] Implementation history current

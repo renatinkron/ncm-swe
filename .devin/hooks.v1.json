@@ -1,0 +1,92 @@
+{
+  "SessionStart": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "agentloop session-start"
+        }
+      ]
+    }
+  ],
+  "UserPromptSubmit": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/classify-guard.js"
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "^(edit|write|apply_patch|notebook_edit)$",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/classify-enforce.js"
+        },
+        {
+          "type": "command",
+          "command": "node .claude/hooks/heldout-guard.js"
+        }
+      ]
+    },
+    {
+      "matcher": "^(exec|write_to_process|powershell)$",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/classify-enforce.js"
+        },
+        {
+          "type": "command",
+          "command": "node .claude/hooks/heldout-guard.js"
+        }
+      ]
+    },
+    {
+      "matcher": "^(read|notebook_read|grep|find_file_by_name)$",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/heldout-guard.js"
+        }
+      ]
+    },
+    {
+      "matcher": "^(run_subagent|skill)$",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/classify-flag.js"
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/tool-evidence.js"
+        }
+      ]
+    }
+  ],
+  "Stop": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node .claude/hooks/stop-guard.js"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "demand": "considere as novidades sobre ncm vs llm e vamos iniciar um experimento aqui como o que está sendo feito no projeto colibri na pasta anterior ../colibri. Preciso que você treine um modelo com essa nova forma de pensar inteligência artificial para vermos os limites disso em uma máquina convencional. Tente aproveitar treinamento se possível do qwen 3-coder por exemplo, full se possível quero um resultado muito acima do comum porque precisamos romper essa barreira para avançar com IA para todos de maneira mais simples e fácil. Isso pode mudar o mundo todo",
+  "started_at": "2026-10-30T13:45:56Z",
+  "classification": "complex",
+  "run_id": "RUN-001",
+  "queue": [
+    "test",
+    "history",
+    "blind_review",
+    "pentest",
+    "issue_close",
+    "close"
+  ],
+  "emitted": "execute",
+  "done": false,
+  "trust": {
+    "level": "terse",
+    "clean_streak": 4,
+    "failures": 0
+  },
+  "baselines": {},
+  "skips": {},
+  "remediations": 0,
+  "step_log": [
+    {
+      "step": "classify",
+      "result": "emitted",
+      "at": "2026-10-30T13:45:56Z"
+    },
+    {
+      "step": "classify",
+      "result": "passed",
+      "detail": "complex",
+      "at": "2026-10-30T13:46:05Z"
+    },
+    {
+      "step": "loop",
+      "result": "emitted",
+      "detail": "complex path, run RUN-001",
+      "at": "2026-10-30T13:46:05Z"
+    },
+    {
+      "step": "issue_create",
+      "result": "passed",
+      "at": "2026-10-30T13:46:22Z"
+    },
+    {
+      "step": "research",
+      "result": "emitted",
+      "at": "2026-10-30T13:46:22Z"
+    },
+    {
+      "step": "research",
+      "result": "passed",
+      "at": "2026-10-30T13:50:33Z"
+    },
+    {
+      "step": "arch_eval",
+      "result": "emitted",
+      "at": "2026-10-30T13:50:33Z"
+    },
+    {
+      "step": "arch_eval",
+      "result": "passed",
+      "at": "2026-10-30T13:52:15Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "emitted",
+      "at": "2026-10-30T13:52:15Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "passed",
+      "at": "2026-10-30T13:54:36Z"
+    },
+    {
+      "step": "execute",
+      "result": "emitted",
+      "at": "2026-10-30T13:54:36Z"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/tool-evidence.js",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/classify-flag.js",
+            "type": "command"
+          }
+        ],
+        "matcher": "Task|Agent"
+      },
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/classify-enforce.js",
+            "type": "command"
+          },
+          {
+            "command": "node .claude/hooks/heldout-guard.js",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|Write|PowerShell"
+      },
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/heldout-guard.js",
+            "type": "command"
+          }
+        ],
+        "matcher": "Read|NotebookRead|Grep|Glob"
+      },
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/rtk-wrap.js",
+            "type": "command"
+          },
+          {
+            "command": "node .claude/hooks/heldout-guard.js",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "agentloop session-start",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/stop-guard.js",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "node .claude/hooks/classify-guard.js",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1",
+  "runs": [
+    {
+      "id": "RUN-001",
+      "status": "planning",
+      "domain": "mixed",
+      "environment": "dev",
+      "summary": "considere as novidades sobre ncm vs llm e vamos iniciar um experimento aqui como o que está sendo feito no projeto colibri na pasta anterior ../colibri. Preciso que você treine um modelo com essa nova forma de pensar inteligência artificial para vermos os limites disso em uma máquina convencional. Tente aproveitar treinamento se possível do qwen 3-coder por exemplo, full se possível quero um resultado muito acima do comum porque precisamos romper essa barreira para avançar com IA para todos de maneira mais simples e fácil. Isso pode mudar o mundo todo",
+      "created_at": "2026-10-30T13:46:05Z",
+      "updated_at": "2026-10-30T13:46:05Z"
+    }
+  ]
+}

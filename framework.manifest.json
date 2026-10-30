@@ -1,0 +1,264 @@
+{
+  "version": "1.8.5",
+  "managed_files": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "framework.manifest.json",
+    ".windsurfrules",
+    ".github/copilot-instructions.md",
+    ".cursor/rules/agents.mdc",
+    ".agents/orchestrator.md",
+    ".agents/executor.md",
+    ".agents/tester.md",
+    ".agents/remediator.md",
+    ".agents/historian.md",
+    ".agents/documenter.md",
+    ".agents/defensive_pentest.md",
+    ".skills/classify_demand.md",
+    ".skills/research.md",
+    ".skills/spec_to_tasks.md",
+    ".skills/execute_tasks_with_contract.md",
+    ".skills/non_conformity_reconciliation.md",
+    ".skills/implementation_history_sync.md",
+    ".skills/blind_review.md",
+    ".skills/documentation_update_sync.md",
+    ".skills/security_gate_owasp.md",
+    ".skills/architecture_evaluation.md",
+    ".skills/defensive_pentest.md",
+    ".skills/issue_lifecycle.md",
+    ".skills/caveman_default.md",
+    ".agentic/contracts/implementation_contract.template.md",
+    ".agentic/contracts/task_plan.template.md",
+    ".agentic/contracts/implementation_history.template.md",
+    ".agentic/contracts/documentation_update.template.md",
+    ".agentic/schemas/run_state.schema.json",
+    ".agentic/state/run_state.template.json",
+    ".agentic/prompts/contract_checklist.txt",
+    ".agentic/prompts/request_examples.txt",
+    ".devin/hooks.v1.json",
+    ".claude/hooks/classify-enforce.js",
+    ".claude/hooks/classify-flag.js",
+    ".claude/hooks/classify-guard.js",
+    ".claude/hooks/rtk-wrap.js",
+    ".claude/hooks/stop-guard.js",
+    ".claude/hooks/lib/classify-common.js",
+    ".agentic/wiki/README.md",
+    ".agentic/wiki/working-with-ai.md",
+    ".agentic/wiki/experiments.md",
+    ".agentic/wiki/tooling.md",
+    ".agentic/wiki/migration.md",
+    ".claude/hooks/heldout-guard.js",
+    ".claude/hooks/tool-evidence.js",
+    ".agentic/state/.gitignore"
+  ],
+  "harness_files": [
+    "CLAUDE.md",
+    ".github/copilot-instructions.md",
+    ".windsurfrules"
+  ],
+  "preserve_dirs": [
+    ".agentic/state/runs",
+    ".agentic/state/archive",
+    ".agentic/specs",
+    ".agentic/research",
+    ".agentic/reviews"
+  ],
+  "obsolete_from_previous": [
+    "framework.yaml",
+    "agents/orchestrator.agent.yaml",
+    "agents/executor.agent.yaml",
+    "agents/tester.agent.yaml",
+    "agents/remediator.agent.yaml",
+    "agents/historian.agent.yaml",
+    "agents/documenter.agent.yaml",
+    "skills/research.skill.yaml",
+    "skills/spec_to_tasks.skill.yaml",
+    "skills/execute_tasks_with_contract.skill.yaml",
+    "skills/non_conformity_reconciliation.skill.yaml",
+    "skills/implementation_history_sync.skill.yaml",
+    "skills/blind_review.skill.yaml",
+    "skills/documentation_update_sync.skill.yaml"
+  ],
+  "claude_subagents": [
+    {
+      "name": "classify-demand",
+      "model": "haiku",
+      "tools": "Read",
+      "follow": [
+        ".skills/classify_demand.md"
+      ],
+      "description": "Classify a demand as fast, standard, or complex. MUST be the first action on every new demand, before any file is created, changed, or any state-changing command runs."
+    },
+    {
+      "name": "research",
+      "model": "sonnet",
+      "tools": "Read, Write, Grep, Glob, WebFetch, WebSearch",
+      "follow": [
+        ".skills/research.md"
+      ],
+      "description": "Produce a concise research brief before spec writing, for complex demands needing investigation, including whether an existing library already solves the problem. Receives only topic and scope \u2014 no prior agent context."
+    },
+    {
+      "name": "spec-to-tasks",
+      "model": "sonnet",
+      "tools": "Read, Write, Grep, Glob",
+      "follow": [
+        ".skills/spec_to_tasks.md"
+      ],
+      "description": "Decompose a spec into atomic, independently verifiable tasks and emit the task_plan."
+    },
+    {
+      "name": "executor",
+      "model": "sonnet",
+      "tools": "Read, Write, Edit, Bash, Grep, Glob",
+      "follow": [
+        ".agents/executor.md",
+        ".skills/execute_tasks_with_contract.md"
+      ],
+      "description": "Implement tasks under the contract section of the task_plan and emit an execution_report with evidence. Receives only task_plan."
+    },
+    {
+      "name": "tester",
+      "model": "sonnet",
+      "tools": "Read, Bash, Grep, Glob",
+      "follow": [
+        ".agents/tester.md"
+      ],
+      "description": "Validate an execution_report against the task_plan ## Contract section and emit a compliance_report. Receives only task_plan, execution_report, and codebase."
+    },
+    {
+      "name": "security-gate-owasp",
+      "model": "sonnet",
+      "tools": "Read, Write, Grep, Glob",
+      "follow": [
+        ".skills/security_gate_owasp.md"
+      ],
+      "description": "Gate security-relevant changes against the OWASP Top 10:2025 categories. Dispatched alongside tester when domain is security or changed files touch auth, crypto, input handling, access control, or dependency manifests. Receives only changed_files and task_plan."
+    },
+    {
+      "name": "architecture-evaluation",
+      "model": "sonnet",
+      "tools": "Read, Write, Grep, Glob",
+      "follow": [
+        ".skills/architecture_evaluation.md"
+      ],
+      "description": "Evaluate architecture before task decomposition using state, flow, computation, failure and trust-boundary analysis; persist trade-offs and validation criteria."
+    },
+    {
+      "name": "defensive-pentest",
+      "model": "sonnet",
+      "tools": "Read, Write, Bash, Grep, Glob",
+      "follow": [
+        ".agents/defensive_pentest.md",
+        ".skills/defensive_pentest.md"
+      ],
+      "description": "Run an authorized, local defensive pentest and optional chaos day only for a final candidate, reporting exploited failures by damage level with evidence and recovery results."
+    },
+    {
+      "name": "remediator",
+      "model": "sonnet",
+      "tools": "Read, Grep, Glob",
+      "follow": [
+        ".agents/remediator.md",
+        ".skills/non_conformity_reconciliation.md"
+      ],
+      "description": "Turn compliance failures into a minimal fix plan and mark impacted tasks for rework. Receives only compliance_report, task_plan, execution_report."
+    },
+    {
+      "name": "historian",
+      "model": "haiku",
+      "tools": "Read, Write, Edit",
+      "follow": [
+        ".agents/historian.md",
+        ".skills/implementation_history_sync.md"
+      ],
+      "description": "Append one factual iteration entry to the run state. Structured write only, no reasoning."
+    },
+    {
+      "name": "blind-review",
+      "model": "sonnet",
+      "tools": "Read, Write, Grep, Glob",
+      "follow": [
+        ".skills/blind_review.md"
+      ],
+      "description": "Review changed files cold, without spec or task context, and emit a blind review report. Receives only changed_files and adjacent_modules."
+    },
+    {
+      "name": "documenter",
+      "model": "haiku",
+      "tools": "Read, Write, Edit, Grep, Glob",
+      "follow": [
+        ".agents/documenter.md",
+        ".skills/documentation_update_sync.md"
+      ],
+      "description": "Update docs from validated behavior after zero blocker and zero major findings. Structured write only."
+    }
+  ],
+  "claude_skills": [
+    {
+      "name": "classify-demand",
+      "source": ".skills/classify_demand.md",
+      "description": "Classify a demand as fast, standard, or complex. Use as the first action on any new demand, before creating, changing, or running anything that changes project state."
+    },
+    {
+      "name": "research",
+      "source": ".skills/research.md",
+      "description": "Produce a concise research brief before spec writing, including checking whether an existing library or tool already solves the problem. Use for demands that need investigation before decomposition."
+    },
+    {
+      "name": "spec-to-tasks",
+      "source": ".skills/spec_to_tasks.md",
+      "description": "Break a spec into atomic, independently verifiable tasks with acceptance criteria. Use once a spec (and research brief, if any) is ready to decompose."
+    },
+    {
+      "name": "execute-tasks-with-contract",
+      "source": ".skills/execute_tasks_with_contract.md",
+      "description": "Execute a task plan sequentially under an implementation contract, collecting evidence per task. Use once a task_plan and contract both exist."
+    },
+    {
+      "name": "non-conformity-reconciliation",
+      "source": ".skills/non_conformity_reconciliation.md",
+      "description": "Turn tester or blind-review findings into a minimal remediation plan and mark impacted tasks for rework. Use whenever a compliance_report has non_conformities greater than 0."
+    },
+    {
+      "name": "implementation-history-sync",
+      "source": ".skills/implementation_history_sync.md",
+      "description": "Append one factual iteration entry to a run's state file. Use after execution and testing, before deciding whether to loop again."
+    },
+    {
+      "name": "blind-review",
+      "source": ".skills/blind_review.md",
+      "description": "Review changed files cold, with no spec or task context, to surface issues a spec-aware pass might miss. Use after non_conformities reach 0, before documentation update."
+    },
+    {
+      "name": "documentation-update-sync",
+      "source": ".skills/documentation_update_sync.md",
+      "description": "Sync project docs with the final validated behavior after a clean compliance and blind review. Use as the last step before closing a run."
+    },
+    {
+      "name": "security-gate-owasp",
+      "source": ".skills/security_gate_owasp.md",
+      "description": "Gate security-relevant changes against the OWASP Top 10:2025 categories before a run can close. Use whenever domain is security, or changed files touch auth, crypto, input handling, access control, or dependency manifests."
+    },
+    {
+      "name": "architecture-evaluation",
+      "source": ".skills/architecture_evaluation.md",
+      "description": "Evaluate architecture before task decomposition using state, flow, computation, failure and trust-boundary analysis; persist trade-offs and validation criteria."
+    },
+    {
+      "name": "defensive-pentest",
+      "source": ".skills/defensive_pentest.md",
+      "description": "Run an authorized, local defensive pentest and optional chaos day only for a final candidate, reporting exploited failures by damage level with evidence and recovery results."
+    },
+    {
+      "name": "caveman",
+      "source": ".skills/caveman_default.md",
+      "description": "This project's default ultra-compressed communication style. Reads the active level from .agentic/state/caveman.json (default: full). Use to check or explain the active communication level, or when asked to change it."
+    },
+    {
+      "name": "issue-lifecycle",
+      "source": ".skills/issue_lifecycle.md",
+      "description": "Create, claim, track, and close a GitHub issue for every standard/complex demand. Call create after classify, update after each major phase, and close before marking the run completed."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+Command examples
+
+# Every demand starts here:
+CLASSIFY_DEMAND demand="<request text>"
+→ fast | standard | complex
+
+# Fast path (simple demands — haiku classifies, orchestrator executes inline):
+"fix the typo in README line 12"
+"rename variable foo to bar in utils.py"
+"add null check before line 34 in handler.go"
+→ no task_plan, no contract, no historian — direct execute + self-verify
+
+RESEARCH before writing a spec
+  RESEARCH topic="improve data pipeline reliability" scope=[src/pipeline, docs/architecture.md]
+  → saves .agentic/research/improve-data-pipeline-reliability.md
+
+DECOMPOSE a spec into tasks
+  PLAN_FROM_SPEC spec_path=.agentic/specs/my-feature.txt project_context={target_environment:dev,change_domain:backend}
+  → task_plan following .agentic/contracts/task_plan.template.md
+
+EXECUTE tasks under contract
+  EXECUTE_PLAN plan_path=.agentic/state/runs/PLAN-001.json contract_path=.agentic/state/runs/CONTRACT-001.json
+  → execution_report with evidence per task
+
+VERIFY implementation against contract
+  VERIFY contract_path=<path> execution_report=<path>
+  → compliance_report with non-conformities
+
+RECONCILE non-conformities and loop
+  RECONCILE compliance_report=<path> run_state=<path>
+  → remediation_plan + reexecution_scope
+
+BLIND REVIEW after compliance
+  BLIND_REVIEW run_id=RUN-001 changed_files=[...] adjacent_modules=[...]
+  → .agentic/reviews/RUN-001-blind-review.md
+
+CLOSE run
+  CLOSE_RUN run_state=<path>
+  condition: all tasks done, zero blocker/major, blind review passed

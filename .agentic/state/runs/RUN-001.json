@@ -1,0 +1,54 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-10-30T13:56:00Z",
+    "decision": "current_branch",
+    "evidence_ref": "no git repo existed at planning time; T001 runs git init, current_branch=main post-init",
+    "gate_passed": true,
+    "initial_branch": "none (repo absent; git init in T001)",
+    "requested_at_utc": "2026-10-30T13:56:00Z",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-001",
+  "demand": "considere as novidades sobre ncm vs llm e vamos iniciar um experimento aqui como o que está sendo feito no projeto colibri na pasta anterior ../colibri. Preciso que você treine um modelo com essa nova forma de pensar inteligência artificial para vermos os limites disso em uma máquina convencional. Tente aproveitar treinamento se possível do qwen 3-coder por exemplo, full se possível quero um resultado muito acima do comum porque precisamos romper essa barreira para avançar com IA para todos de maneira mais simples e fácil. Isso pode mudar o mundo todo",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null,
+    "reason": "no-github"
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-10-30T13:46:05Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "planning",
+  "plan_id": "PLAN-001",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-001",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}
