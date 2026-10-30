@@ -1,0 +1,49 @@
+# VQ-VAE (NCM stage-1 tokenizer) — CPU-scaled config, semantics follow the
+quantizer_impl: mini
+# released LM1B config (hazyresearch/ncm-checkpoints) with smaller dims/levels.
+in_vocab_size: 8192          # set at runtime from trained BPE
+context_length: 128          # segment length in pre-tokens
+embed_dim: 192
+n_layers: 4                  # head count inside enc/dec blocks (upstream semantics)
+compression_factor: 1
+dropout: 0.1
+use_qk_norm: true
+pre_quant_groupnorm: 4
+enc_layers: 2
+enc_attn_window: 0
+enc_conv_layers: 0
+enc_conv_kernel: 3
+dec_layers: 1
+enc_positional: true
+dec_positional: true
+vqvae_vocab_size: [2048, 2048, 2048, 2048, 2048, 2048]
+vector_quantizer:
+  clss: multiscale_residual_vector_quantizer
+  decay: 0.99
+  epsilon: 0.00001
+  commitment_cost: 0.25
+  restart_threshold: 0.005
+  learned_l1_sampling: false
+  learned_all_sampling: false
+  quant_resi:
+    enabled: true
+    ratio: 0.5
+    share_mode: 0
+    learnable_ratio: false
+  levels:
+    use_manual_levels: true
+    manual_levels: [1, 8, 16, 32, 64, 128]
+  aux:
+    fine_drop:
+      dual: true
+      prob: 0.5
+      min_keep: 1
+      w_full: 0.9
+      w_trunc: 0.1
+    code_corruption:
+      enabled: false
+      mode: uniform
+      random_rate: true
+      low: 0.0
+      high: 0.0
+      skip_level0: true

@@ -56,6 +56,9 @@ def main() -> int:
     ap.add_argument("--threads", type=int, default=10)
     ap.add_argument("--max-samples", type=int, default=0,
                     help="limit segments (smoke)")
+    ap.add_argument("--vq-coef", type=float, default=1.0,
+                    help="scale on vq_loss (commitment+codebook); <1 protects "
+                         "the encoder when codebook norms explode")
     ap.add_argument("--seed", type=int, default=1234)
     args = ap.parse_args()
 
@@ -98,7 +101,7 @@ def main() -> int:
             recon = F.cross_entropy(
                 logits.reshape(-1, logits.shape[-1]), x.reshape(-1),
                 ignore_index=bpe.pad_token_id)
-            loss = recon + vq_loss
+            loss = recon + args.vq_coef * vq_loss
             opt.zero_grad(set_to_none=True)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)

@@ -83,6 +83,7 @@ def main():
            "hardware": {"cpu_count": os.cpu_count()}}
 
     # --- NCM: K passes, all codes per level parallel ---
+    torch.manual_seed(0)
     t0 = time.time()
     rss0 = rss_mb()
     idx, codes = gen.generate(batch_size=args.n, temperature=args.temperature,

@@ -18,7 +18,7 @@ def build_vqvae(cfg: dict):
     from models.vqvae import VQVAE
 
     vq_cfg = OmegaConf.create(dict(cfg["vector_quantizer"]))
-    return VQVAE(
+    model = VQVAE(
         in_vocab_size=int(cfg["in_vocab_size"]),
         context_length=int(cfg["context_length"]),
         embed_dim=int(cfg["embed_dim"]),
@@ -38,6 +38,16 @@ def build_vqvae(cfg: dict):
         enc_positional=bool(cfg.get("enc_positional", True)),
         dec_positional=bool(cfg.get("dec_positional", False)),
     )
+    if cfg.get("quantizer_impl") == "mini":
+        # Stable minimal multiscale residual quantizer (EMA-only codebook).
+        from ncm_swe.vq.mini_msrq import MiniMSRQ
+        vcfg = cfg["vector_quantizer"]
+        model.vq = MiniMSRQ(
+            levels=vcfg["levels"]["manual_levels"],
+            vocab_size=list(cfg["vqvae_vocab_size"]),
+            embed_dim=int(cfg["embed_dim"]),
+            commitment_cost=float(vcfg.get("commitment_cost", 0.25)))
+    return model
 
 
 def save_vqvae(model, path: str | Path, cfg: dict, meta: dict | None = None):

@@ -7,3 +7,4 @@
 {"t":"arch_eval","ts":"2026-10-30T13:52:15Z"}
 {"t":"task_plan","ts":"2026-10-30T13:54:36Z","d":{"branch":"current_branch","phases":"4","tasks":"8"}}
 {"t":"task_plan","ts":"2026-10-30T13:54:36Z"}
+{"t":"2026-10-30T13:41:13-03:00","event":"progress","note":"vendored quantizer collapsed (codebook explosion to 1e6 norms -> single-code levels). Implemented MiniMSRQ (EMA-bounded, no learned residual) -> recon_ce 5.30 @ step50. AR-warm training started parallel to VQ-VAE v5 (600 steps)."}
