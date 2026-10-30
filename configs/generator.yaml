@@ -1,0 +1,24 @@
+# NCM generator + AR baseline — dims chosen for 1:1 warm-start from
+# Qwen2.5-Coder-0.5B (embd 896, q 14×64, kv 2×64, mlp 4864 SwiGLU, RoPE 1e6).
+n_embd: 896
+n_layer: 4
+n_head_q: 14
+n_head_kv: 2
+dropout: 0.0
+mlp_hidden: 4864
+glu: true
+use_qk_norm: false     # Qwen2.5 has no qk-norm; true for Qwen3-style weights
+rope_base: 1000000.0
+bias: true
+shared_head: true
+context_length: 128
+train:
+  steps: 2000
+  batch_size: 16
+  lr: 0.0006
+  eval_every: 250
+  save_every: 250
+warmstart:
+  enabled: true
+  qwen_dir: /tmp/llm/qwen05
+  q_layers: [0, 1, 2, 3]
