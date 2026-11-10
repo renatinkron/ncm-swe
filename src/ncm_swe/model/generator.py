@@ -149,7 +149,8 @@ class LevelGenerator(nn.Module):
         sched = getattr(self, 'corrupt_schedule', 'flat')
         hi = getattr(self, 'corrupt_hi', self.corrupt)
         lo = getattr(self, 'corrupt_lo', self.corrupt)
-        rates = torch.rand(B, 1, device=idx.device) * self.corrupt
+        rates = torch.rand(B, 1, device=idx.device) * self.corrupt \
+            if sched != 'linear' else None
         ofs = self.levels[0]  # skip level 0 (official: skip_level0) — l0 seeds
                               # z_hat for every chunk; corrupting it poisons all
         nlv = len(self.levels) - 1
@@ -355,7 +356,7 @@ class LevelGenerator(nn.Module):
                 passes += 1
             codes.append(cur)
         idx = torch.cat(codes, dim=1)
-        self.last_passes = passes + 1  # +1 for level 0
+        self.last_passes = passes + (1 if l0 is None else 0)
         if return_per_level:
             return idx, codes
         return idx
