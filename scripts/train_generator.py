@@ -56,9 +56,15 @@ def main():
     ap.add_argument("--steps", type=int, default=None)
     ap.add_argument("--batch-size", type=int, default=None)
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--intra", action="store_true",
+                    help="intra-level chunked conditioning (MaskGIT-style)")
+    ap.add_argument("--intra-passes", type=int, default=32,
+                    help="max positions unmasked per intra pass")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(open(args.config))
+    cfg["intra"] = args.intra
+    cfg["intra_passes"] = args.intra_passes
     tc = cfg.get("train", {})
     steps = args.steps or tc.get("steps", 2000)
     batch = args.batch_size or tc.get("batch_size", 16)
@@ -79,7 +85,8 @@ def main():
             dropout=cfg.get("dropout", 0.0), mlp_hidden=cfg["mlp_hidden"],
             glu=cfg.get("glu", True), use_qk_norm=cfg.get("use_qk_norm", False),
             rope_base=cfg.get("rope_base", 1e6), bias=cfg.get("bias", True),
-            shared_head=cfg.get("shared_head", True))
+            shared_head=cfg.get("shared_head", True),
+            intra=args.intra, intra_passes=args.intra_passes)
         X = torch.from_numpy(np.load(
             Path(args.codes) / "train.npy").astype(np.int64))
     else:

@@ -18,10 +18,12 @@ class CorpusBPE:
 
     @classmethod
     def train(cls, texts, vocab_size: int = 8192, out_path: str | Path | None = None):
-        from tokenizers import Tokenizer, models, pre_tokenizers, trainers
+        from tokenizers import (Tokenizer, models, pre_tokenizers,
+                                trainers, decoders)
 
         tok = Tokenizer(models.BPE())
         tok.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=False)
+        tok.decoder = decoders.ByteLevel()
         trainer = trainers.BpeTrainer(
             vocab_size=vocab_size,
             special_tokens=["[PAD]", "[EOS]", "[BOS]"],

@@ -27,9 +27,15 @@ class LevelGenerator(nn.Module):
     def __init__(self, vqvae, n_embd=896, n_layer=4, n_head_q=14,
                  n_head_kv=2, dropout=0.0, mlp_hidden=4864, glu=True,
                  use_qk_norm=False, rope_base=1_000_000.0, bias=True,
-                 shared_head=True):
+                 shared_head=True, intra=False, intra_passes=32,
+                 corrupt=0.0):
         super().__init__()
-        self.vqvae = vqvae  # frozen tokenizer
+        # NOTE: vqvae registered AFTER _init_weights below so apply() cannot
+        # re-randomize the frozen pretrained tokenizer (found in RUN-017
+        # blind review: assigning here scrambles every Linear/Embedding).
+        self.intra = intra
+        self.intra_passes = intra_passes
+        self.corrupt = corrupt
         self.levels = list(vqvae.vq.levels)          # e.g. [1,8,...,128]
         self.chunk_levels = self.levels[1:]           # predicted in main seq
         self.vocab_sizes = list(vqvae.vq.vqvae_vocab_sizes)
@@ -49,6 +55,12 @@ class LevelGenerator(nn.Module):
                   use_qk_norm=use_qk_norm, rope=True, glu=glu, bias=bias)
             for _ in range(n_layer)])
         self.ln_f = RMSNorm(n_embd)
+        if intra:
+            # per-level learned mask embedding in VQ z-space; zeros init so
+            # pending positions start as pure coarse input (= parallel mode)
+            self.mask_emb = nn.ParameterList(
+                [nn.Parameter(torch.zeros(self.embed_dim))
+                 for _ in self.levels])
         if shared_head:
             self.head = nn.Linear(n_embd, self.V, bias=False)
         else:
@@ -76,6 +88,7 @@ class LevelGenerator(nn.Module):
         self.register_buffer("lvl_ids", lvl_ids, persistent=False)
         self.apply(self._init_weights)
         nn.init.normal_(self.q0, std=0.02)
+        self.vqvae = vqvae  # frozen tokenizer — registered post-init on purpose
 
     @staticmethod
     def _init_weights(m):
@@ -93,12 +106,78 @@ class LevelGenerator(nn.Module):
             z = self.head[level_idx](h)
         return z + self.lvl_bias[level_idx]
 
-    def forward(self, idx):
-        """idx: (B, sum(levels)). Returns (logits_l0 (B,l0,V0), logits_main
-        (B,T,V_padded_per_pos->use per-level CE helper)) for training."""
+    def _intra_add(self, idx, boundaries):
+        """(B,T,D) additive tensor for intra-level conditioning.
+
+        For chunk i (predicting level i+1, target codes idx[:, ofs:ofs+L]):
+        positions < boundaries[:,i]  -> + emb_{i+1}(code)   (decided)
+        positions >= boundaries[:,i] -> + mask_emb_{i+1}    (pending)
+        boundaries=None -> all pending (no leak, matches pure-parallel)."""
+        B = idx.shape[0]
+        vq = self.vqvae.vq
+        add = torch.zeros(B, self.T, self.embed_dim, device=idx.device)
+        tgt_ofs = self.levels[0]
+        seq_ofs = 0
+        arange_cache = {}
+        for i, L in enumerate(self.chunk_levels):
+            codes_i = idx[:, tgt_ofs:tgt_ofs + L]
+            ce = vq.embeddings[i + 1](codes_i)
+            if boundaries is None:
+                dec = torch.zeros(B, L, dtype=torch.bool, device=idx.device)
+            else:
+                if L not in arange_cache:
+                    arange_cache[L] = torch.arange(L, device=idx.device)
+                dec = arange_cache[L].unsqueeze(0) < boundaries[:, i:i + 1]
+            add[:, seq_ofs:seq_ofs + L] = torch.where(
+                dec.unsqueeze(-1), ce, self.mask_emb[i + 1].view(1, 1, -1))
+            seq_ofs += L
+            tgt_ofs += L
+        return add
+
+    def _corrupt_codes(self, idx):
+        """Official-NCM-style conditioning corruption.
+
+        schedule 'flat' (default/backward-compat): per-item rate
+        r_i ~ U(0, self.corrupt); each code replaced w.p. r_i.
+        schedule 'linear': per-LEVEL rate, linearly decreasing from
+        corrupt_hi (first conditioned level) to corrupt_lo (last) —
+        official recipe per WPS replication (strong arm 0.75→0.25).
+        Each code replaced by a uniform code from the same level's
+        codebook. Targets stay clean; level 0 never corrupted."""
+        out = idx.clone()
+        B = idx.shape[0]
+        sched = getattr(self, 'corrupt_schedule', 'flat')
+        hi = getattr(self, 'corrupt_hi', self.corrupt)
+        lo = getattr(self, 'corrupt_lo', self.corrupt)
+        rates = torch.rand(B, 1, device=idx.device) * self.corrupt
+        ofs = self.levels[0]  # skip level 0 (official: skip_level0) — l0 seeds
+                              # z_hat for every chunk; corrupting it poisons all
+        nlv = len(self.levels) - 1
+        for j, L in enumerate(self.levels[1:], start=1):
+            if sched == 'linear':
+                # rate fixa por nível: hi → lo linearmente
+                r = hi + (lo - hi) * (j - 1) / max(nlv - 1, 1)
+                mask_lvl = torch.rand(B, L, device=idx.device) < r
+            else:
+                mask_lvl = (
+                    torch.rand(idx.shape, device=idx.device) < rates
+                )[:, ofs:ofs + L]
+            rnd = torch.randint(0, self.vocab_sizes[j], (B, L),
+                                device=idx.device)
+            out[:, ofs:ofs + L] = torch.where(mask_lvl, rnd,
+                                              out[:, ofs:ofs + L])
+            ofs += L
+        return out
+
+    def forward(self, idx, boundaries=None):
+        """idx: (B, sum(levels)). Returns (logits_l0 (B,l0,V0), outs[i]
+        (B,L_{i+1},V_{i+1})) for training."""
         B = idx.shape[0]
         with torch.no_grad():
-            x = self.vqvae.vq.idx_to_ncm_input(idx)  # (B,T,D_vq)
+            idx_in = self._corrupt_codes(idx) if self.corrupt > 0 else idx
+            x = self.vqvae.vq.idx_to_ncm_input(idx_in)  # (B,T,D_vq)
+        if self.intra:
+            x = x + self._intra_add(idx_in, boundaries)
         h0 = self.q0.expand(B, -1, -1) + self.pos.weight[0] + self.lvl.weight[0]
         hmain = self.proj_in(x) + self.pos.weight[1:] \
             + self.lvl.weight[self.lvl_ids + 1]
@@ -117,20 +196,37 @@ class LevelGenerator(nn.Module):
         return logits_l0, outs  # outs[i]: (B, L_{i+1}, V_{i+1})
 
     def loss(self, idx):
-        logits_l0, outs = self.forward(idx)
+        boundaries = None
+        if self.intra:
+            # per-item random decided-boundary per level: 0..L inclusive
+            boundaries = torch.stack(
+                [torch.randint(0, L + 1, (idx.shape[0],), device=idx.device)
+                 for L in self.chunk_levels], dim=1)
+        logits_l0, outs = self.forward(idx, boundaries)
         l0 = self.levels[0]
         t0 = idx[:, :l0]
         loss_l0 = F.cross_entropy(
             logits_l0.reshape(-1, logits_l0.shape[-1]), t0.reshape(-1))
         total = loss_l0
         ofs = l0
-        per_level = {"l0": float(loss_l0.detach())}
+        per_level = {"l0": round(float(loss_l0.detach()), 4)}
         for i, out in enumerate(outs):
-            t = idx[:, ofs:ofs + self.chunk_levels[i]]
-            ce = F.cross_entropy(out.reshape(-1, out.shape[-1]), t.reshape(-1))
+            L = self.chunk_levels[i]
+            t = idx[:, ofs:ofs + L]
+            if self.intra:
+                pending = (torch.arange(L, device=idx.device).unsqueeze(0)
+                           >= boundaries[:, i:i + 1])
+                ce_map = F.cross_entropy(
+                    out.reshape(-1, out.shape[-1]), t.reshape(-1),
+                    reduction="none").reshape(t.shape)
+                ce = ((ce_map * pending).sum()
+                      / pending.sum().clamp_min(1))
+            else:
+                ce = F.cross_entropy(
+                    out.reshape(-1, out.shape[-1]), t.reshape(-1))
             per_level[f"l{i+1}"] = round(float(ce.detach()), 4)
             total = total + ce
-            ofs += self.chunk_levels[i]
+            ofs += L
         return total / (len(outs) + 1), per_level
 
     # ----------------------------- sampling ---------------------------------
@@ -153,16 +249,27 @@ class LevelGenerator(nn.Module):
             z_q = vq._apply_quant_resi(z_q, j)
             z_hat = z_hat + z_q
             if j + 1 < len(self.levels):
-                chunks.append(F.interpolate(
-                    z_hat.transpose(-1, -2), size=(self.levels[j + 1],),
-                    mode="area").transpose(-1, -2))
+                if hasattr(vq, "_interp"):
+                    chunks.append(vq._interp(z_hat, self.levels[j + 1]))
+                else:
+                    chunks.append(F.interpolate(
+                        z_hat.transpose(-1, -2), size=(self.levels[j + 1],),
+                        mode="area").transpose(-1, -2))
         return chunks  # chunks[k] predicts level k+1
 
-    def _forward_partial(self, codes_by_level):
-        """Run the stack over [q0] + chunks predicting levels 1..len(codes)."""
+    def _forward_partial(self, codes_by_level, cur=None, decided=None):
+        """Run the stack over [q0] + chunks predicting levels 1..len(codes).
+
+        Intra mode: `cur`/`decided` (B,L_k) inject emb(code) at decided
+        positions of the level being predicted, mask_emb elsewhere."""
         B = codes_by_level[0].shape[0]
         k_next = len(codes_by_level)  # predict level index k_next
         chunks = self._chunks_from_codes(codes_by_level, k_next)
+        if self.intra and cur is not None:
+            L = self.levels[k_next]
+            ce = self.vqvae.vq.embeddings[k_next](cur)
+            chunks[-1] = chunks[-1] + torch.where(
+                decided.unsqueeze(-1), ce, self.mask_emb[k_next].view(1, 1, -1))
         h0 = self.q0.expand(B, -1, -1) + self.pos.weight[0] + self.lvl.weight[0]
         parts = [h0]
         pos = 1
@@ -193,29 +300,62 @@ class LevelGenerator(nn.Module):
 
     @torch.no_grad()
     def generate(self, batch_size=1, temperature=1.0, top_k=0, top_p=1.0,
-                 return_per_level=False):
-        """Coarse→fine generation in K passes. Returns idx (B,sum(levels))."""
+                 return_per_level=False, l0=None):
+        """Coarse→fine generation in K passes. Returns idx (B,sum(levels)).
+
+        l0: optional (B, levels[0]) long tensor — external level-0 codes
+        (official recipe samples l0 ~ corpus unigram instead of predicting).
+        l0=None preserves the default: l0 is sampled from the model head.
+        """
         self.eval()
         codes = []
-        # level 0: q0 only
-        h = self.q0.expand(batch_size, -1, -1) + self.pos.weight[0] \
-            + self.lvl.weight[0]
-        mask0 = torch.zeros(1, 1, 1, 1)
-        for blk in self.blocks:
-            h, _ = blk(h, mask0, self.rope_cos[:1], self.rope_sin[:1])
-        h = self.ln_f(h)
-        l0_logits = self._head_logits(h, 0).squeeze(1)
-        codes.append(self._sample(l0_logits, temperature, top_k, top_p))
+        if l0 is not None:
+            l0 = l0.to(self.q0.device)
+            assert l0.shape == (batch_size, self.levels[0]), \
+                f"l0 shape {tuple(l0.shape)} != ({batch_size},{self.levels[0]})"
+            v0 = int(self.vocab_sizes[0])
+            assert int(l0.min()) >= 0 and int(l0.max()) < v0, \
+                f"l0 fora do range [0,{v0})"
+            codes.append(l0)
+        else:
+            # level 0: q0 only
+            h = self.q0.expand(batch_size, -1, -1) + self.pos.weight[0] \
+                + self.lvl.weight[0]
+            mask0 = torch.zeros(1, 1, 1, 1)
+            for blk in self.blocks:
+                h, _ = blk(h, mask0, self.rope_cos[:1], self.rope_sin[:1])
+            h = self.ln_f(h)
+            l0_logits = self._head_logits(h, 0).squeeze(1)
+            codes.append(self._sample(l0_logits, temperature, top_k, top_p))
         # levels 1..K-1
+        passes = 0
         for k in range(1, len(self.levels)):
-            h = self._forward_partial(codes)
-            # last chunk = last L_k positions
             Lk = self.levels[k]
-            logits = self._head_logits(h[:, -Lk:], k)
-            codes.append(self._sample(
-                logits.reshape(batch_size * Lk, -1), temperature, top_k,
-                top_p).reshape(batch_size, Lk))
+            if not self.intra:
+                h = self._forward_partial(codes)
+                logits = self._head_logits(h[:, -Lk:], k)
+                codes.append(self._sample(
+                    logits.reshape(batch_size * Lk, -1), temperature,
+                    top_k, top_p).reshape(batch_size, Lk))
+                passes += 1
+                continue
+            # intra: causal chunks within the level (left→right)
+            cur = torch.zeros(batch_size, Lk, dtype=torch.long,
+                              device=self.q0.device)
+            decided = torch.zeros(batch_size, Lk, dtype=torch.bool,
+                                  device=self.q0.device)
+            for s in range(0, Lk, self.intra_passes):
+                h = self._forward_partial(codes, cur, decided)
+                lg = self._head_logits(h[:, -Lk:], k)[:, s:s + self.intra_passes]
+                codes_s = self._sample(
+                    lg.reshape(-1, lg.shape[-1]), temperature, top_k,
+                    top_p).reshape(batch_size, -1)
+                cur[:, s:s + codes_s.shape[1]] = codes_s
+                decided[:, s:s + codes_s.shape[1]] = True
+                passes += 1
+            codes.append(cur)
         idx = torch.cat(codes, dim=1)
+        self.last_passes = passes + 1  # +1 for level 0
         if return_per_level:
             return idx, codes
         return idx

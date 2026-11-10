@@ -1,4 +1,5 @@
 # VQ-VAE (NCM stage-1 tokenizer) — CPU-scaled config, semantics follow the
+quantizer_impl: mini
 # released LM1B config (hazyresearch/ncm-checkpoints) with smaller dims/levels.
 in_vocab_size: 8192          # set at runtime from trained BPE
 context_length: 128          # segment length in pre-tokens
@@ -16,6 +17,10 @@ dec_layers: 2
 enc_positional: true
 dec_positional: true
 vqvae_vocab_size: [2048, 2048, 2048, 2048, 2048, 2048, 2048, 2048]
+# NOTE: quantizer_impl: mini swaps in MiniMSRQ — of the vector_quantizer:
+# block below ONLY `commitment_cost` and `levels.manual_levels` apply;
+# decay/aux.fine_drop/aux.code_corruption/quant_resi are INERT.
+# (vqvae_vocab_size above also applies.)
 vector_quantizer:
   clss: multiscale_residual_vector_quantizer
   decay: 0.99

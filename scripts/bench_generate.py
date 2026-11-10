@@ -15,6 +15,7 @@ import resource
 import time
 from pathlib import Path
 
+import numpy as np
 import torch
 import yaml
 
@@ -39,7 +40,10 @@ def load_gen(path, vqvae):
         n_head_q=cfg["n_head_q"], n_head_kv=cfg["n_head_kv"],
         mlp_hidden=cfg["mlp_hidden"], glu=cfg.get("glu", True),
         use_qk_norm=cfg.get("use_qk_norm", False),
-        rope_base=cfg.get("rope_base", 1e6), bias=cfg.get("bias", True))
+        rope_base=cfg.get("rope_base", 1e6), bias=cfg.get("bias", True),
+        shared_head=cfg.get("shared_head", True),
+        intra=cfg.get("intra", False),
+        intra_passes=cfg.get("intra_passes", 32))
     m.load_state_dict(ck["model"])
     return m.eval(), cfg
 
@@ -70,6 +74,10 @@ def main():
     ap.add_argument("--temperature", type=float, default=0.8)
     ap.add_argument("--top-k", type=int, default=40)
     ap.add_argument("--out", default="artifacts/bench.json")
+    ap.add_argument("--l0", default="model",
+                    help="model|unigram|uniform|active|smooth:<eps> — origem do código l0 (oficial: unigram)")
+    ap.add_argument("--l0-unigram", default="artifacts/l0_unigram.npy",
+                    help="vetor de probabilidades empíricas de l0")
     args = ap.parse_args()
 
     vqvae, _, _ = load_vqvae(args.vqvae)
@@ -79,22 +87,38 @@ def main():
     ar, acfg = load_ar(args.ar)
     ctx = acfg.get("context_length", 128)
     res = {"config": {"n": args.n, "temperature": args.temperature,
-                      "top_k": args.top_k, "ctx": ctx},
+                      "top_k": args.top_k, "ctx": ctx, "l0_mode": args.l0},
            "hardware": {"cpu_count": os.cpu_count()}}
 
     # --- NCM: K passes, all codes per level parallel ---
+    l0_codes = None
+    if args.l0 != "model":
+        # official recipe: l0 ~ distribuição empírica do corpus (não predita)
+        p = torch.tensor(np.load(args.l0_unigram, allow_pickle=False),
+                         dtype=torch.float64)
+        if args.l0 == "uniform":
+            p = torch.ones_like(p) / p.numel()
+        elif args.l0 == "active":
+            p = (p > 0).double(); p = p / p.sum()
+        elif args.l0.startswith("smooth:"):
+            eps = float(args.l0.split(":", 1)[1])
+            p = (1.0 - eps) * p + eps * torch.ones_like(p) / p.numel()
+        l0_codes = torch.multinomial(
+            p.float(), args.n * gen.levels[0], replacement=True
+        ).view(args.n, gen.levels[0])
     torch.manual_seed(0)
     t0 = time.time()
     rss0 = rss_mb()
     idx, codes = gen.generate(batch_size=args.n, temperature=args.temperature,
-                              top_k=args.top_k, return_per_level=True)
+                              top_k=args.top_k, return_per_level=True,
+                              l0=l0_codes)
     dt_ncm = time.time() - t0
     texts_ncm = gen.decode_text(idx, bpe)
     n_tok_ncm = idx.shape[1]
     res["ncm"] = {
         "wall_s": round(dt_ncm, 3), "per_sample_s": round(dt_ncm / args.n, 3),
         "codes_per_sample": n_tok_ncm,
-        "level_passes": len(codes),
+        "level_passes": getattr(gen, "last_passes", len(codes)),
         "tokens_equiv": [len(bpe.encode(t)) for t in texts_ncm],
         "peak_rss_mb": round(rss_mb(), 1),
         "params": sum(p.numel() for p in gen.parameters()),
