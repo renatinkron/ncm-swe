@@ -38,8 +38,8 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--corrupt", type=float, default=1.0)
     ap.add_argument("--corrupt-schedule", default="flat",
-                    choices=["flat", "linear"],
-                    help="flat: r_i~U(0,corrupt) por item | linear: taxa por nível corrupt-hi→corrupt-lo (oficial)")
+                    choices=["flat", "linear", "self"],
+                    help="flat: r_i~U(0,corrupt) por item | linear: taxa por nível corrupt-hi→corrupt-lo (oficial) | self: taxas lineares + códigos amostrados das próprias predições (GLAT-lite)")
     ap.add_argument("--corrupt-hi", type=float, default=0.75)
     ap.add_argument("--corrupt-lo", type=float, default=0.25)
     ap.add_argument("--init-from", default="",

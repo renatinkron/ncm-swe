@@ -142,20 +142,34 @@ class LevelGenerator(nn.Module):
         schedule 'linear': per-LEVEL rate, linearly decreasing from
         corrupt_hi (first conditioned level) to corrupt_lo (last) —
         official recipe per WPS replication (strong arm 0.75→0.25).
-        Each code replaced by a uniform code from the same level's
-        codebook. Targets stay clean; level 0 never corrupted."""
+        schedule 'self' (GLAT-lite): same linear rates, but each replaced
+        code is sampled from the model's own current predictions for that
+        level — corrompe com os erros reais do modelo, nao ruido uniforme
+        (Qian et al. 2021, arXiv 2008.07905). Costs one extra forward.
+        Targets stay clean; level 0 never corrupted."""
         out = idx.clone()
         B = idx.shape[0]
         sched = getattr(self, 'corrupt_schedule', 'flat')
         hi = getattr(self, 'corrupt_hi', self.corrupt)
         lo = getattr(self, 'corrupt_lo', self.corrupt)
         rates = torch.rand(B, 1, device=idx.device) * self.corrupt \
-            if sched != 'linear' else None
+            if sched == 'flat' else None
+        preds = None
+        if sched == 'self':
+            saved = self.corrupt
+            try:
+                self.corrupt = 0.0
+                _, outs = self.forward(idx)
+            finally:
+                self.corrupt = saved
+            preds = [torch.multinomial(
+                o.softmax(-1).reshape(-1, o.shape[-1]), 1
+            ).reshape(B, -1) for o in outs]
         ofs = self.levels[0]  # skip level 0 (official: skip_level0) — l0 seeds
                               # z_hat for every chunk; corrupting it poisons all
         nlv = len(self.levels) - 1
         for j, L in enumerate(self.levels[1:], start=1):
-            if sched == 'linear':
+            if sched in ('linear', 'self'):
                 # rate fixa por nível: hi → lo linearmente
                 r = hi + (lo - hi) * (j - 1) / max(nlv - 1, 1)
                 mask_lvl = torch.rand(B, L, device=idx.device) < r
@@ -163,8 +177,8 @@ class LevelGenerator(nn.Module):
                 mask_lvl = (
                     torch.rand(idx.shape, device=idx.device) < rates
                 )[:, ofs:ofs + L]
-            rnd = torch.randint(0, self.vocab_sizes[j], (B, L),
-                                device=idx.device)
+            rnd = preds[j - 1] if sched == 'self' else torch.randint(
+                0, self.vocab_sizes[j], (B, L), device=idx.device)
             out[:, ofs:ofs + L] = torch.where(mask_lvl, rnd,
                                               out[:, ofs:ofs + L])
             ofs += L
