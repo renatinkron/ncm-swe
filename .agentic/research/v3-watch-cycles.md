@@ -9,6 +9,38 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | ciclo | hora | último ponto | dup | gap | decisão |
 |---|---|---|---|---|---|
 | 1 | 10 nov 16:45 | @5999 | 0.0542 | +1.089 | **KEEP** — ver análise |
+| 2 | 10 nov ~18:45 | @6499 | 0.0505 | +1.101 | **ADJUST** — v4 GLAT-lite lançado |
+
+## Ciclo 2 — 10 nov ~18:45 UTC
+
+**@6499**: dup **0.0505** (novo mínimo), distinct 0.7178, self CE 5.4726,
+gt CE **4.3713** (< v2 baseline 4.412 — modelo agora teacher-forced
+MELHOR que v2 e com metade do stutter), gap = **+1.101**.
+
+**Platô confirmado**: gap +1.064 → +1.048 → +1.089 → +1.101 — 4 pontos
+flat na faixa 1.05–1.11. A corrupção uniforme linear deu o que tinha.
+Gatilho pré-registrado disparado.
+
+**Decisão: ADJUST** — lançado braço **v4 GLAT-lite** em paralelo:
+- `--corrupt-schedule self` (commit ae086af): corrompe condicionamento
+  com códigos amostrados das PRÓPRIAS predições do modelo (não ruído
+  uniforme) — GLAT de Qian et al. 2021 adaptado a hierarquia de códigos
+- warm-start do snapshot @6499, offset 6499, 3000 steps, THREADS=6
+  (v3 segue com ~10 → v3 continua como braço de controle uniforme)
+- primeiro eval v4 em local 499 → label ~6998 (convenção −1 vs v3)
+- v3 labels 6999/7499/... servem como controle pareado no mesmo
+  horizonte de steps totais
+- watcher v4 (pid 1860710) + eval_ckpt_v4.sh ativos; watcher antigo
+  duplicado do v3 (pid 1382545) morto neste ciclo
+
+**Comparação pareada planejada**: v4@6998 vs v3@6999 — mesmo orçamento
+total de steps desde v2, único delta = fonte dos códigos de corrupção
+(uniforme vs amostrados-do-modelo). Se v4 reduzir gap/dup abaixo do
+controle → evidência própria de que erro-do-modelo > ruído uniforme
+para exposure bias hierárquico.
+
+**Custo**: v4 ~2× por step (forward extra no corrupt) × threads
+menores → ~55-70s/step, ~500 steps ≈ 8-10h até o primeiro ponto.
 
 ## Ciclo 1 — 10 nov ~16:45 UTC
 
