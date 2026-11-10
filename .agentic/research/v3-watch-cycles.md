@@ -10,6 +10,47 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 |---|---|---|---|---|---|
 | 1 | 10 nov 16:45 | @5999 | 0.0542 | +1.089 | **KEEP** — ver análise |
 | 2 | 10 nov ~18:45 | @6499 | 0.0505 | +1.101 | **ADJUST** — v4 GLAT-lite lançado |
+| 3 | 10 nov ~23:30 | v3 @6999 | 0.0644 | +1.105 | **KEEP** — v4 em voo; v5-intra candidato |
+
+## Ciclo 3 — 10 nov ~23:30 UTC
+
+**v3 @6999** (controle): dup 0.0644 (oscilando no ruído n=8 ~0,05–0,065),
+distinct 0.7156, self 5.4227, gt **4.3181** (sempre melhorando),
+gap **+1.105** — platô firme: 5 pontos em 1.05–1.11.
+
+Leitura: o MODELO segue melhorando (gt ↓ constante); o que saturou é o
+benefício da corrupção uniforme sobre robustez/exposure. Reforça v4.
+
+**v4 em voo**: ~55s/step (2 forwards), step ~6770 → primeiro eval
+@6998 em ~4h.
+
+**Pergunta do ciclo**: se o resíduo é multimodalidade intra-nível,
+existe correção no lado do DECODE sem retreino?
+
+**Fontes**:
+- Mask-Predict / CMLM (Ghazvininejad et al. 2019, arXiv 1904.09324):
+  re-predizer iterativamente as posições de MENOR confiança — +4 BLEU
+  vs NAR puro, ~1 BLEU do AR. Mas exige modelo treinado com masked
+  conditioning (CMLM).
+- ReMDM (arXiv 2503.00307) / T2M (arXiv 2604.18738) / Posterior
+  Refinement (FMLM+): mesma família — posições erradas caem
+  consistentemente no conjunto de baixa confiança; remask-and-repredict
+  é inference-time compute scaling.
+- Estudo empírico ACL 2025 (aclanthology 2025.acl-long.1443): caveat —
+  confiança predita correlaciona imperfeitamente com qualidade.
+
+**Limitação arquitetural identificada**: refinement dentro de um nível
+exige que o modelo condicione posições do MESMO nível entre si — nosso
+modelo é intra=False (independência condicional); re-amostrar o mesmo
+nível com o mesmo condicionamento não muda nada. O mecanismo `intra`/
+`mask_emb` EXISTE no generator (projetado RUN-016) mas nunca treinado.
+
+**Candidato v5**: treinar com `intra=True` → destrava Mask-Predict-style
+refinement por nível (decided/masked codes via _intra_add). A fila fica:
+v4 (self-corruption, em voo) → v5 (intra + refinement no decode).
+Decisão de v5 após o primeiro ponto do v4 (@6998).
+
+**Decisão: KEEP** — aguardar v4@6998 + v3@7499.
 
 ## Ciclo 2 — 10 nov ~18:45 UTC
 
