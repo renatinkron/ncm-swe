@@ -16,6 +16,17 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 6 | 11 nov ~04:15 | — | — | — | **KILL v4** — veredito antecipado |
 | 7 | 11 nov ~06:00 | v3 @7999 | **0.046** | **+0.987** | **KEEP** — gap rompeu 1,0! |
 | 8 | 11 nov ~08:45 | v3 @8499 | 0.0526 | +1.167 | **KEEP** — sub-1.0 era variância |
+| 9 | 11 nov ~11:00 | v3 @8999 | 0.0528 | +1.109 | **KEEP** — 1º ponto do critério de parada |
+
+## Ciclo 9 — 11 nov ~11:00 UTC
+
+**v3 @8999**: dup 0.0528, distinct 0.6808, self 5.384, gt **4.2752**,
+gap +1.109 — dentro da faixa pré-registrada (0.95–1.20), 1º dos 2
+pontos exigidos para a parada antecipada. gt CE empatado no melhor
+valor (4.275) — converge para ~4.27.
+
+Se @9499 também cair na faixa → STOP: declara-se convergência em
+gap ~1.1 / dup ~0.05 / gt ~4.28 e economiza ~5h até o fim nominal.
 
 ## Ciclo 8 — 11 nov ~08:45 UTC
 
