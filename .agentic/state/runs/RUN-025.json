@@ -50,5 +50,6 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ]
+  ],
+  "summary": "v3 monitoring cadence 2h: 9 cycles, series to @8999 (dup ~0.05 floor, gap ~1.10 plateau, gt 4.275); v4 self-corruption arm launched+killed on paired -46%; blind review nc=0; early-stop rule pending @9499"
 }
