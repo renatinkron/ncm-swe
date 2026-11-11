@@ -11,6 +11,40 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 1 | 10 nov 16:45 | @5999 | 0.0542 | +1.089 | **KEEP** — ver análise |
 | 2 | 10 nov ~18:45 | @6499 | 0.0505 | +1.101 | **ADJUST** — v4 GLAT-lite lançado |
 | 3 | 10 nov ~23:30 | v3 @6999 | 0.0644 | +1.105 | **KEEP** — v4 em voo; v5-intra candidato |
+| 4 | 11 nov ~00:15 | v4 @6998 | 0.0578 | **+1.616** | **KEEP 1 ponto** — negativo no pareado |
+
+## Ciclo 4 — 11 nov ~00:15 UTC
+
+**Comparação pareada v4@6998 vs v3@6999** (mesmo orçamento desde o
+warm-start; único delta = fonte da corrupção):
+
+| métrica | v3 uniforme | v4 self-corruption |
+|---|---|---|
+| dup_rate | 0.0644 | 0.0578 |
+| distinct | 0.7156 | 0.6723 |
+| self CE | 5.423 | 5.868 |
+| gt CE | 4.318 | 4.252 |
+| **gap** | **+1.105** | **+1.616** |
+
+**Resultado negativo**: GLAT-lite tornou o modelo MAIS sensível aos
+próprios erros (+1,62 vs +1,11), não mais robusto. gt CE marginalmente
+melhor (4,25) — trade-off errado. Converge com WPS "neighbour
+corruption" (piorou GenPPL 61–69 vs 43–49): corromper condicionamento
+com códigos plausíveis/não-uniformes pode AMPLIFICAR o mismatch —
+o modelo aprende a confiar demais no condicionamento.
+
+Hipóteses para o mecanismo: (a) predições do modelo são "corretas
+demais" — não ensinam recuperação de erro real; (b) transient de 500
+steps após 6,5k de uniforme; (c) loss 5,0 vs 5,5 não comparável
+(corruption distribution mais fácil).
+
+Bug corrigido no ciclo: watch_v4.sh FIRST=6999→6998 (primeiro boundary
+do offset 6499 é 6998); eval @6998 rodado manualmente.
+
+**Decisão: KEEP v4 mais 1 ponto** (@7498 ~5h) — se gap seguir >1,4,
+KILL v4 e documentar negativo. v3 segue como braço principal.
+Candidato seguinte: v5 intra (masked conditioning + Mask-Predict no
+decode) — a única alavanca ainda não testada para o resíduo ~1,1.
 
 ## Ciclo 3 — 10 nov ~23:30 UTC
 

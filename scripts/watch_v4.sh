@@ -5,7 +5,7 @@
 cd "$(dirname "$0")/.."
 set -u
 OFFSET=6499
-FIRST=6999   # primeira fronteira avaliável (local 499 + offset)
+FIRST=6998   # primeira fronteira avaliável (local 499 + offset)
 LOG=.agentic/state/v4_watch.log
 LAST_DONE=0
 MAXSEC=$((60*60*60))   # 60h teto
