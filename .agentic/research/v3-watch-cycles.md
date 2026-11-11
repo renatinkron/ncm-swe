@@ -15,6 +15,24 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 5 | 11 nov ~02:15 | v3 @7499 | 0.0515 | +1.183 | **KEEP** — aguarda v4@7498 p/ veredito |
 | 6 | 11 nov ~04:15 | — | — | — | **KILL v4** — veredito antecipado |
 | 7 | 11 nov ~06:00 | v3 @7999 | **0.046** | **+0.987** | **KEEP** — gap rompeu 1,0! |
+| 8 | 11 nov ~08:45 | v3 @8499 | 0.0526 | +1.167 | **KEEP** — sub-1.0 era variância |
+
+## Ciclo 8 — 11 nov ~08:45 UTC
+
+**v3 @8499**: dup 0.0526, distinct 0.7487, self 5.443,
+gt **4.2757** (melhor da série), gap +1.167 — rebotou acima de 1,0.
+
+Quadro real: gap oscila **0.99–1.18, média ~1.10** desde @4999 — o
+sub-1.0 do @7999 foi variância n=8, não rompimento. Piso do schedule
+linear neste orçamento ≈ +1.1 nats; dup_rate piso ≈ 0.05.
+gt CE segue caindo monotonicamente (modelo aprende, robustez saturou).
+
+**Pré-registro de parada antecipada**: se @8999 e @9499 permanecerem
+em 0.95–1.20, a trajetória é conclusiva — parar v3 em ~@9499,
+declarar "gap estabilizou ~1.1, dup ~0.05" e economizar ~10h de CPU.
+A história do paper já está completa: corrupção linear oficial
+reduziu stutter ~50% e gap ~15%, sem resolver multimodalidade residual;
+corrupção com predições-próprias (v4) é pior que uniforme.
 
 ## Ciclo 7 — 11 nov ~06:00 UTC
 
