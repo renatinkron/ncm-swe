@@ -13,6 +13,30 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 3 | 10 nov ~23:30 | v3 @6999 | 0.0644 | +1.105 | **KEEP** — v4 em voo; v5-intra candidato |
 | 4 | 11 nov ~00:15 | v4 @6998 | 0.0578 | **+1.616** | **KEEP 1 ponto** — negativo no pareado |
 | 5 | 11 nov ~02:15 | v3 @7499 | 0.0515 | +1.183 | **KEEP** — aguarda v4@7498 p/ veredito |
+| 6 | 11 nov ~04:15 | — | — | — | **KILL v4** — veredito antecipado |
+
+## Ciclo 6 — 11 nov ~04:15 UTC
+
+**Decisão: KILL v4 (container parado/removido, watcher morto).**
+
+Racional: +46% de degradação do gap no pareado @6998 é efeito grande
+(não ruído n=8), converge com o negativo independente do WPS
+(neighbour-corruption), e a confirmação @7498 custaria ~5h atrasando o
+v3 ~2× por contenção. O braço é RESUMÍVEL — snapshot
+`artifacts/v4_eval/ckpt_step6998.pt` preservado; se a hipótese
+"transient de 500 steps" importar depois, retomamos do snapshot.
+
+Aprendizado para o paper: corromper o condicionamento com códigos
+amostrados do próprio modelo (GLAT-lite adaptado a hierarquia) PIORA o
+exposure gap vs controle uniforme — segundo datapoint independente de
+que a FORMA do ruído importa mais que sua presença. Mecanismo
+plausível: predições do modelo são "corretas demais" → condicionamento
+permanece próximo do manifold limpo → não ensina recuperação; e/ou o
+modelo aprende a superestimar a confiabilidade do condicionamento,
+amplificando erros em cascata na inferência.
+
+v3 agora com CPU livre (~17-25s/step) → @7999 em ~2,5h, fim (~13000)
+em ~36h. Braço principal segue até o final para a trajetória completa.
 
 ## Ciclo 5 — 11 nov ~02:15 UTC
 
