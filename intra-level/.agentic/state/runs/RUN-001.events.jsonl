@@ -1,0 +1,2 @@
+{"t":"begin","ts":"2026-11-11T14:38:24Z","d":{"demand":"v5","level":"standard"}}
+{"t":"note","ts":"2026-11-11T14:38:47Z","d":{"detail":"run_state field github_issue.status is \"pending\", want one of [in-progress closed unavailable]","step_failed":"issue_create"}}

@@ -16,6 +16,19 @@ Se `.agentic/state/.classified` existe e `loop.json` indica um loop ativo (`done
      retome o passo emitido. Não execute `begin` nem `classify` novamente.
      Só inicie um loop novo quando não houver um loop classificado ativo.
 
+## Loop pointer recovery
+
+- `agentloop begin` refuses while a loop is active. If the pointer is wrong
+  (`status` shows a run you did not intend — e.g. an orphan run created by a
+  delegated call), run `agentloop resume <run-id>` to restore the intended run.
+  It uses the `loop.<run>.json` snapshot written at displacement, else rebuilds
+  the queue from the run's events log. Never start a duplicate run to "fix" a
+  displaced pointer.
+- `begin --force` abandons the active loop on purpose; the old loop is
+  snapshotted and can still be resumed.
+- If hooks block `agentloop`/`rtk agentloop` commands, the project's installed
+  hooks are stale — run `agentloop update .` to refresh managed files.
+
 
 ---
 

@@ -1,0 +1,17 @@
+{"timestamp":"2026-10-31T20:59:00Z","demand":"status check: modelo ainda treinando?","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-01T10:45:00Z","demand":"como estamos? (status geral)","files_touched":["/tmp/watch_ar471m.sh","artifacts/queue_471m.log"],"verdict":"pass"}
+{"timestamp":"2026-11-01T18:23:00Z","demand":"como estamos? (status)","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-01T19:15:00Z","demand":"status do treinamento","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-01T20:20:00Z","demand":"status","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-01T21:14:00Z","demand":"status","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-02T04:30:00Z","demand":"analisar conversa Gemini compartilhada (O Nascimento da IA / Projeto MANA) e cruzar com ncm_swe","files_touched":["/tmp/devin-overflows-1000/5ccde9aa/content.txt"],"verdict":"pass"}
+{"timestamp":"2026-11-02T05:10:00Z","demand":"ingerir artefatos Gemini MANA no RAG + status NCM; descoberto watcher travado (self-match), AR471M done, bench 471m disparado, heads treino real disparado","files_touched":[".agentic/research/rag/papers/gemini-mana-spec.txt","artifacts/bench_471m.log","artifacts/heads_train.log"],"verdict":"pass"}
+{"timestamp":"2026-11-02T05:20:00Z","demand":"watcher robusto por /proc/PID: bench->eval auto (OK, Q471 DONE 01:46), heads->log; NCM 2.27x mais rapido que AR em 471M","files_touched":["scripts/chain_watcher.sh","artifacts/eval_471m.json","artifacts/queue_471m.log"],"verdict":"pass"}
+{"timestamp":"2026-11-02T05:45:00Z","demand":"status geral — heads done em 2h (7401s), l0=0.94, todo compute concluido; watcher encadeou tudo sozinho","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-04T13:25:31Z","demand":"como estamos? status","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-04T13:41:46Z","demand":"como ter modelo puramente NCM: baixar vs treinar vs converter","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-04T21:10:32Z","demand":"status bg + proximo passo","files_touched":[],"verdict":"pass"}
+{"timestamp": "2026-11-08T00:16:24Z", "demand": "pesquisar otimizacoes relevantes as descobertas sobre residual VQ imprevisivel e o paper NCM original", "files_touched": [".agentic/research/ncm-official-recipe-analysis.md", "scripts/ncm_official_probe.py", "artifacts/ncm_official/*"], "verdict": "pass"}
+{"timestamp": "2026-11-08T19:19:29.831932+00:00", "demand": "monitorar treino gen_ncm_v2 e registrar veredito quando bench_v2 existir", "files_touched": [], "verdict": "in-flight: step 560/3000 healthy, l11=3.93 \u2014 fine codes learning well post-fix; bench pending ~11h"}
+{"timestamp": "2026-11-09T01:01:00.013629+00:00", "demand": "monitor horario do treino gen_ncm_v2 com log em arquivo", "files_touched": ["/tmp/monitor_v2.sh", "artifacts/monitor_v2.log"], "verdict": "pass \u2014 logger horario armado ate bench_v2 ou morte do treino"}
+{"timestamp": "2026-11-10T15:15:09.982745+00:00", "demand": "registrar pontos novos da serie v3 na nota de pesquisa", "files_touched": [".agentic/research/v3-linear-corruption-eval.md"], "verdict": "pass"}

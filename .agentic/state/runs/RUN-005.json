@@ -1,0 +1,59 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-11-01T21:53:22.038577+00:00",
+    "decision": "current_branch",
+    "evidence_ref": "local research repo",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-01T21:53:22.038577+00:00",
+    "selected_branch": "main"
+  },
+  "change_domain": "backend",
+  "contract_id": "CONTRACT-005",
+  "demand": "pesquisar e prototipar conversao criativa de MoE pretrained (Qwen3-Coder-30B-A3B) para geracao hierarquica NCM em CPU convencional, usando analogia multirresolucao de renderizacao (piramide laplaciana, adaptive sampling)",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-01T21:51:10Z"
+    },
+    {
+      "event": "iteration",
+      "note": "MoE→NCM research: pyramid codebook from Qwen embeddings proven + level-heads learning verified on frozen backbone (coarse-first signature); RAG BM25 built; full training delegated to background",
+      "t": "2026-11-01T22:27:44.036465+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-005",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-005",
+  "summary": "MoE→NCM conversion research: vocabulary-pyramid codebook built from Qwen embeddings (no VQ-VAE) + level-heads learning verified on frozen backbone (coarse-first signature); RAG built; full-scale head training delegated to background compute",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

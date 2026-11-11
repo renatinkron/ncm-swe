@@ -1,0 +1,12 @@
+{"t":"begin","ts":"2026-11-04T21:43:12Z","d":{"demand":"treinar token head condicionada em codigos RVQ (ultima milha aprendida): duas variantes — feat-only vs feat+codigos previstos pelas heads — medir acuracia token vs baseline 0% e re-testar spec-decode","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-04T21:43:15Z"}
+{"t":"task_plan","ts":"2026-11-04T21:43:30Z"}
+{"t":"execute","ts":"2026-11-04T22:40:16Z"}
+{"t":"test","ts":"2026-11-04T22:40:23Z","d":{"nc":0}}
+{"t":"note","ts":"2026-11-04T22:40:23Z","d":{"detail":"no new history entry in RUN-010.json","step_failed":"history"}}
+{"t":"history","ts":"2026-11-04T22:40:27Z"}
+{"t":"blind_review","ts":"2026-11-04T22:40:37Z"}
+{"t":"issue_close","ts":"2026-11-04T22:40:37Z"}
+{"t":"close","ts":"2026-11-04T22:40:41Z"}
+{"t":"close","ts":"2026-11-04T22:40:41Z","d":{"failures":1,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-04T22:40:41Z","d":{"memory_publish":"runs/RUN-010.md"}}

@@ -1,0 +1,65 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-10-30T22:10:39.548443+00:00",
+    "decision": "current_branch",
+    "evidence_ref": "local research repo, no remote; main is the only branch",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-10-30T22:10:39.548443+00:00",
+    "selected_branch": "main"
+  },
+  "change_domain": "backend",
+  "contract_id": "CONTRACT-002",
+  "demand": "o que podemos fazer? Dá pra continuar? Se der, treine o modelo você mesmo swe2 para que ele fique o melhor possível",
+  "github_issue": {
+    "number": null,
+    "reason": "no-github",
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-10-30T22:10:05Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "backend",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "Both arms resumed to step 1000 (NCM 250-\u003e1000 wall 14.9k s, AR 500-\u003e1000 wall 9.0k s). AR loss 3.30-\u003e2.11; NCM 5.69-\u003e5.52. Bench refreshed: NCM 0.527s vs AR 0.552s/sample (x1.05 low-load; ~x2.6/token-equiv). Report synced to symmetric comparison.",
+      "target_environment": "dev",
+      "timestamp": "2026-10-31T02:20:42.809764+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-002",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-002",
+  "summary": "Resumed both arms to step 1000: AR loss 3.30-\u003e2.11, NCM 5.69-\u003e5.52; symmetric bench NCM x1.05/sample (~x2.6/token-equiv); quality ceiling confirmed at 60M/4MB scale.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

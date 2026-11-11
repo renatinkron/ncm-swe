@@ -1,0 +1,59 @@
+{
+  "branch_strategy": {
+    "branch": "main",
+    "decision": "current_branch",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-014",
+  "demand": "implementar NCM nativo escopo-fechado: corpus TinyStoriesV2, tokenizer BPE 8k, modelo 30-100M com decoder conceito-token co-treinado, evals end-to-end",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-06T20:25:08Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 2,
+      "non_conformities": 0,
+      "phase": "close",
+      "summary": "Pipeline completo: TinyStories 800k (161 shards), BPE 8k (ByteLevel decoder fix), VQ-VAE MiniMSRQ held_ce 0.152 (apos colapso do quantizador vendored — config corrigido + gate de diversidade), AR 67.15M loss ~2.5 (estorias coerentes), NCM 68.83M total loss ~6.25 (grosso aprendido l0~4, finos ~uniformes). Bench: NCM 2.82x mais rapido (0.219s vs 0.617s/amostra) mas qualidade word-salad — speedup real, qualidade insuficiente. Veredito honesto em artifacts/report.md.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-07T08:39:42Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-014",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-014",
+  "summary": "NCM nativo TinyStories end-to-end: pipeline completo (BPE8k+MiniMSRQ+AR/NCM pareados); NCM 2.82x mais rapido mas word-salad — speedup real, qualidade insuficiente nos niveis finos.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

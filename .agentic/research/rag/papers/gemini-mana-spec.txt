@@ -1,0 +1,33 @@
+MANA (Motor de Amortização Não-Autorregressiva) — distilled spec + independent validations.
+Source: Gemini conversation "O Nascimento da IA" (share ad879a3a4635, Oct-Nov 2026), distilled for ncm_swe RAG.
+Parallel research thread converging on same problem: frontier-quality LLM inference on commodity CPU (i5, 16-32GB RAM, PCIe 3.0 NVMe).
+
+=== EVOLUTION ===
+MANA 1.0 (REPROVED): claimed NCM + Jacobi iteration + layer streaming + expert pinning would yield 50-128 tok/s on i5. Fatal flaws found: (a) target model "Qwen3-8B-MoE" does not exist — Qwen3-8B is dense; real small MoE is Qwen3-30B-A3B (30B total, ~3.3B active, 128 experts); (b) Jacobi/parallel decoding on a natively autoregressive model WITHOUT retraining gives ~1-2x not 21x — literature (CLLMs 2.4-3.4x, Jacobi Forcing ~3.8-4x) only achieves good acceptance AFTER consistency distillation / fine-tuning on parallel decoding trajectories; (c) NCM is a different architecture trained from scratch (VQ-VAE tokenizer + per-level transformer), no published recipe converts pretrained AR weights into NCM; (d) ALU utilization on dequantized CPU matmul ~20-40% of peak, not 100%.
+
+MANA 2.0: corrected target to Qwen3-30B-A3B, added Phase 0 (Jacobi Forcing/CLLM adaptation on small model first, gate of 3-4 tokens accepted per iteration before scaling), block reduced 64->16-32 tokens, honest 10-20 tok/s target. New problems: Q16 "lossless" weights don't fit 16GB (dense non-expert params ~1.1B + hot expert union ~4.5B = ~11GB FP16 + KV ~2GB = over budget; Q4/Q8 required); "auxiliary head" described = exactly EAGLE/Medusa speculative decoding draft head (heads typically full transformer layer ~hundreds MB on 30B, not 20-50MB; training needs teacher hidden-state collection = days at 5 tok/s on i5); Tree-sitter validates syntax not semantics (symbol tables need queries on top of parse).
+
+MANA 3.0 (APPROVED for prototyping): hybrid quantization Q8_0 for always-resident dense/attention/router/shared-expert (~1.2GB) + Q4_K_M for routed experts via mmap; draft model Qwen3-0.6B Q4_K_M (~400MB, same tokenizer/vocab as Qwen3 family — NOT Qwen2.5-1.5B which is wrong generation); reuse llama.cpp native speculative decoding (llama-speculative, --model-draft, --draft-max flags, or llama-server) instead of rewriting; target 10-20 tok/s.
+
+=== KEY TECHNICAL INSIGHTS (validated) ===
+
+1. BLOCK-UNION ROUTING PARADOX: in MoE speculative verification of a 16-token block, each token may route to different experts per layer. The router at layer L decides from hidden states output by layer L-1 — you CANNOT know the block's expert union before computing each layer. Fix: layer-wise token batching — at layer L, batch all 16 tokens through router L to get exact expert union for THAT layer; cold experts read once serve all 16 tokens (I/O amortization). Prefetch of L+1 must be statistical (historical co-activation: "if expert X at layer L fired, expert Y at L+1 has ~80% chance on coding tasks") or session-level LRU pinning.
+
+2. EXPERT PINNING: the real engineering delta, not speculative decoding (already in llama.cpp). Pin hot experts in RAM via mlock() or dedicated buffer to prevent kernel page eviction; LRU/LFU cache with strict cap (~6GB experts + ~1.2GB dense + ~2GB KV GQA ≈ 6-8GB total on 16GB machine); cold experts read from SSD on demand. Use posix_fadvise(POSIX_FADV_WILLNEED)/madvise(MADV_WILLNEED)/io_uring for async prefetch during AVX2 matmul of current layer.
+
+3. TREE-SITTER PLACEMENT: post-verification AST rollback is USELESS — greedy speculative decoding verification is mathematically lossless (accepted tokens identical to what 30B would generate), so re-generating a "broken" block produces the same code with the same error, double cost. Also every 16-token block is a code fragment whose AST contains MISSING/ERROR nodes at the tail — naive error-node rollback rejects 100% of valid blocks. Correct use: (a) pre-verification filter on the 0.6B draft output to prune absurd speculative branches BEFORE spending 30B compute; (b) GBNF grammar constraints at sampling time in llama.cpp; (c) entropy-collapse early-abort of the draft.
+
+4. SELF-SPECULATIVE MoE alternative: draft with the same 30B but restricted to Top-1 expert among RAM-resident experts only, verify with real Top-8 routing — zero extra model memory, zero second KV cache. Untested, research frontier.
+
+5. CONFIRMED HARDWARE ECONOMICS: 14B at 4-bit ≈ 7GB; ~50GB/s RAM bandwidth → ~7 tok/s ceiling for full model sweep; PCIe 3.0 NVMe ≈ 3.5GB/s; traditional lossless compression of FP16 weights ~ineffective — quantization/codebook IS the useful "symbol map"; MoE cold-start expert pull from SSD dominates when pinning fails; KV cache GQA grows with context (~2GB ≈ ~20K tokens on 30B-A3B).
+
+6. FOUNDATIONS WORTH FORKING: llama.cpp (native spec-decode + GBNF + ggml mmap backend — inject MoE router interceptor + LRU/mlock in src/llama-mmap.cpp / ggml-cpu); ktransformers / PowerInfer-2 (state of art MoE expert offload CPU↔SSD, but still autoregressive); Candle (Rust ML framework, Qwen3 dense OK but Qwen3-MoE may need port from qwen2-moe); tree-sitter-rs (fast AST); glommio/tokio-uring (Rust io_uring) if going Rust route.
+
+7. INVALIDATED CLAIMS: PowerInfer described as "expert prediction" — actually predicts activated ReLU NEURONS (activation sparsity), expert prefetch is different line (Pre-gated MoE etc.); "NCM ~4x faster than LLM" — paper reports 10-31x vs diffusion LMs, vs AR single-user magnitude unverified; KANs/Mamba/MatMul-free threads were explored and abandoned (Transformer→SSM distillation exists but adds cost without solving decode bottleneck); two-model spec-decode failed on i5 due to double KV cache + double model overhead — solvable only with sufficiently small draft (0.6B ≈ 400MB) or self-speculative.
+
+=== INTERSECTION WITH ncm_swe ===
+- Our train_level_heads.py (RUN-005) IS the "auxiliary head on frozen backbone" pattern — but predicts hierarchical RVQ codes (true NCM twist) instead of flat tokens like Medusa/EAGLE.
+- Validations confirm: "no published recipe converts pretrained AR weights to NCM" — our pyramid-over-frozen-embeddings + level heads is a novel attempt at exactly this open problem.
+- Consensus practical path: spec-decode (0.6B draft → 30B-A3B target) + expert pinning + layer-wise batching = deployable today; NCM/hierarchical generation remains the research arm.
+- Honest speedup range for parallel-decode methods on CPU: 1.5-3x after adaptation; our measured 1.05-1.34x at 60M scale is consistent pre-adaptation.
+- Jacobi zero-shot on AR model: entropy explodes, output collapses — matches why AR weights can't drive parallel decoding without new objective.

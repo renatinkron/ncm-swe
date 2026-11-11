@@ -73,17 +73,44 @@ function isReadOnlyPowerShell(cmd) {
 // `next`/`skip` precede and drive classification, so blocking them deadlocks
 // the loop. Sequencing inside the loop is enforced by the binary's `expects`
 // validation, not by this hook.
-const FRAMEWORK_CMD = /^agentloop(\s|$)/
+// RTK (and `rtk proxy`) is a read-only output filter wrappers many users
+// prefix every command with — without this the gate deadlocked the loop by
+// blocking `rtk agentloop next` (agro-trade RUN-080 trace, RUN-044).
+// The prefix alone is not enough: `rtk agentloop next; rm -rf x` must stay
+// blocked, so the exemption applies only when the remainder carries no
+// unquoted shell metachars. Command substitution ($ / `) is rejected even
+// inside double quotes; single-quoted content stays literal.
+const FRAMEWORK_PREFIX = /^(?:rtk(?:\.exe)?(?:\s+proxy)?\s+)?agentloop(?:\.exe)?/
+
+function isFrameworkCmd(c) {
+  const m = c.match(FRAMEWORK_PREFIX)
+  if (!m) return false
+  const rest = c.slice(m[0].length)
+  if (rest !== '' && !/^\s/.test(rest)) return false // agentloopx, agentloop-foo
+  let sq = false, dq = false
+  for (const ch of rest) {
+    if (sq) { if (ch === "'") sq = false; continue }
+    if (dq) {
+      if (ch === '"') { dq = false; continue }
+      if (ch === '$' || ch === '`' || ch === '\\') return false
+      continue
+    }
+    if (ch === "'") { sq = true; continue }
+    if (ch === '"') { dq = true; continue }
+    if (';&|<>$`(){}[]\\\r\n'.includes(ch)) return false
+  }
+  return !sq && !dq
+}
 
 function isStateChangingBash(cmd) {
   const c = (cmd || '').trim()
-  if (FRAMEWORK_CMD.test(c)) return false
+  if (isFrameworkCmd(c)) return false
   return !isReadOnlyBash(c)
 }
 
 function isStateChangingPowerShell(cmd) {
   const c = (cmd || '').trim()
-  if (FRAMEWORK_CMD.test(c)) return false
+  if (isFrameworkCmd(c)) return false
   return !isReadOnlyPowerShell(c)
 }
 

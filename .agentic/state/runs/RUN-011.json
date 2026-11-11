@@ -1,0 +1,60 @@
+{
+  "branch_strategy": {
+    "branch": "main",
+    "decision": "current_branch",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-011",
+  "demand": "continuar treino do codes-head (resume ate step 3000) e re-medir acuracia/spec-decode vs RUN-010",
+  "github_issue": {
+    "note": "no GitHub remote configured; issue lifecycle recorded locally",
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-06T00:58:58Z"
+    },
+    {
+      "actor": "tester",
+      "change_domain": "ml",
+      "iteration": 2,
+      "non_conformities": 0,
+      "phase": "validation",
+      "summary": "Codes-head resume 1500-\u003e3000 (57min): ESTAGNOU — t1 truth 3,125%-\u003e2,34% (128 pos, mesmo protocolo), a1=0; melhores 5 evals de loss todos no treino original (6,61@1300); spec tokhead accept=0, equal_ar=True. Veredito: gargalo estrutural (capacidade/alvo/dados), nao de steps.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-06T01:59:32Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-011",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-011",
+  "summary": "Codes-head resume 1500-3000: estagnou (t1 3,125-\u003e2,34%, a1=0); spec tokhead accept=0 equal_ar; gargalo estrutural, nao de steps",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

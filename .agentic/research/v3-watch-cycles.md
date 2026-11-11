@@ -17,6 +17,40 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 7 | 11 nov ~06:00 | v3 @7999 | **0.046** | **+0.987** | **KEEP** — gap rompeu 1,0! |
 | 8 | 11 nov ~08:45 | v3 @8499 | 0.0526 | +1.167 | **KEEP** — sub-1.0 era variância |
 | 9 | 11 nov ~11:00 | v3 @8999 | 0.0528 | +1.109 | **KEEP** — 1º ponto do critério de parada |
+| 10 | 11 nov ~13:45 | v3 @9499 | 0.0576 | +1.090 | **STOP** — critério de parada disparou |
+
+## Ciclo 10 (final) — 11 nov ~13:45 UTC
+
+**v3 @9499**: dup 0.0576, distinct 0.7603, self 5.306, gt **4.216**
+(melhor da série), gap +1.090 — 2º ponto consecutivo na faixa
+0.95–1.20 → **critério de parada antecipada disparado: v3 STOPPED.**
+
+Container parado e removido; watcher morto. Terminal =
+`artifacts/v3_eval/ckpt_step9499.pt` (snapshot + eval completos).
+Economia: ~3.500 steps ≈ ~24h de CPU — converge estável há 4.500.
+
+## Veredito da série v3 (10 pontos, n=8 cada)
+
+| métrica | v2 | v3 final (@9499) | Δ |
+|---|---|---|---|
+| dup_rate | 0.1095 | 0.0576 | **−47%** |
+| distinct | 0.663 | 0.760 | +15% |
+| self CE | 5.648 | 5.306 | −6% |
+| gt CE limpo | 4.412 | **4.216** | −4.4% (melhor que baseline) |
+| exposure gap | +1.236 | +1.090 → platô ~1.10 | −12% (saturado @~4k) |
+
+Conclusões para o paper:
+1. Corrupção linear oficial (0.75→0.25) em warm-start REDUZ gagueira
+   ~metade e gap ~12%, mantendo/melhorando CE limpo — melhoria real
+   mas saturada em +1.1 nats neste orçamento.
+2. Corrupção com predições-próprias (v4 GLAT-lite) é PIOR (+46% gap
+   no pareado) — a FORMA do ruído importa; converge com o negativo
+   de neighbour-corruption do WPS. Predições "corretas demais" não
+   ensinam recuperação.
+3. Refinement no decode (Mask-Predict-style) é a alavanca restante —
+   exige `intra=True` no treino → candidato v5.
+4. Arco narrativo global permanece ausente — separado do problema
+   de robustez local (l0/escala), como previsto.
 
 ## Ciclo 9 — 11 nov ~11:00 UTC
 
@@ -242,3 +276,27 @@ corrupção uniforme implementável no nosso orçamento?
 permanente. Se o gap ficar flat em +2 pontos consecutivos (próximos:
 @6499, @6999), desenhar braço "self-corruption" (GLAT-lite) warm-start do
 melhor ckpt — implementação ~30 linhas em _corrupt_codes + 1 forward/step.
+
+## Braço v5 — intra-level masked conditioning + Mask-Predict (RUN-026)
+
+Hipótese: o resíduo (~+1,1 nats de gap, ~5% dup) é independência condicional
+dentro do nível — cada posição amostrada iid. `intra=True` condiciona
+posições pendentes aos códigos já decididos do MESMO nível (via mask_emb) e
+destrava refinement iterativo estilo Mask-Predict (remascara posições de
+menor confiança e re-prediz em paralelo).
+
+Setup: warm-start v3@9499 (snapshot), `--intra --intra-mask mix`
+(50% prefixo L→R + 50% subconjunto aleatório por item/nível — cobre decode
+chunked e remáscara esparsa), corrupt linear 0.75→0.25 mantido, intra_passes
+=32, 2500 steps, OFFSET=9499 → labels 9998..11998+. THREADS=14 (CPU livre).
+
+Custo de decode: chunked intra = ceil(L/32) por nível ≈ 24 passes vs 11 do
+paralelo (≈2,2× mais forward passes — o trade-off a medir). Refinement
+iters=1, from_level=7 adiciona +10 passes (34 total no sanity).
+
+Sanity (12 steps, batch 4): treino intra roda, warm-start preserva tudo
+exceto mask_emb.* (init zero = pending≈paralelo), decode chunked+refine
+funciona: passes=34, dup 0,050, gap +0,55 (n=4 — indício apenas).
+
+Comparação pré-registrada: v5@9998 (chunked, refine=0) vs v3@9499 (paralelo)
+— e v5@9998 com refine_iters=1 para isolar o efeito do refinement.

@@ -42,6 +42,13 @@ def main():
                     help="flat: r_i~U(0,corrupt) por item | linear: taxa por nível corrupt-hi→corrupt-lo (oficial) | self: taxas lineares + códigos amostrados das próprias predições (GLAT-lite)")
     ap.add_argument("--corrupt-hi", type=float, default=0.75)
     ap.add_argument("--corrupt-lo", type=float, default=0.25)
+    ap.add_argument("--intra", action="store_true",
+                    help="masked intra-level conditioning (mask_emb)")
+    ap.add_argument("--intra-mask", default="boundary",
+                    choices=["boundary", "random", "mix"],
+                    help="boundary: prefixo L->R | random: subconjunto arbitrário (mask-predict) | mix: 50/50")
+    ap.add_argument("--intra-passes", type=int, default=32,
+                    help="posições por passe no decode chunked intra")
     ap.add_argument("--init-from", default="",
                     help="checkpoint p/ warm-start (resume)")
     ap.add_argument("--offset", type=int, default=0,
@@ -67,14 +74,22 @@ def main():
 
     model = LevelGenerator(vqvae, n_embd=896, n_layer=4, n_head_q=14,
                            n_head_kv=2, mlp_hidden=4864,
-                           corrupt=args.corrupt)
-    model.corrupt_schedule = args.corrupt_schedule
-    model.corrupt_hi = args.corrupt_hi
-    model.corrupt_lo = args.corrupt_lo
+                           intra=args.intra, intra_passes=args.intra_passes,
+                           intra_mask=args.intra_mask,
+                           corrupt=args.corrupt,
+                           corrupt_schedule=args.corrupt_schedule,
+                           corrupt_hi=args.corrupt_hi,
+                           corrupt_lo=args.corrupt_lo)
     if args.init_from:
         prev = torch.load(args.init_from, map_location="cpu",
                           weights_only=False)
-        model.load_state_dict(prev["model"], strict=True)
+        missing, unexpected = model.load_state_dict(
+            prev["model"], strict=False)
+        new_keys = [k for k in missing + unexpected
+                    if not k.startswith("mask_emb.")]
+        assert not new_keys, f"state_dict incompatível: {new_keys}"
+        if missing:
+            print(f"init aleatório: {missing}", flush=True)
         print(f"warm-start de {args.init_from}", flush=True)
     n_par = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"generator trainable params {n_par/1e6:.2f}M", flush=True)
@@ -105,6 +120,9 @@ def main():
                                    "corrupt_schedule": args.corrupt_schedule,
                                    "corrupt_hi": args.corrupt_hi,
                                    "corrupt_lo": args.corrupt_lo,
+                                   "intra": args.intra,
+                                   "intra_mask": args.intra_mask,
+                                   "intra_passes": args.intra_passes,
                                    "levels": list(vqvae.vq.levels)},
                         "model_type": "official_codes"},
                        f"{OUT}/ckpt.pt")
@@ -121,6 +139,9 @@ def main():
                            "corrupt_schedule": args.corrupt_schedule,
                            "corrupt_hi": args.corrupt_hi,
                            "corrupt_lo": args.corrupt_lo,
+                           "intra": args.intra,
+                           "intra_mask": args.intra_mask,
+                           "intra_passes": args.intra_passes,
                            "levels": list(vqvae.vq.levels)},
                 "model_type": "official_codes"}, f"{OUT}/final.pt")
     mlog.write(json.dumps({"step": args.steps + args.offset,

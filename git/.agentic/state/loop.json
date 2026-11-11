@@ -1,0 +1,24 @@
+{
+  "demand": "auditoria",
+  "started_at": "2026-11-09T13:26:13Z",
+  "classification": "",
+  "run_id": "",
+  "queue": [],
+  "emitted": "classify",
+  "done": false,
+  "trust": {
+    "level": "guided",
+    "clean_streak": 0,
+    "failures": 0
+  },
+  "baselines": null,
+  "skips": {},
+  "remediations": 0,
+  "step_log": [
+    {
+      "step": "classify",
+      "result": "emitted",
+      "at": "2026-11-09T13:26:13Z"
+    }
+  ]
+}

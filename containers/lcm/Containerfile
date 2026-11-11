@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+# LCM inference env: torch-cpu + fairseq2(CPU variant) + SONAR + wtpsplit.
+# Build needs network; runtime is --network none.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libsndfile1 && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir \
+      torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu \
+ && pip install --no-cache-dir \
+      omegaconf==2.3.0 wtpsplit==2.1.2 sonar-space==0.3.2 \
+ && pip install --no-cache-dir "fairseq2==v0.3.0rc1" --pre \
+      --extra-index-url https://fair.pkg.atmeta.com/fairseq2/whl/rc/pt2.5.1/cpu
+WORKDIR /work

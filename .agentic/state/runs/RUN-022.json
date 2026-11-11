@@ -1,0 +1,56 @@
+{
+  "branch_strategy": {
+    "decision": "new_branch",
+    "detail": "repo externo ncm-local-study, trabalho em main",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-022",
+  "demand": "auditoria-git",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-09T13:27:10Z"
+    },
+    {
+      "facts": "Scan full-history encontrou ~/models em 5 JSONs e ncm_swe+SHAs no review-2 dos commits antigos; filter-branch rewrite + force-push; re-scan=0; objetos orfaos server-side ainda 200 (delete_repo ausente).",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "ts": "2026-11-09T13:29:24.934981+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-022",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-022",
+  "summary": "Historia do repo publico ncm-local-study auditada, reescrita (filter-branch) e force-pushada; zero identificadores; residual de objetos orfaos reportado.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

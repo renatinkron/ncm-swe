@@ -1,0 +1,23 @@
+# NCM generator ~300M — medium-class (paper lm1b-medium proportions scaled
+# to this codebase's SwiGLU/GQA core). No warm-start (Qwen-0.5B dims don't
+# match; honest random init std=0.02 as in baseline).
+n_embd: 1024
+n_layer: 24
+n_head_q: 16
+n_head_kv: 4
+dropout: 0.0
+mlp_hidden: 5504
+glu: true
+use_qk_norm: false
+rope_base: 1000000.0
+bias: true
+shared_head: true
+context_length: 128
+train:
+  steps: 2000
+  batch_size: 4        # batch 8 OOM-risked at 471M params (RSS hit 14.6GB)
+  lr: 0.0004           # gentler for the bigger model
+  eval_every: 250
+  save_every: 250
+warmstart:
+  enabled: false

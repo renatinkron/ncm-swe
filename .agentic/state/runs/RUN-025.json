@@ -1,16 +1,17 @@
 {
   "branch_strategy": {
-    "decision": "current_branch",
     "confirmation_status": "confirmed",
-    "gate_passed": true
+    "decision": "current_branch",
+    "gate_passed": true,
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-025",
   "demand": "ciclo 2h monitoramento v3: colher ponto novo da serie, pesquisa bibliografica direcionada, decidir manter ou ajustar",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -26,12 +27,12 @@
     {
       "non_conformities": 0,
       "phase": "execute+test",
-      "summary": "9 monitoring cycles ~2h: v3 series @5999-@8999 (dup 0.1095->~0.05 floor, gap +1.24->~1.10 plateau, gt CE 4.412->4.275). Gap plateau triggered v4 GLAT-lite arm (self-corruption, warm-start @6499); paired comparison @6998 vs @6999 showed +1.616 vs +1.105 (-46%) -> v4 killed, snapshot resumable. Mask-Predict inference-side refinement identified as needing intra=True training (v5 candidate). Early-stop rule pre-registered: @9499 in-band -> declare convergence. nc=0.",
+      "summary": "9 monitoring cycles ~2h: v3 series @5999-@8999 (dup 0.1095-\u003e~0.05 floor, gap +1.24-\u003e~1.10 plateau, gt CE 4.412-\u003e4.275). Gap plateau triggered v4 GLAT-lite arm (self-corruption, warm-start @6499); paired comparison @6998 vs @6999 showed +1.616 vs +1.105 (-46%) -\u003e v4 killed, snapshot resumable. Mask-Predict inference-side refinement identified as needing intra=True training (v5 candidate). Early-stop rule pre-registered: @9499 in-band -\u003e declare convergence. nc=0.",
       "ts": "2026-11-11T12:44:16.660818+00:00"
     }
   ],
   "iteration": 1,
-  "overall_status": "testing",
+  "overall_status": "completed",
   "plan_id": "PLAN-025",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -41,6 +42,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-025",
+  "summary": "v3 monitoring cadence 2h: 9 cycles, series to @8999 (dup ~0.05 floor, gap ~1.10 plateau, gt 4.275); v4 self-corruption arm launched+killed on paired -46%; blind review nc=0; early-stop rule pending @9499",
   "target_environment": "dev",
   "tasks": [
     {
@@ -50,6 +52,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "v3 monitoring cadence 2h: 9 cycles, series to @8999 (dup ~0.05 floor, gap ~1.10 plateau, gt 4.275); v4 self-corruption arm launched+killed on paired -46%; blind review nc=0; early-stop rule pending @9499"
+  ]
 }

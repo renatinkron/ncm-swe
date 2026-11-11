@@ -1,4 +1,4 @@
-<!-- agentloop:start version="1.8.5" -->
+<!-- agentloop:start version="1.9.1" -->
 # MANDATORY — STOP
 
 Do not work. Do not write, edit, run commands, create files, or modify state.

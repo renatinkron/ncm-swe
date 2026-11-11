@@ -1,0 +1,50 @@
+{
+  "demand": "v5",
+  "started_at": "2026-11-11T14:36:49Z",
+  "classification": "standard",
+  "run_id": "RUN-001",
+  "queue": [
+    "task_plan",
+    "execute",
+    "test",
+    "history",
+    "blind_review",
+    "issue_close",
+    "close"
+  ],
+  "emitted": "issue_create",
+  "done": false,
+  "trust": {
+    "level": "guided",
+    "clean_streak": 0,
+    "failures": 1
+  },
+  "baselines": {},
+  "skips": {},
+  "remediations": 0,
+  "step_log": [
+    {
+      "step": "classify",
+      "result": "emitted",
+      "at": "2026-11-11T14:36:49Z"
+    },
+    {
+      "step": "classify",
+      "result": "passed",
+      "detail": "standard",
+      "at": "2026-11-11T14:38:24Z"
+    },
+    {
+      "step": "loop",
+      "result": "emitted",
+      "detail": "standard path, run RUN-001",
+      "at": "2026-11-11T14:38:24Z"
+    },
+    {
+      "step": "issue_create",
+      "result": "failed",
+      "detail": "run_state field github_issue.status is \"pending\", want one of [in-progress closed unavailable]",
+      "at": "2026-11-11T14:38:47Z"
+    }
+  ]
+}

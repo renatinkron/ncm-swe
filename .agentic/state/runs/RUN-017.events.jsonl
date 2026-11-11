@@ -1,0 +1,18 @@
+{"t":"begin","ts":"2026-11-08T00:28:47Z","d":{"demand":"tokenizer oficial NCM + encode corpus_ts + treinar LevelGenerator com corrupção + bench vs AR","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-08T00:28:51Z"}
+{"t":"note","ts":"2026-11-08T00:29:08Z","d":{"detail":"run_state field branch_strategy.decision is \"\", want one of [current_branch new_branch]","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-08T00:29:12Z"}
+{"t":"execute","ts":"2026-11-08T01:07:52Z"}
+{"t":"test","ts":"2026-11-08T01:08:00Z","d":{"nc":3}}
+{"t":"remediate","ts":"2026-11-08T01:08:04Z"}
+{"t":"execute","ts":"2026-11-08T03:01:29Z"}
+{"t":"test","ts":"2026-11-08T03:01:33Z","d":{"nc":2}}
+{"t":"remediate","ts":"2026-11-08T03:01:36Z"}
+{"t":"execute","ts":"2026-11-08T16:30:51Z"}
+{"t":"test","ts":"2026-11-08T16:31:09Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-08T16:31:13Z"}
+{"t":"blind_review","ts":"2026-11-08T16:38:50Z"}
+{"t":"issue_close","ts":"2026-11-08T16:38:53Z"}
+{"t":"close","ts":"2026-11-08T16:38:57Z"}
+{"t":"close","ts":"2026-11-08T16:38:57Z","d":{"failures":1,"remediations":2,"status":"completed"}}
+{"t":"note","ts":"2026-11-08T16:38:58Z","d":{"memory_publish":"runs/RUN-017.md"}}

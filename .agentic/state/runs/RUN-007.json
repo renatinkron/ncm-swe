@@ -1,0 +1,55 @@
+{
+  "branch_strategy": {
+    "branch": "main",
+    "decision": "current_branch",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-007",
+  "demand": "implementar rascunho especulativo hierarquico: usar heads piramidais (l0/l1) sobre backbone Qwen congelado para propor blocos de k tokens, verificar com AR, medir aceitacao e speedup vs decode AR puro",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-04T11:28:34Z"
+    },
+    {
+      "compliance": "nc=0 primeiro ciclo",
+      "iteration": 2,
+      "summary": "Spec-decode hierarquico medido: trainer --offsets K (um forward, K distancias); block_heads 4x45.6M treinadas 1500 passos/41min, losses ~3.7 sem degradacao por offset; spec_pyramid.py correto (text_equal_ar=True); accept=0 em depth 1/2/6 — gargalo e a reconstrucao codigo-\u003etoken (32% top-1), nao as heads; spec 0.92-0.96 vs AR 3.67-4.80 tok/s",
+      "timestamp": "2026-11-04T12:17:26.146085Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-007",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-007",
+  "summary": "Spec-decode piramidal medido: correto (equal_ar) mas accept=0 em depth 1/2/6 — gargalo e a ultima milha codigo-\u003etoken (32% top-1), nao as heads; spec ~0.95 tok/fwd vs AR ~4 tok/s",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

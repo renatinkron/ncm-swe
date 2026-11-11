@@ -1,0 +1,60 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "remote": false,
+    "selected_branch": "main",
+    "type": "local-only"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-016",
+  "demand": "implementar geracao intra-nivel por chunks causais mascarados (MaskGIT-style: posicoes decididas carregam emb(code), pendentes emb_mask, fronteira aleatoria por nivel no treino, geracao em ~N passes por nivel) + treinar NCM novo nos codes_ts2 + bench vs AR",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-07T18:52:27Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "model",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "tested",
+      "summary": "Intra-level chunked NCM trained and benched: x1.22 speedup, word-salad persists; GT-boundary CE diagnostic shows fine codes unpredictable.",
+      "target_environment": "local-cpu",
+      "timestamp": "2026-11-07T23:32:25Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-016",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-016",
+  "summary": "Intra-level NCM trained/benched: x1.22, word-salad persists; GT-boundary CE diagnostic proves fine residual codes unpredictable; interp area-\u003elinear bug fixed post-hoc.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{"t":"begin","ts":"2026-11-10T01:43:16Z","d":{"demand":"continuar pesquisa NCM: experimentos CPU para coerencia global (l0), pesquisa bibliografica a cada descoberta, atualizacao continua do paper","level":"complex"}}
+{"t":"issue_create","ts":"2026-11-10T01:43:22Z"}
+{"t":"research","ts":"2026-11-10T01:45:12Z","d":{"finding":"l0 oficial = unigram empirica salva no ckpt; nosso l0 predito ≈uniforme causa OOD; correcao zero-retreino","slug":"ncm-l0-unigram-sampling","verdict":"done"}}
+{"t":"research","ts":"2026-11-10T01:45:12Z"}
+{"t":"arch_eval","ts":"2026-11-10T01:45:23Z"}
+{"t":"task_plan","ts":"2026-11-10T01:45:57Z","d":{"phases":"4","plan":"PLAN-023","tasks":"5","verdict":"done"}}
+{"t":"task_plan","ts":"2026-11-10T01:45:57Z"}
+{"t":"note","ts":"2026-11-10T01:57:57Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-023.execution_report.md","step_failed":"execute"}}
+{"t":"execute","ts":"2026-11-10T01:58:09Z"}
+{"t":"test","ts":"2026-11-10T01:58:15Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-10T01:58:19Z"}
+{"t":"blind_review","ts":"2026-11-10T09:44:01Z"}
+{"t":"skip","ts":"2026-11-10T09:44:03Z","d":{"reason":"research code only: local training/sampling scripts, no network-facing surface, no auth/crypto/input-validation changes; changes are tensor ops + CLI flags","step":"pentest"}}
+{"t":"issue_close","ts":"2026-11-10T09:44:10Z"}
+{"t":"close","ts":"2026-11-10T09:44:17Z"}
+{"t":"close","ts":"2026-11-10T09:44:17Z","d":{"failures":1,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-10T09:44:18Z","d":{"memory_publish":"runs/RUN-023.md"}}

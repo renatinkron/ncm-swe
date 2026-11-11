@@ -1,0 +1,60 @@
+{
+  "branch_strategy": {
+    "branch": "main",
+    "decision": "current_branch",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-012",
+  "demand": "pesquisar fundo (fontes revisadas/peer-reviewed) e escolher+executar a proxima alavanca mais promissora da ultima milha NCM",
+  "github_issue": {
+    "note": "no GitHub remote; recorded locally",
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-06T13:03:18Z"
+    },
+    {
+      "actor": "tester",
+      "change_domain": "ml",
+      "iteration": 2,
+      "non_conformities": 0,
+      "phase": "validation",
+      "summary": "Pesquisa peer-reviewed guiou a alavanca: --target ar (soft-CE vs logits do backbone, DistillSpec) + --topk verify (SpecInfer frontier). PRIMEIRO a1\u003e0 (3,125%, 4/128; rank AR 43,5k-\u003e4,7k) e PRIMEIRO accept\u003e0 (0,58@k=64, offset0, equal_ar=True). Frontier rescue custa forward extra -\u003e spec ainda ~2x mais lento que AR; proximo passo = tree-verify batched. feat nunca aprende em nenhum alvo (ablacao 2x).",
+      "target_environment": "dev",
+      "timestamp": "2026-11-06T14:24:51Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-012",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-012",
+  "summary": "Lit-guided lever (DistillSpec soft-CE + SpecInfer topk): first a1\u003e0 (3,1%) and first accept\u003e0 (0,58@k64) with equal_ar; frontier rescue costs fwd extra - spec still ~2x slower; tree-verify is next",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

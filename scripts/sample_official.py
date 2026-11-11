@@ -119,6 +119,14 @@ def main():
                     help="frequency_deficit — boost em tokens sub-usados")
     ap.add_argument("--adj", default="",
                     help="adjacency_penalty 'al,aw,ad' — penaliza picks recentes")
+    ap.add_argument("--intra-passes", type=int, default=0,
+                    help="override do chunk size no decode intra (0=cfg)")
+    ap.add_argument("--refine-iters", type=int, default=0,
+                    help="rodadas de mask-predict refinement por nível")
+    ap.add_argument("--refine-frac", type=float, default=0.3,
+                    help="fração menos confiante remascarada por rodada")
+    ap.add_argument("--refine-from", type=int, default=1,
+                    help="nível mínimo (índice) onde refinement se aplica")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
 
@@ -139,6 +147,10 @@ def main():
     model = LevelGenerator(vqvae, n_embd=cfg.get("n_embd", 896),
                            n_layer=cfg.get("n_layer", 4), n_head_q=14,
                            n_head_kv=2, mlp_hidden=4864,
+                           intra=cfg.get("intra", False),
+                           intra_passes=args.intra_passes
+                           or cfg.get("intra_passes", 32),
+                           intra_mask=cfg.get("intra_mask", "boundary"),
                            corrupt=cfg.get("corrupt", 0.0))
     model.load_state_dict(ck["model"], strict=True)
     model.eval()
@@ -150,7 +162,10 @@ def main():
 
     t0 = time.time()
     idx = model.generate(batch_size=args.n, temperature=args.temp,
-                         top_k=args.top_k, top_p=args.top_p, l0=l0_codes)
+                         top_k=args.top_k, top_p=args.top_p, l0=l0_codes,
+                         refine_iters=args.refine_iters,
+                         refine_frac=args.refine_frac,
+                         refine_from=args.refine_from)
     gen_s = time.time() - t0
 
     # decode: official path — decoder logits -> pick_tokens -> BPE decode (cut@EOS)

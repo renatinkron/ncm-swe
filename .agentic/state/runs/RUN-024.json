@@ -1,0 +1,56 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "decision": "current_branch",
+    "gate_passed": true,
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-024",
+  "demand": "avaliar checkpoints intermediarios do v3 (corrupcao linear): dup_rate + ce_self_gen por checkpoint, registrar resultados, atualizar paper",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-10T09:47:04Z"
+    },
+    {
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "v3 checkpoint evaluator+watcher built; first point ckpt@4499: dup 0.0792 (v2 0.1095, -28%), distinct 0.766, exposure gap +1.25 (stable), clean gt CE +0.13 (WPS trade-off). Preliminary, n=8, 15% of schedule. nc=0.",
+      "ts": "2026-11-10T09:50:09.290104+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-024",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-024",
+  "summary": "v3 incremental evaluator shipped: eval_ckpt_v3.sh + watch_v3.sh (auto-eval per 500-step ckpt); first point @4499: dup_rate 0.0792 vs v2 0.1095 (-28%), exposure gap +1.25 stable, clean CE +0.13 (WPS trade-off); blind review majors fixed (boundary off-by-one, torn-snapshot, final.pt). Paper update at final verdict. nc=0.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

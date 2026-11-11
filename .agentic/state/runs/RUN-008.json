@@ -1,0 +1,55 @@
+{
+  "branch_strategy": {
+    "branch": "main",
+    "decision": "current_branch",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-008",
+  "demand": "baixar e testar Mimir-1.6B (LCM da Meta, pesos mirror HF) como ground truth de modelo de conceitos: instalar fairseq2+sonar em container isolado, rodar inferencia CPU, comparar com nosso NCM",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-04T13:45:54Z"
+    },
+    {
+      "compliance": "nc=0 primeiro ciclo",
+      "iteration": 2,
+      "summary": "Mimir-1.6B (LCM Meta, mirror HF) rodou offline em podman lcm-infer (--network none): 6 conceitos/prompt em ~84s = 0.07 conc/s, fp32 CPU, 40 timesteps; SONAR cache 6.5GB via warm run; licao: ultima milha conceito-\u003etexto do LCM e um decoder seq2seq inteiro — nao elimina custo do token, move-o",
+      "timestamp": "2026-11-04T14:08:40.009536Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-008",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-008",
+  "summary": "Mimir-1.6B LCM rodando offline em podman: 0.07 conceitos/s fp32 CPU; licoes: SONAR resolve ultima milha com decoder seq2seq inteiro (move custo, nao elimina) — caminho nosso = decoder leve condicionado em codigos RVQ",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

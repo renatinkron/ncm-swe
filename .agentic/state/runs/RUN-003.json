@@ -1,0 +1,65 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-10-31T02:22:02.103753+00:00",
+    "decision": "current_branch",
+    "evidence_ref": "local research repo",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-10-31T02:22:02.103753+00:00",
+    "selected_branch": "main"
+  },
+  "change_domain": "data",
+  "contract_id": "CONTRACT-003",
+  "demand": "seguir para os próximos passos com corpus overnight + epocas, faça as filas e siga o jogo",
+  "github_issue": {
+    "number": null,
+    "reason": "no-github",
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-10-31T02:21:14Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "data",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "Corpus +47% (4,665 rec); gens resumed to step 2000 (AR loss ~1.8, NCM ~5.4); bench_2000 NCM x1.14/sample; continuous trainer armed for +1000-step cycles indefinitely.",
+      "target_environment": "dev",
+      "timestamp": "2026-10-31T09:40:37.135446+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-003",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-003",
+  "summary": "Corpus +47% (4,665 rec); both gens to step 2000 (AR loss ~1.8, NCM ~5.4); NCM x1.14/sample; continuous +1000-step regime armed for days of training.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

@@ -28,6 +28,7 @@ class LevelGenerator(nn.Module):
                  n_head_kv=2, dropout=0.0, mlp_hidden=4864, glu=True,
                  use_qk_norm=False, rope_base=1_000_000.0, bias=True,
                  shared_head=True, intra=False, intra_passes=32,
+                 intra_mask='boundary',
                  corrupt=0.0, corrupt_schedule='flat',
                  corrupt_hi=None, corrupt_lo=None):
         super().__init__()
@@ -36,6 +37,7 @@ class LevelGenerator(nn.Module):
         # blind review: assigning here scrambles every Linear/Embedding).
         self.intra = intra
         self.intra_passes = intra_passes
+        self.intra_mask = intra_mask
         self.corrupt = corrupt
         self.corrupt_schedule = corrupt_schedule
         self.corrupt_hi = corrupt if corrupt_hi is None else corrupt_hi
@@ -110,13 +112,16 @@ class LevelGenerator(nn.Module):
             z = self.head[level_idx](h)
         return z + self.lvl_bias[level_idx]
 
-    def _intra_add(self, idx, boundaries):
+    def _intra_add(self, idx, boundaries, decided=None):
         """(B,T,D) additive tensor for intra-level conditioning.
 
         For chunk i (predicting level i+1, target codes idx[:, ofs:ofs+L]):
-        positions < boundaries[:,i]  -> + emb_{i+1}(code)   (decided)
-        positions >= boundaries[:,i] -> + mask_emb_{i+1}    (pending)
-        boundaries=None -> all pending (no leak, matches pure-parallel)."""
+        decided positions  -> + emb_{i+1}(code)
+        pending positions  -> + mask_emb_{i+1}
+        `decided`: optional list of (B,L) bool masks per chunk level —
+        arbitrary patterns (Mask-Predict-style sparse remasking).
+        `boundaries`: (B, n_chunks) prefix cut per level (left→right chunks).
+        Both None -> all pending (no leak, matches pure-parallel)."""
         B = idx.shape[0]
         vq = self.vqvae.vq
         add = torch.zeros(B, self.T, self.embed_dim, device=idx.device)
@@ -126,7 +131,9 @@ class LevelGenerator(nn.Module):
         for i, L in enumerate(self.chunk_levels):
             codes_i = idx[:, tgt_ofs:tgt_ofs + L]
             ce = vq.embeddings[i + 1](codes_i)
-            if boundaries is None:
+            if decided is not None:
+                dec = decided[i]
+            elif boundaries is None:
                 dec = torch.zeros(B, L, dtype=torch.bool, device=idx.device)
             else:
                 if L not in arange_cache:
@@ -193,7 +200,7 @@ class LevelGenerator(nn.Module):
             ofs += L
         return out
 
-    def forward(self, idx, boundaries=None):
+    def forward(self, idx, boundaries=None, decided=None):
         """idx: (B, sum(levels)). Returns (logits_l0 (B,l0,V0), outs[i]
         (B,L_{i+1},V_{i+1})) for training."""
         B = idx.shape[0]
@@ -201,7 +208,7 @@ class LevelGenerator(nn.Module):
             idx_in = self._corrupt_codes(idx) if self.corrupt > 0 else idx
             x = self.vqvae.vq.idx_to_ncm_input(idx_in)  # (B,T,D_vq)
         if self.intra:
-            x = x + self._intra_add(idx_in, boundaries)
+            x = x + self._intra_add(idx_in, boundaries, decided)
         h0 = self.q0.expand(B, -1, -1) + self.pos.weight[0] + self.lvl.weight[0]
         hmain = self.proj_in(x) + self.pos.weight[1:] \
             + self.lvl.weight[self.lvl_ids + 1]
@@ -219,14 +226,38 @@ class LevelGenerator(nn.Module):
             ofs += l
         return logits_l0, outs  # outs[i]: (B, L_{i+1}, V_{i+1})
 
+    def _sample_intra_masks(self, idx):
+        """Returns (boundaries, decided) for intra training per intra_mask:
+        'boundary' — per-item prefix cut ~ U{0..L} per level (original).
+        'random'   — per-item decided SUBSET of size k ~ U{0..L} per level
+                     (arbitrary patterns; enables Mask-Predict refinement).
+        'mix'      — 50/50 boundary and random per item per level."""
+        B, dev = idx.shape[0], idx.device
+        if self.intra_mask == 'boundary':
+            return torch.stack(
+                [torch.randint(0, L + 1, (B,), device=dev)
+                 for L in self.chunk_levels], dim=1), None
+        decided = []
+        for L in self.chunk_levels:
+            k = torch.randint(0, L + 1, (B, 1), device=dev)
+            perm = torch.argsort(torch.rand(B, L, device=dev), dim=1)
+            rank = torch.empty_like(perm)
+            rank.scatter_(1, perm, torch.arange(L, device=dev)
+                          .unsqueeze(0).expand(B, L))
+            dec = rank < k
+            if self.intra_mask == 'mix':
+                b = torch.randint(0, L + 1, (B, 1), device=dev)
+                pref = (torch.arange(L, device=dev).unsqueeze(0) < b)
+                dec = torch.where(torch.rand(B, 1, device=dev) < 0.5,
+                                  pref, dec)
+            decided.append(dec)
+        return None, decided
+
     def loss(self, idx):
-        boundaries = None
+        boundaries = decided = None
         if self.intra:
-            # per-item random decided-boundary per level: 0..L inclusive
-            boundaries = torch.stack(
-                [torch.randint(0, L + 1, (idx.shape[0],), device=idx.device)
-                 for L in self.chunk_levels], dim=1)
-        logits_l0, outs = self.forward(idx, boundaries)
+            boundaries, decided = self._sample_intra_masks(idx)
+        logits_l0, outs = self.forward(idx, boundaries, decided)
         l0 = self.levels[0]
         t0 = idx[:, :l0]
         loss_l0 = F.cross_entropy(
@@ -238,8 +269,11 @@ class LevelGenerator(nn.Module):
             L = self.chunk_levels[i]
             t = idx[:, ofs:ofs + L]
             if self.intra:
-                pending = (torch.arange(L, device=idx.device).unsqueeze(0)
-                           >= boundaries[:, i:i + 1])
+                if decided is not None:
+                    pending = ~decided[i]
+                else:
+                    pending = (torch.arange(L, device=idx.device)
+                               .unsqueeze(0) >= boundaries[:, i:i + 1])
                 ce_map = F.cross_entropy(
                     out.reshape(-1, out.shape[-1]), t.reshape(-1),
                     reduction="none").reshape(t.shape)
@@ -324,13 +358,20 @@ class LevelGenerator(nn.Module):
 
     @torch.no_grad()
     def generate(self, batch_size=1, temperature=1.0, top_k=0, top_p=1.0,
-                 return_per_level=False, l0=None):
+                 return_per_level=False, l0=None,
+                 refine_frac=0.0, refine_iters=0, refine_from=1):
         """Coarse→fine generation in K passes. Returns idx (B,sum(levels)).
 
         l0: optional (B, levels[0]) long tensor — external level-0 codes
         (official recipe samples l0 ~ corpus unigram instead of predicting).
         l0=None preserves the default: l0 is sampled from the model head.
-        """
+
+        Mask-Predict refinement (intra only): after each level k >=
+        refine_from, run refine_iters rounds — score each position by the
+        prob the model assigns to its current code under fully-decided
+        context, remask the lowest-confidence refine_frac fraction, and
+        re-predict pending positions in parallel. Each round costs 2
+        transformer passes. refine_iters=0 disables (default)."""
         self.eval()
         codes = []
         if l0 is not None:
@@ -377,6 +418,25 @@ class LevelGenerator(nn.Module):
                 cur[:, s:s + codes_s.shape[1]] = codes_s
                 decided[:, s:s + codes_s.shape[1]] = True
                 passes += 1
+            if refine_iters > 0 and k >= refine_from:
+                n_mask = max(1, int(round(Lk * refine_frac)))
+                all_dec = torch.ones(batch_size, Lk, dtype=torch.bool,
+                                     device=self.q0.device)
+                for _ in range(refine_iters):
+                    h = self._forward_partial(codes, cur, all_dec)
+                    lg = self._head_logits(h[:, -Lk:], k)
+                    conf = F.softmax(lg, -1).gather(
+                        -1, cur.unsqueeze(-1)).squeeze(-1)
+                    low = conf.argsort(dim=1)[:, :n_mask]
+                    decided2 = all_dec.clone()
+                    decided2.scatter_(1, low, False)
+                    h = self._forward_partial(codes, cur, decided2)
+                    lg = self._head_logits(h[:, -Lk:], k)
+                    new = self._sample(
+                        lg.reshape(-1, lg.shape[-1]), temperature,
+                        top_k, top_p).reshape(batch_size, Lk)
+                    cur = torch.where(decided2, cur, new)
+                    passes += 2
             codes.append(cur)
         idx = torch.cat(codes, dim=1)
         self.last_passes = passes + (1 if l0 is None else 0)

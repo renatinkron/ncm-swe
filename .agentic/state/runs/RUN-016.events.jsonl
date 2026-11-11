@@ -1,0 +1,18 @@
+{"t":"begin","ts":"2026-11-07T18:52:27Z","d":{"demand":"implementar geracao intra-nivel por chunks causais mascarados (MaskGIT-style: posicoes decididas carregam emb(code), pendentes emb_mask, fronteira aleatoria por nivel no treino, geracao em ~N passes por nivel) + treinar NCM novo nos codes_ts2 + bench vs AR","level":"standard"}}
+{"t":"note","ts":"2026-11-07T18:52:27Z","d":{"detail":"run_state field github_issue.status is \"pending\", want one of [in-progress closed unavailable]","step_failed":"issue_create"}}
+{"t":"issue_create","ts":"2026-11-07T18:52:30Z","d":{"status":"unavailable"}}
+{"t":"issue_create","ts":"2026-11-07T18:52:30Z"}
+{"t":"task_plan","ts":"2026-11-07T18:52:39Z"}
+{"t":"execute","ts":"2026-11-07T23:26:37Z"}
+{"t":"test","ts":"2026-11-07T23:30:06Z","d":{"nc":"1","report":".agentic/state/runs/RUN-016.compliance_report.md","tasks_passed":"4","verdict":"compliant_with_minor_nc"}}
+{"t":"test","ts":"2026-11-07T23:31:13Z","d":{"nc":1}}
+{"t":"remediate","ts":"2026-11-07T23:31:18Z"}
+{"t":"execute","ts":"2026-11-07T23:31:20Z"}
+{"t":"test","ts":"2026-11-07T23:32:11Z","d":{"artifact":"artifacts/boundary_ce_intra.json","nc1":"resolved","non_conformities":"0","report":".agentic/state/runs/RUN-016.compliance_report.md","verdict":"compliant"}}
+{"t":"test","ts":"2026-11-07T23:32:18Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-07T23:32:25Z"}
+{"t":"blind_review","ts":"2026-11-07T23:38:15Z"}
+{"t":"issue_close","ts":"2026-11-07T23:38:20Z"}
+{"t":"close","ts":"2026-11-07T23:38:25Z"}
+{"t":"close","ts":"2026-11-07T23:38:25Z","d":{"failures":1,"remediations":1,"status":"completed"}}
+{"t":"note","ts":"2026-11-07T23:38:25Z","d":{"memory_publish":"runs/RUN-016.md"}}

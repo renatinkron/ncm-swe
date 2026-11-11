@@ -14,9 +14,9 @@
   "demand": "considere as novidades sobre ncm vs llm e vamos iniciar um experimento aqui como o que está sendo feito no projeto colibri na pasta anterior ../colibri. Preciso que você treine um modelo com essa nova forma de pensar inteligência artificial para vermos os limites disso em uma máquina convencional. Tente aproveitar treinamento se possível do qwen 3-coder por exemplo, full se possível quero um resultado muito acima do comum porque precisamos romper essa barreira para avançar com IA para todos de maneira mais simples e fácil. Isso pode mudar o mundo todo",
   "github_issue": {
     "number": null,
+    "reason": "no-github",
     "status": "unavailable",
-    "url": null,
-    "reason": "no-github"
+    "url": null
   },
   "history": [
     {
@@ -28,10 +28,20 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-10-30T13:46:05Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 2,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "All 8 tasks executed. Corpus 3181 rec; MiniMSRQ tokenizer (heldout CE 1.49) replaced collapsed vendored quantizer; Qwen 32-tensor warm-start both arms; NCM 68.8M cut@250 vs AR 67.2M@500. Bench: NCM 0.658s vs AR 0.884s/sample (x1.34); eval recorded (py_parse 0.0 both, honest weak-quality result at this scale).",
+      "target_environment": "dev",
+      "timestamp": "2026-10-30T19:51:15.862306+00:00"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-001",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -41,6 +51,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-001",
+  "summary": "NCM vs AR on CPU: MiniMSRQ tokenizer fixed vendored-quantizer collapse; Qwen warm-start 32 tensors; NCM x1.34/sample (~x3.5/token-equiv) at 0.658s vs 0.884s; quality weak at 60M/4MB scale - honest limits documented.",
   "target_environment": "dev",
   "tasks": [
     {

@@ -1,0 +1,12 @@
+{"t":"begin","ts":"2026-11-04T17:49:18Z","d":{"demand":"decoder por verossimilhanca de caminho de codigos: score(v) = soma_k logP(code_k(v)) sobre heads treinadas, substituindo nearest-embedding; medir concordancia com argmax AR e re-testar spec-decode","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-04T17:49:21Z"}
+{"t":"task_plan","ts":"2026-11-04T17:49:40Z"}
+{"t":"execute","ts":"2026-11-04T20:08:41Z"}
+{"t":"test","ts":"2026-11-04T20:08:49Z","d":{"nc":0}}
+{"t":"note","ts":"2026-11-04T20:08:49Z","d":{"detail":"no new history entry in RUN-009.json","step_failed":"history"}}
+{"t":"history","ts":"2026-11-04T20:08:53Z"}
+{"t":"blind_review","ts":"2026-11-04T20:09:07Z"}
+{"t":"issue_close","ts":"2026-11-04T20:09:07Z"}
+{"t":"close","ts":"2026-11-04T20:09:11Z"}
+{"t":"close","ts":"2026-11-04T20:09:11Z","d":{"failures":1,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-04T20:09:11Z","d":{"memory_publish":"runs/RUN-009.md"}}

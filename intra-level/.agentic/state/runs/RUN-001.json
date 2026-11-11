@@ -1,0 +1,53 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "pending",
+    "confirmed_at_utc": null,
+    "decision": "pending",
+    "evidence_ref": "",
+    "gate_passed": false,
+    "initial_branch": "",
+    "requested_at_utc": "",
+    "selected_branch": "pending"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-001",
+  "demand": "v5",
+  "github_issue": {
+    "number": null,
+    "status": "pending",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-11T14:38:24Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "planning",
+  "plan_id": "PLAN-001",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-001",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

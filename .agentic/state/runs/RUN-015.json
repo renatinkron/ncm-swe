@@ -1,0 +1,60 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "remote": false,
+    "selected_branch": "main",
+    "type": "local-only"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-015",
+  "demand": "diagnostico de ablacao de niveis do VQ-VAE (quais niveis finos carregam informacao) seguido do experimento corretivo mais promissor para qualidade NCM — continuar autonomamente",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-07T08:44:38Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 2,
+      "non_conformities": 0,
+      "phase": "close",
+      "summary": "Ablacao nivelVQ: finos essenciais (k5=36%-\u003ek6=97%). 2 bracos: (A) codebooks afunilados [2048..128] speedup x3.22, (B) resume 5500 steps uniforme x3.21 — AMBOS incoerentes. Veredito: gargalo informacional/arquitetural, nao codebook nem steps. Prox: intra-level chunked generation (RUN-016).",
+      "target_environment": "dev",
+      "timestamp": "2026-11-07T18:48:50Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-015",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-015",
+  "summary": "Ablacao: niveis finos essenciais (k6=97% vs k5=36%). Dois bracos (codebooks afunilados x3.22 / 2x steps x3.21) falharam igual — gargalo informacional, direciona RUN-016 intra-level.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

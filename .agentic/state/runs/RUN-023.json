@@ -1,0 +1,60 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "pending",
+    "confirmed_at_utc": null,
+    "decision": "current_branch",
+    "evidence_ref": "",
+    "gate_passed": false,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-10T01:46:00Z",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-023",
+  "demand": "continuar pesquisa NCM: experimentos CPU para coerencia global (l0), pesquisa bibliografica a cada descoberta, atualizacao continua do paper",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-10T01:43:16Z"
+    },
+    {
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "l0 unigram/uniform/model sampling implemented; official sampling (T=1.0,no top-k) halves dup_rate 0.2174-\u003e0.1095; decode penalties partial; exposure bias +1.24 nats on self-gen stacks (fine levels); linear 0.75-\u003e0.25 corruption + warm-start v3 arm launched (10k steps); WPS replication + Gu2018 cited; paper updated (new 4.4) and pushed (55b7ee7). Tests: 3 pass, 2 fail on vendored hydra import (pre-existing env gap). nc=0.",
+      "ts": "2026-11-10T01:58:19.147061Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-023",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-023",
+  "summary": "Official inference recipe ported (l0 unigram, T=1.0 sampling, decode penalties): l0 source ~irrelevant to stutter, official sampling halves dup_rate 0.217-\u003e0.110, exposure bias measured +1.24 nats on self-gen stacks; WPS independent replication converges; linear-corruption v3 arm running (verdict next iteration); paper updated+published (55b7ee7). nc=0.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

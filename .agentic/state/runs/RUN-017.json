@@ -1,0 +1,55 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "rationale": "local-only repo, no remote",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-017",
+  "demand": "tokenizer oficial NCM + encode corpus_ts + treinar LevelGenerator com corrupção + bench vs AR",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-08T00:28:47Z"
+    },
+    {
+      "detail": "official-tokenizer codes trained w/ corruption; fine levels learned (l11 held 6.81 vs unif 8.32) but l0 stayed uniform -\u003e 8/8 word-salad, 1.29s/sample, 12 passes; bottleneck moved to l0+train-scale",
+      "event": "execute_complete",
+      "iter": 3,
+      "ts": "2026-11-08T16:31:13Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-017",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-017",
+  "summary": "official-tokenizer codes + corruption: fine levels learned but l0 uniform -\u003e word-salad; blind review found init-order bug scrambling vqvae in ALL runs; fixed, retrain gen_ncm_v2 launched",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

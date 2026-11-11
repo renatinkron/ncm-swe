@@ -1,0 +1,30 @@
+{"t":"begin","ts":"2026-11-06T20:25:08Z","d":{"demand":"implementar NCM nativo escopo-fechado: corpus TinyStoriesV2, tokenizer BPE 8k, modelo 30-100M com decoder conceito-token co-treinado, evals end-to-end","level":"complex"}}
+{"t":"issue_create","ts":"2026-11-06T20:25:11Z"}
+{"t":"skip","ts":"2026-11-06T20:25:15Z","d":{"reason":"research done in RUN-013: efficient-curated-training-peer-reviewed.md + ncm-closed-scope-training-plan.md","step":"research"}}
+{"t":"skip","ts":"2026-11-06T20:25:18Z","d":{"reason":"arch eval done in RUN-013 (efficient-curated-training-architecture-evaluation.md): state/flow/computation/failure already analyzed","step":"arch_eval"}}
+{"t":"task_plan","ts":"2026-11-06T20:25:54Z"}
+{"t":"note","ts":"2026-11-06T20:25:57Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-014.execution_report.md","step_failed":"execute"}}
+{"t":"execute","ts":"2026-11-06T20:35:38Z"}
+{"t":"test","ts":"2026-11-06T20:37:20Z","d":{"nc":"6","verdict":"fail"}}
+{"t":"test","ts":"2026-11-06T20:37:32Z","d":{"nc":6}}
+{"t":"remediate","ts":"2026-11-06T20:37:50Z"}
+{"t":"execute","ts":"2026-11-07T00:10:10Z"}
+{"t":"test","ts":"2026-11-07T00:11:20Z","d":{"nc":"5","verdict":"fail"}}
+{"t":"test","ts":"2026-11-07T00:11:26Z","d":{"nc":5}}
+{"t":"remediate","ts":"2026-11-07T00:11:34Z"}
+{"t":"execute","ts":"2026-11-07T08:35:34Z"}
+{"t":"test","ts":"2026-11-07T08:38:00Z","d":{"nc":"1","paths":".agentic/state/runs/RUN-014.compliance_report.md","verdict":"fail"}}
+{"t":"test","ts":"2026-11-07T08:38:14Z","d":{"nc":1}}
+{"t":"remediate","ts":"2026-11-07T08:38:23Z"}
+{"t":"execute","ts":"2026-11-07T08:38:32Z"}
+{"t":"test","ts":"2026-11-07T08:39:28Z","d":{"nc":"0","verdict":"pass"}}
+{"t":"test","ts":"2026-11-07T08:39:34Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-07T08:39:44Z"}
+{"t":"blind_review","ts":"2026-11-07T08:43:26Z","d":{"findings":"11","verdict":"findings"}}
+{"t":"blind_review","ts":"2026-11-07T08:43:26Z"}
+{"t":"skip","ts":"2026-11-07T08:44:00Z","d":{"reason":"research run: local CPU training pipeline, no service/credential surface, not release-bound; blind-review majors already remediated (flock+timeout+inert-knob docs)","step":"pentest"}}
+{"t":"issue_close","ts":"2026-11-07T08:44:06Z","d":{"status":"unavailable"}}
+{"t":"issue_close","ts":"2026-11-07T08:44:06Z"}
+{"t":"close","ts":"2026-11-07T08:44:15Z"}
+{"t":"close","ts":"2026-11-07T08:44:15Z","d":{"failures":1,"remediations":3,"status":"completed"}}
+{"t":"note","ts":"2026-11-07T08:44:15Z","d":{"memory_publish":"runs/RUN-014.md"}}

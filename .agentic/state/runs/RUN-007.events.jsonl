@@ -1,0 +1,11 @@
+{"t":"begin","ts":"2026-11-04T11:28:34Z","d":{"demand":"implementar rascunho especulativo hierarquico: usar heads piramidais (l0/l1) sobre backbone Qwen congelado para propor blocos de k tokens, verificar com AR, medir aceitacao e speedup vs decode AR puro","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-04T11:28:39Z"}
+{"t":"task_plan","ts":"2026-11-04T11:29:30Z"}
+{"t":"execute","ts":"2026-11-04T12:17:09Z"}
+{"t":"test","ts":"2026-11-04T12:17:19Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-04T12:17:26Z"}
+{"t":"blind_review","ts":"2026-11-04T12:17:41Z"}
+{"t":"issue_close","ts":"2026-11-04T12:17:44Z"}
+{"t":"close","ts":"2026-11-04T12:17:47Z"}
+{"t":"close","ts":"2026-11-04T12:17:47Z","d":{"failures":0,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-04T12:17:48Z","d":{"memory_publish":"runs/RUN-007.md"}}

@@ -1,0 +1,31 @@
+{"t":"begin","ts":"2026-11-08T16:39:05Z","d":{"demand":"retreino LevelGenerator com fix do bug de init (vqvae preservado) + skip_level0 corruption, codes_official, 3000 steps, bench vs AR","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-08T16:39:52Z"}
+{"t":"task_plan","ts":"2026-11-08T16:40:01Z"}
+{"t":"execute","ts":"2026-11-08T16:40:07Z"}
+{"t":"test","ts":"2026-11-08T16:40:12Z","d":{"nc":3}}
+{"t":"remediate","ts":"2026-11-08T16:40:16Z"}
+{"t":"execute","ts":"2026-11-08T16:44:48Z"}
+{"t":"test","ts":"2026-11-08T16:44:58Z","d":{"nc":3}}
+{"t":"remediate","ts":"2026-11-08T16:45:00Z"}
+{"t":"execute","ts":"2026-11-08T16:45:16Z"}
+{"t":"test","ts":"2026-11-08T16:46:44Z","d":{"nc":3}}
+{"t":"remediate","ts":"2026-11-08T16:46:44Z"}
+{"t":"execute","ts":"2026-11-08T16:47:31Z"}
+{"t":"test","ts":"2026-11-08T16:47:37Z","d":{"nc":3}}
+{"t":"remediate","ts":"2026-11-08T16:47:39Z"}
+{"t":"execute","ts":"2026-11-08T16:47:49Z"}
+{"t":"test","ts":"2026-11-08T16:47:53Z","d":{"nc":3}}
+{"t":"remediate","ts":"2026-11-08T16:47:55Z"}
+{"t":"execute","ts":"2026-11-08T16:48:04Z"}
+{"t":"test","ts":"2026-11-08T16:48:11Z","d":{"nc":3}}
+{"t":"history","ts":"2026-11-08T16:51:03Z"}
+{"t":"blind_review","ts":"2026-11-08T16:56:25Z","d":{"verdict":"no blockers; majors=env-var-doc-inconsistency verified non-defect (OUT_DIR correct in container, GEN file path in chain); hardening applied: GEN isfile assert"}}
+{"t":"note","ts":"2026-11-08T16:57:05Z"}
+{"t":"blind_review","ts":"2026-11-08T16:57:13Z","d":{"blockers":"0","majors":"2","minors":"7","path":".agentic/reviews/RUN-018-blind-review.md","verdict":"pass"}}
+{"t":"blind_review","ts":"2026-11-08T16:58:07Z"}
+{"t":"blind_review","ts":"2026-11-08T16:59:33Z"}
+{"t":"blind_review","ts":"2026-11-08T16:59:36Z"}
+{"t":"issue_close","ts":"2026-11-08T16:59:36Z"}
+{"t":"close","ts":"2026-11-08T16:59:39Z"}
+{"t":"close","ts":"2026-11-08T16:59:39Z","d":{"failures":0,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-08T16:59:40Z","d":{"memory_publish":"runs/RUN-018.md"}}
