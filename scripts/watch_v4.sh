@@ -8,7 +8,7 @@ OFFSET=6499
 FIRST=6998   # primeira fronteira avaliável (local 499 + offset)
 LOG=.agentic/state/v4_watch.log
 LAST_DONE=0
-MAXSEC=$((60*60*60))   # 60h teto
+MAXSEC=$((60*60*72))   # 72h teto
 T0=$(date +%s)
 
 echo "[watch] start $(date -Is)" >>"$LOG"

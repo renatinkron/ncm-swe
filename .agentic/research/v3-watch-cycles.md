@@ -33,8 +33,10 @@ gap ~1.1 / dup ~0.05 / gt ~4.28 e economiza ~5h até o fim nominal.
 **v3 @8499**: dup 0.0526, distinct 0.7487, self 5.443,
 gt **4.2757** (melhor da série), gap +1.167 — rebotou acima de 1,0.
 
-Quadro real: gap oscila **0.99–1.18, média ~1.10** desde @4999 — o
-sub-1.0 do @7999 foi variância n=8, não rompimento. Piso do schedule
+Quadro real: gap oscila **0.99–1.18, média ~1.10** desde @4999
+(convenção adotada adiante: "flat" = faixa inclusive 0.95–1.20 →
+@4999 em diante conta) — o sub-1.0 do @7999 foi variância n=8, não
+rompimento. Piso do schedule
 linear neste orçamento ≈ +1.1 nats; dup_rate piso ≈ 0.05.
 gt CE segue caindo monotonicamente (modelo aprende, robustez saturou).
 

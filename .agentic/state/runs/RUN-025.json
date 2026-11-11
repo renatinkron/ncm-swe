@@ -1,0 +1,54 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "confirmation_status": "confirmed",
+    "gate_passed": true
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-025",
+  "demand": "ciclo 2h monitoramento v3: colher ponto novo da serie, pesquisa bibliografica direcionada, decidir manter ou ajustar",
+  "github_issue": {
+    "number": null,
+    "url": null,
+    "status": "unavailable"
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-10T16:38:41Z"
+    },
+    {
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "9 monitoring cycles ~2h: v3 series @5999-@8999 (dup 0.1095->~0.05 floor, gap +1.24->~1.10 plateau, gt CE 4.412->4.275). Gap plateau triggered v4 GLAT-lite arm (self-corruption, warm-start @6499); paired comparison @6998 vs @6999 showed +1.616 vs +1.105 (-46%) -> v4 killed, snapshot resumable. Mask-Predict inference-side refinement identified as needing intra=True training (v5 candidate). Early-stop rule pre-registered: @9499 in-band -> declare convergence. nc=0.",
+      "ts": "2026-11-11T12:44:16.660818+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "testing",
+  "plan_id": "PLAN-025",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-025",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

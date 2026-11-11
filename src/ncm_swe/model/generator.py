@@ -28,7 +28,8 @@ class LevelGenerator(nn.Module):
                  n_head_kv=2, dropout=0.0, mlp_hidden=4864, glu=True,
                  use_qk_norm=False, rope_base=1_000_000.0, bias=True,
                  shared_head=True, intra=False, intra_passes=32,
-                 corrupt=0.0):
+                 corrupt=0.0, corrupt_schedule='flat',
+                 corrupt_hi=None, corrupt_lo=None):
         super().__init__()
         # NOTE: vqvae registered AFTER _init_weights below so apply() cannot
         # re-randomize the frozen pretrained tokenizer (found in RUN-017
@@ -36,6 +37,9 @@ class LevelGenerator(nn.Module):
         self.intra = intra
         self.intra_passes = intra_passes
         self.corrupt = corrupt
+        self.corrupt_schedule = corrupt_schedule
+        self.corrupt_hi = corrupt if corrupt_hi is None else corrupt_hi
+        self.corrupt_lo = corrupt if corrupt_lo is None else corrupt_lo
         self.levels = list(vqvae.vq.levels)          # e.g. [1,8,...,128]
         self.chunk_levels = self.levels[1:]           # predicted in main seq
         self.vocab_sizes = list(vqvae.vq.vqvae_vocab_sizes)
@@ -149,22 +153,27 @@ class LevelGenerator(nn.Module):
         Targets stay clean; level 0 never corrupted."""
         out = idx.clone()
         B = idx.shape[0]
-        sched = getattr(self, 'corrupt_schedule', 'flat')
-        hi = getattr(self, 'corrupt_hi', self.corrupt)
-        lo = getattr(self, 'corrupt_lo', self.corrupt)
+        sched = self.corrupt_schedule
+        hi = self.corrupt_hi
+        lo = self.corrupt_lo
         rates = torch.rand(B, 1, device=idx.device) * self.corrupt \
             if sched == 'flat' else None
         preds = None
         if sched == 'self':
             saved = self.corrupt
+            was_training = self.training
             try:
                 self.corrupt = 0.0
-                _, outs = self.forward(idx)
+                self.eval()  # own predictions without dropout perturbation
+                _, outs = self(idx)
             finally:
                 self.corrupt = saved
+                if was_training:
+                    self.train()
             preds = [torch.multinomial(
                 o.softmax(-1).reshape(-1, o.shape[-1]), 1
             ).reshape(B, -1) for o in outs]
+            del outs
         ofs = self.levels[0]  # skip level 0 (official: skip_level0) — l0 seeds
                               # z_hat for every chunk; corrupting it poisons all
         nlv = len(self.levels) - 1

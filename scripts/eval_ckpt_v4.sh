@@ -22,12 +22,14 @@ esac
 
 # guard anti-torn-snapshot: exige mtime estável (>120s sem escrita) —
 # torch.save escreve in-place; copiar durante o save corromperia o snapshot.
-NOW=$(date +%s)
-MT=$(stat -c %Y "$CKPT")
-if [ $((NOW - MT)) -lt 120 ]; then
+# espera em loop re-stat: um save aterrissando durante a espera também
+# produziria snapshot rasgado; repete até mtime estável >=120s
+for _ in 1 2 3 4 5; do
+  NOW=$(date +%s); MT=$(stat -c %Y "$CKPT")
+  [ $((NOW - MT)) -ge 120 ] && break
   echo "ckpt recém-escrito (mtime ${MT}); aguardando estabilizar" >&2
   sleep $((130 - (NOW - MT)))
-fi
+done
 
 LAST=$(tail -1 artifacts/gen_ncm_v4/metrics.jsonl | python3 -c 'import json,sys; print(json.load(sys.stdin)["step"])')
 LOCAL=$((LAST - OFFSET))
