@@ -12,6 +12,18 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 2 | 10 nov ~18:45 | @6499 | 0.0505 | +1.101 | **ADJUST** — v4 GLAT-lite lançado |
 | 3 | 10 nov ~23:30 | v3 @6999 | 0.0644 | +1.105 | **KEEP** — v4 em voo; v5-intra candidato |
 | 4 | 11 nov ~00:15 | v4 @6998 | 0.0578 | **+1.616** | **KEEP 1 ponto** — negativo no pareado |
+| 5 | 11 nov ~02:15 | v3 @7499 | 0.0515 | +1.183 | **KEEP** — aguarda v4@7498 p/ veredito |
+
+## Ciclo 5 — 11 nov ~02:15 UTC
+
+**v3 @7499**: dup 0.0515, distinct 0.6807, self 5.489, gt **4.306**,
+gap +1.183 — sexto ponto flat (1.05–1.18). Platô consolidado; gt ainda
+melhora lentamente (4.55→4.31 no braço v3).
+
+O controle pareado para v4@7498 já existe (este ponto): quando v4@7498
+cair (~4h), veredito kill/keep conforme gap > ou < ~1.4.
+
+**Decisão: KEEP** — sem ação até v4@7498.
 
 ## Ciclo 4 — 11 nov ~00:15 UTC
 
