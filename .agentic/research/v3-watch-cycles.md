@@ -14,6 +14,27 @@ Baseline: v2 dup 0.1095, gap +1.2357, gt 4.4124.
 | 4 | 11 nov ~00:15 | v4 @6998 | 0.0578 | **+1.616** | **KEEP 1 ponto** — negativo no pareado |
 | 5 | 11 nov ~02:15 | v3 @7499 | 0.0515 | +1.183 | **KEEP** — aguarda v4@7498 p/ veredito |
 | 6 | 11 nov ~04:15 | — | — | — | **KILL v4** — veredito antecipado |
+| 7 | 11 nov ~06:00 | v3 @7999 | **0.046** | **+0.987** | **KEEP** — gap rompeu 1,0! |
+
+## Ciclo 7 — 11 nov ~06:00 UTC
+
+**v3 @7999**: dup **0.046** (mínimo da série), distinct 0.7512,
+self 5.3135, gt 4.3265, gap **+0.987** — primeiro ponto abaixo de 1,0.
+
+Releitura do "platô": 5 pontos em 1.05–1.18 podem ter sido descida
+LENTA, não saturação — @7999 confirma que o gap continua cedendo.
+Valida a decisão de manter o v3 como braço principal até o fim.
+(O timing é ~1,5k steps após a morte do v4 — coincidência, não
+causalidade: v3 nunca viu o v4.)
+
+Veredito v4 permanece válido: a comparação pareada foi feita no MESMO
+orçamento total (@6998 vs @6999) — o +1,616 do v4 não pode ser
+explicado por "esperar mais", só por transient de adaptação, que o
+próprio próximo ponto do v4 teria testado (braço resumível se preciso).
+
+Próximo: @8499 (~2h) — se gap seguir <1,0, a tese "corrupção linear
+oficial reduz exposure bias continuamente" se fortalece; se voltar
+>1,05, era variância n=8.
 
 ## Ciclo 6 — 11 nov ~04:15 UTC
 
