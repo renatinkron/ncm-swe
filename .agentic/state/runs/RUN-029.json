@@ -24,6 +24,19 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-11-12T15:15:40Z"
+    },
+    {
+      "actor": "devin",
+      "iteration": 1,
+      "phase": "execute+test",
+      "non_conformities": 0,
+      "summary": "head windowing adotado (gen_s 13.51->8.29s, bit-identico; acumulado 11.06x); --compile-decode opt-in (quente 7.4s ~12.4x, warmup ~11s so paga multi-geracao); headroom residual ~4x em eficiencia de kernel, int8 fora de escopo",
+      "evidence": [
+        "artifacts/prof/eval_chunklocal_windowed.json",
+        "artifacts/prof/eval_chunklocal_compiled.json",
+        ".agentic/state/runs/RUN-029.execution_report.md"
+      ],
+      "timestamp": "2026-11-12T15:20:30Z"
     }
   ],
   "iteration": 1,
@@ -46,5 +59,6 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ]
+  ],
+  "summary": "head windowing adotado: gen_s 13.51->8.29s (acumulado 11.06x, bit-identico); --compile-decode opt-in quente 7.4s (~12.4x); nc=0; docs sincronizados."
 }

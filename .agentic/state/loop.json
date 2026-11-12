@@ -3,20 +3,17 @@
   "started_at": "2026-11-12T15:15:39Z",
   "classification": "standard",
   "run_id": "RUN-029",
-  "queue": [
-    "history",
-    "blind_review",
-    "issue_close",
-    "close"
-  ],
-  "emitted": "test",
+  "queue": [],
+  "emitted": "close",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 3,
+    "clean_streak": 7,
     "failures": 0
   },
-  "baselines": {},
+  "baselines": {
+    "history_len": 1
+  },
   "skips": {},
   "remediations": 0,
   "step_log": [
@@ -66,6 +63,46 @@
       "step": "test",
       "result": "emitted",
       "at": "2026-11-12T15:20:06Z"
+    },
+    {
+      "step": "test",
+      "result": "passed",
+      "at": "2026-11-12T15:20:10Z"
+    },
+    {
+      "step": "history",
+      "result": "emitted",
+      "at": "2026-11-12T15:20:10Z"
+    },
+    {
+      "step": "history",
+      "result": "passed",
+      "at": "2026-11-12T15:20:14Z"
+    },
+    {
+      "step": "blind_review",
+      "result": "emitted",
+      "at": "2026-11-12T15:20:14Z"
+    },
+    {
+      "step": "blind_review",
+      "result": "passed",
+      "at": "2026-11-12T15:20:43Z"
+    },
+    {
+      "step": "issue_close",
+      "result": "emitted",
+      "at": "2026-11-12T15:20:43Z"
+    },
+    {
+      "step": "issue_close",
+      "result": "passed",
+      "at": "2026-11-12T15:20:46Z"
+    },
+    {
+      "step": "close",
+      "result": "emitted",
+      "at": "2026-11-12T15:20:46Z"
     }
   ]
 }
