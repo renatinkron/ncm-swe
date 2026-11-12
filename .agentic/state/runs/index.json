@@ -246,12 +246,21 @@
     },
     {
       "id": "RUN-028",
+      "status": "completed",
+      "domain": "mixed",
+      "environment": "dev",
+      "summary": "Chunk-local decode implementado e validado: gen_s 91.68-\u003e13.51s (6.79x, B=8) com saída byte-idêntica; nc=0; blind review limpo; docs sincronizados.",
+      "created_at": "2026-11-12T14:09:15Z",
+      "updated_at": "2026-11-12T14:09:15Z"
+    },
+    {
+      "id": "RUN-029",
       "status": "planning",
       "domain": "mixed",
       "environment": "dev",
-      "summary": "pesquisa profunda do decode ncm: verificar se chunk-local decode (block-diagonal attention) elimina recompute do prefixo, cache de kv, int8, e extrair maxima performance de inferencia",
-      "created_at": "2026-11-12T14:09:15Z",
-      "updated_at": "2026-11-12T14:09:15Z"
+      "summary": "continuar otimizacao do decode ncm pos chunk-local: avaliar torch.compile do trunk em decode, head windowing e headroom residual no gen_s",
+      "created_at": "2026-11-12T15:15:40Z",
+      "updated_at": "2026-11-12T15:15:40Z"
     }
   ]
 }

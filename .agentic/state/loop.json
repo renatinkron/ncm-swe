@@ -1,153 +1,62 @@
 {
-  "demand": "pesquisa profunda do decode ncm: verificar se chunk-local decode (block-diagonal attention) elimina recompute do prefixo, cache de kv, int8, e extrair maxima performance de inferencia",
-  "started_at": "2026-11-12T14:09:11Z",
-  "classification": "complex",
-  "run_id": "RUN-028",
-  "queue": [],
-  "emitted": "close",
+  "demand": "continuar otimizacao do decode ncm pos chunk-local: avaliar torch.compile do trunk em decode, head windowing e headroom residual no gen_s",
+  "started_at": "2026-11-12T15:15:39Z",
+  "classification": "standard",
+  "run_id": "RUN-029",
+  "queue": [
+    "test",
+    "history",
+    "blind_review",
+    "issue_close",
+    "close"
+  ],
+  "emitted": "execute",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 3,
-    "failures": 2
+    "clean_streak": 2,
+    "failures": 0
   },
-  "baselines": {
-    "history_len": 1
-  },
-  "skips": {
-    "pentest": "refatoracao numerica pura do path de decode (atenção block-diagonal): sem auth, crypto, input externo novo, IPC, filesystem ou superficie de rede; semantica provada bit-identica"
-  },
+  "baselines": {},
+  "skips": {},
   "remediations": 0,
   "step_log": [
     {
       "step": "classify",
       "result": "emitted",
-      "at": "2026-11-12T14:09:11Z"
+      "at": "2026-11-12T15:15:39Z"
     },
     {
       "step": "classify",
       "result": "passed",
-      "detail": "complex",
-      "at": "2026-11-12T14:09:15Z"
+      "detail": "standard",
+      "at": "2026-11-12T15:15:40Z"
     },
     {
       "step": "loop",
       "result": "emitted",
-      "detail": "complex path, run RUN-028",
-      "at": "2026-11-12T14:09:15Z"
+      "detail": "standard path, run RUN-029",
+      "at": "2026-11-12T15:15:40Z"
     },
     {
       "step": "issue_create",
       "result": "passed",
-      "at": "2026-11-12T14:09:18Z"
-    },
-    {
-      "step": "research",
-      "result": "emitted",
-      "at": "2026-11-12T14:09:18Z"
-    },
-    {
-      "step": "research",
-      "result": "passed",
-      "at": "2026-11-12T14:14:24Z"
-    },
-    {
-      "step": "arch_eval",
-      "result": "emitted",
-      "at": "2026-11-12T14:14:24Z"
-    },
-    {
-      "step": "arch_eval",
-      "result": "passed",
-      "at": "2026-11-12T14:14:49Z"
+      "at": "2026-11-12T15:15:42Z"
     },
     {
       "step": "task_plan",
       "result": "emitted",
-      "at": "2026-11-12T14:14:49Z"
-    },
-    {
-      "step": "task_plan",
-      "result": "failed",
-      "detail": ".agentic/state/runs/RUN-028.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"",
-      "at": "2026-11-12T14:15:00Z"
+      "at": "2026-11-12T15:15:42Z"
     },
     {
       "step": "task_plan",
       "result": "passed",
-      "at": "2026-11-12T14:15:12Z"
+      "at": "2026-11-12T15:15:52Z"
     },
     {
       "step": "execute",
       "result": "emitted",
-      "at": "2026-11-12T14:15:12Z"
-    },
-    {
-      "step": "execute",
-      "result": "passed",
-      "at": "2026-11-12T14:20:37Z"
-    },
-    {
-      "step": "test",
-      "result": "emitted",
-      "at": "2026-11-12T14:20:37Z"
-    },
-    {
-      "step": "test",
-      "result": "passed",
-      "at": "2026-11-12T14:20:48Z"
-    },
-    {
-      "step": "history",
-      "result": "emitted",
-      "at": "2026-11-12T14:20:48Z"
-    },
-    {
-      "step": "history",
-      "result": "failed",
-      "detail": "no new history entry in RUN-028.json",
-      "at": "2026-11-12T14:20:52Z"
-    },
-    {
-      "step": "history",
-      "result": "passed",
-      "at": "2026-11-12T14:20:56Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "emitted",
-      "at": "2026-11-12T14:20:56Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "passed",
-      "at": "2026-11-12T14:21:32Z"
-    },
-    {
-      "step": "pentest",
-      "result": "emitted",
-      "at": "2026-11-12T14:21:32Z"
-    },
-    {
-      "step": "pentest",
-      "result": "skipped",
-      "detail": "refatoracao numerica pura do path de decode (atenção block-diagonal): sem auth, crypto, input externo novo, IPC, filesystem ou superficie de rede; semantica provada bit-identica",
-      "at": "2026-11-12T14:21:37Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "emitted",
-      "at": "2026-11-12T14:21:37Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "passed",
-      "at": "2026-11-12T14:21:42Z"
-    },
-    {
-      "step": "close",
-      "result": "emitted",
-      "at": "2026-11-12T14:21:42Z"
+      "at": "2026-11-12T15:15:52Z"
     }
   ]
 }

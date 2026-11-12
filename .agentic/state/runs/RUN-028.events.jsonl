@@ -11,3 +11,6 @@
 {"t":"blind_review","ts":"2026-11-12T14:21:32Z"}
 {"t":"skip","ts":"2026-11-12T14:21:37Z","d":{"reason":"refatoracao numerica pura do path de decode (atenção block-diagonal): sem auth, crypto, input externo novo, IPC, filesystem ou superficie de rede; semantica provada bit-identica","step":"pentest"}}
 {"t":"issue_close","ts":"2026-11-12T14:21:42Z"}
+{"t":"close","ts":"2026-11-12T14:22:59Z"}
+{"t":"close","ts":"2026-11-12T14:22:59Z","d":{"failures":2,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-12T14:23:00Z","d":{"memory_publish":"runs/RUN-028.md"}}

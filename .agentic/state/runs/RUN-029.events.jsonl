@@ -1,0 +1,3 @@
+{"t":"begin","ts":"2026-11-12T15:15:40Z","d":{"demand":"continuar otimizacao do decode ncm pos chunk-local: avaliar torch.compile do trunk em decode, head windowing e headroom residual no gen_s","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-12T15:15:42Z"}
+{"t":"task_plan","ts":"2026-11-12T15:15:52Z"}

@@ -104,6 +104,7 @@ class LevelGenerator(nn.Module):
         nn.init.normal_(self.q0, std=0.02)
         self.vqvae = vqvae  # frozen tokenizer — registered post-init on purpose
         self._trunk_fn = None  # set by enable_trunk_compile()
+        self._decode_trunk_fn = None  # set by enable_decode_compile()
 
     @staticmethod
     def _init_weights(m):
@@ -394,9 +395,30 @@ class LevelGenerator(nn.Module):
              torch.arange(gofs, gofs + L, device=h.device)])
         cos = self.rope_cos[pos_ids]
         sin = self.rope_sin[pos_ids]
+        h = (self._decode_trunk_fn or self._chunk_trunk)(h, m, cos, sin)
+        return h
+
+    def _chunk_trunk(self, h, m, cos, sin):
+        """Trunk loop with explicit mask/rope — decode path, compilable."""
         for blk in self.blocks:
             h, _ = blk(h, m, cos, sin)
         return self.ln_f(h)
+
+    def enable_decode_compile(self):
+        """Compile the decode chunk trunk (dynamic seq len across levels).
+        Returns True if smoke test passed, else stays eager."""
+        try:
+            cand = torch.compile(self._chunk_trunk, dynamic=True)
+            with torch.no_grad():
+                T = 1 + self.levels[-1]
+                cand(torch.zeros(1, T, self.n_embd, device=self.q0.device),
+                     torch.zeros(1, 1, T, T, device=self.q0.device),
+                     self.rope_cos[:T], self.rope_sin[:T])
+            self._decode_trunk_fn = cand
+            return True
+        except Exception:
+            self._decode_trunk_fn = None
+            return False
 
     def _forward_partial(self, codes_by_level, cur=None, decided=None):
         """Run the stack over [q0] + chunks predicting levels 1..len(codes).
@@ -506,7 +528,10 @@ class LevelGenerator(nn.Module):
                 conf = torch.zeros(batch_size, Lk, device=self.q0.device)
                 for s in range(0, Lk, self.intra_passes):
                     h = self._forward_chunk(base_chunk, k, cur, decided)
-                    lg = self._head_logits(h[:, 1:], k)[:, s:s + self.intra_passes]
+                    # head only on the positions this pass consumes
+                    # (per-position linear — exact, skips dead logits)
+                    lg = self._head_logits(
+                        h[:, 1 + s:1 + s + self.intra_passes], k)
                     codes_s = self._sample(
                         lg.reshape(-1, lg.shape[-1]), temperature, top_k,
                         top_p).reshape(batch_size, -1)

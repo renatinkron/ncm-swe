@@ -127,6 +127,9 @@ def main():
                     help="fração menos confiante remascarada por rodada")
     ap.add_argument("--refine-from", type=int, default=1,
                     help="nível mínimo (índice) onde refinement se aplica")
+    ap.add_argument("--compile-decode", action="store_true",
+                    help="torch.compile no trunk de decode (opt-in; "
+                         "warmup amortizado dentro do run)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
 
@@ -154,6 +157,10 @@ def main():
                            corrupt=cfg.get("corrupt", 0.0))
     model.load_state_dict(ck["model"], strict=True)
     model.eval()
+    if args.compile_decode:
+        ok = model.enable_decode_compile()
+        print(f"compile-decode: {'ok' if ok else 'falhou — eager'}",
+              flush=True)
     if args.refine_iters > 0:
         if not model.intra:
             print("AVISO: ckpt intra=False — refine-iters ignorado", flush=True)

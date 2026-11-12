@@ -1,17 +1,18 @@
 {
   "branch_strategy": {
+    "confirmation_status": "confirmed",
     "decision": "current_branch",
+    "gate_passed": true,
     "name": null,
     "reason": "refactoring de decode validado, mesmo repo",
-    "confirmation_status": "confirmed",
-    "gate_passed": true
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-028",
   "demand": "pesquisa profunda do decode ncm: verificar se chunk-local decode (block-diagonal attention) elimina recompute do prefixo, cache de kv, int8, e extrair maxima performance de inferencia",
   "github_issue": {
-    "status": "unavailable",
-    "reason": "no GitHub remote configured"
+    "reason": "no GitHub remote configured",
+    "status": "unavailable"
   },
   "history": [
     {
@@ -25,21 +26,21 @@
       "timestamp": "2026-11-12T14:09:15Z"
     },
     {
-      "iteration": 1,
-      "phase": "execute+test",
-      "non_conformities": 0,
-      "summary": "_forward_chunk integrado no generate() (intra/nao-intra/refine) com z_hat incremental; _forward_partial mantido como referencia. Eval same-box seed0 n=8 no ckpt v5 final: gen_s 91.68->13.51s (6.79x, gate>=3x), passes 24, dup/gap/CE/textos byte-identicos ao baseline.",
+      "commit": "d8f3dcd",
       "evidence": [
         "artifacts/prof/eval_baseline_samebox.json",
         "artifacts/prof/eval_chunklocal_final.json",
         ".agentic/state/runs/RUN-028.execution_report.md",
         ".agentic/state/runs/RUN-028.compliance_report.md"
       ],
-      "commit": "d8f3dcd"
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "_forward_chunk integrado no generate() (intra/nao-intra/refine) com z_hat incremental; _forward_partial mantido como referencia. Eval same-box seed0 n=8 no ckpt v5 final: gen_s 91.68-\u003e13.51s (6.79x, gate\u003e=3x), passes 24, dup/gap/CE/textos byte-identicos ao baseline."
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-028",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -49,6 +50,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-028",
+  "summary": "Chunk-local decode implementado e validado: gen_s 91.68-\u003e13.51s (6.79x, B=8) com saída byte-idêntica; nc=0; blind review limpo; docs sincronizados.",
   "target_environment": "dev",
   "tasks": [
     {
@@ -58,6 +60,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "Chunk-local decode implementado e validado: gen_s 91.68->13.51s (6.79x, B=8) com saída byte-idêntica; nc=0; blind review limpo; docs sincronizados."
+  ]
 }
