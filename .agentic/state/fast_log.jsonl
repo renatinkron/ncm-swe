@@ -17,3 +17,7 @@
 {"timestamp": "2026-11-10T15:15:09.982745+00:00", "demand": "registrar pontos novos da serie v3 na nota de pesquisa", "files_touched": [".agentic/research/v3-linear-corruption-eval.md"], "verdict": "pass"}
 {"timestamp": "2026-11-12T13:00:16.074329+00:00", "demand": "ciclo-2h-monitoramento-v5-colher-pontos-novos-da-serie-pesquisa-direcionada-decidir-manter-ou-ajustar", "files_touched": [".agentic/research/v3-watch-cycles.md", "paper/paper_pt-br.md", "paper/paper_en-us.md", "TIMELINE.md", "SOURCES.md", "artifacts/v5_eval/"], "verdict": "pass"}
 {"timestamp": "2026-11-12T16:49:03.996884+00:00", "demand": "ciclo de monitoramento v5-ext: health check e colheita de evals disponiveis", "files_touched": [".agentic/state/fast_log.jsonl"], "verdict": "pass"}
+{"timestamp":"2026-11-12T21:43:13Z","demand":"check de status v5-ext: progresso de treino e evals novos","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-12T22:21:30Z","demand":"check se treino v5-ext terminou e colher evals finais","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-12T22:33:08Z","demand":"monitoramento continuo v5-ext: colher @13499+","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-12T22:35:04Z","demand":"monitoramento continuo v5-ext: colher @13999","files_touched":[],"verdict":"pass"}

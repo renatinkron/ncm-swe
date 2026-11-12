@@ -200,3 +200,97 @@ One day, Tim had an idea. He opened her door and found a big was in the safe pla
 {'dup_rate': 0.0555, 'distinct_ratio': 0.6883, 's_per_sample': 2.958, 'passes': 24}
 self 5.0712 gt 4.3199
 [watch] avaliado ckpt ~12999 2026-11-12T17:00:41-03:00
+snapshot artifacts/v5ext_eval/ckpt_step13499.pt (metrics step ~13500, refine_iters=0)
+VQVAE, Total parameter count: 36.43M
+VQVAE, Non embedding parameter count: 33.24M
+{
+ "n": 8,
+ "temp": 1.0,
+ "topk": 0,
+ "top_p": 1.0,
+ "seed": 0,
+ "l0_mode": "unigram",
+ "freq": 0.0,
+ "mu": 0.0,
+ "adj": null,
+ "gen_s": 52.76,
+ "passes": 24,
+ "s_per_sample": 6.595,
+ "dup_rate": 0.0498,
+ "distinct_ratio": 0.7585,
+ "ce_self_gen": {
+  "l0": 8.1464,
+  "l1": 7.8793,
+  "l2": 7.6503,
+  "l3": 6.8936,
+  "l4": 6.1933,
+  "l5": 4.4155,
+  "l6": 4.49,
+  "l7": 3.0042,
+  "l8": 3.3619,
+  "l9": 3.1458,
+  "l10": 3.2592,
+  "l11": 1.1582,
+  "total": 4.9665
+ },
+ "ce_held_gt": {
+  "l0": 7.8375,
+  "l1": 7.2469,
+  "l2": 6.3253,
+  "l3": 6.0279,
+  "l4": 4.8576,
+  "l5": 4.3343,
+  "l6": 3.8605,
+  "l7": 1.6561,
+  "l8": 2.7915,
+  "l9": 3.0105,
+  "l10": 2.9032,
+  "l11": 0.4959,
+  "total": 4.2789
+ },
+ "l0_codes": [
+  [
+   2181
+  ],
+  [
+   222
+  ],
+  [
+   439
+  ],
+  [
+   2574
+  ],
+  [
+   1017
+  ],
+  [
+   488
+  ],
+  [
+   260
+  ],
+  [
+   1490
+  ]
+ ]
+}
+---  the box and smiles. She says, ", be kind and mom. You need it to take the truck and from you to and promise to be be happy. We we will make make a big smile. We can wrap someone. Take are are sorry done. You will do you? What class?"
+"What Mom Mom Mom asks.
+"Sam says, "We decided to pray more. mean
+--- 
+One day, a little girl Tim went to the park. The library was a big house. wanted wanted to help the near the big tree, so she She wanted touch the then, something unexpected happened. The cat got very angry. Tim and started to down the ladder with the the cat. The cat and Tim. Tim and and clapped. 
+---  bottle The. wanted to help it better again butJust then, Tim met a bug. The bug said the ",,, little bug." Tim said,I can help you you. I will help you find my way, I will help you you."
+Tim other looked at it home and gave it a little little bug back. They said, "Yes, I will help you."
+ So Tim he 
+---  saw things and pretty things. One day, who dad came to the garden. She looked at at dad. She said, "Lily, are safe. We forgive forgive you to the garage. This us home toark better." Lily said.
+“Yes, you,, that my present! We have to go together. Then, you can can have have some and fun easy to do t
+---  came of him him. The cat was not scared quiet and not trembling away anymore. They were all wonderful very day day at the park less The end.
+--- . The ball played laughed at the park. Sue was excited to play ball ball play.
+At the park, they saw a big big fish. The toy had a great time at at the pretty girl. Sue waved said goodbye goodbye as at the park.
+---  together. Tom was very sad anymore.. She was not worried anymore. They could not help the cat quiet was of to go outside outside, and then they would never forget you and again.
+---  was happy to have have a new new.
+== artifacts/v5ext_eval/ckpt_step13499.json ==
+{'dup_rate': 0.0498, 'distinct_ratio': 0.7585, 's_per_sample': 6.595, 'passes': 24}
+self 4.9665 gt 4.2789
+[watch] avaliado ckpt ~13499 2026-11-12T19:32:14-03:00

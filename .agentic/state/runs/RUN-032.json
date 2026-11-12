@@ -1,18 +1,19 @@
 {
   "branch_strategy": {
+    "confirmation_status": "confirmed",
     "decision": "current_branch",
+    "gate_passed": true,
     "name": null,
     "reason": "monitoramento",
-    "confirmation_status": "confirmed",
-    "gate_passed": true
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-032",
   "demand": "monitoramento continuo v5-ext: ciclos de health check e colheita de evals a cada boundary",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -27,20 +28,20 @@
     },
     {
       "actor": "devin",
-      "iteration": 1,
-      "phase": "monitor-c1c2",
-      "non_conformities": 0,
-      "summary": "ciclos @12499 (dup 0.036 nao confirmado) e @12999 (gap 0.751 via trade-off gt 4.22->4.32) logados; watcher autonomo; treino ~55%, veredito pendente",
       "evidence": [
         ".agentic/research/v5-watch-cycles.md",
         "artifacts/v5ext_eval/ckpt_step12499.json",
         "artifacts/v5ext_eval/ckpt_step12999.json"
       ],
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "monitor-c1c2",
+      "summary": "ciclos @12499 (dup 0.036 nao confirmado) e @12999 (gap 0.751 via trade-off gt 4.22-\u003e4.32) logados; watcher autonomo; treino ~55%, veredito pendente",
       "timestamp": "2026-11-12T20:44:40Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-032",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -50,6 +51,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-032",
+  "summary": "Monitoramento v5-ext ciclos 1-2: @12499 dup 0.036 nao confirmado, @12999 gap 0.751 via trade-off gt-\u003e4.32; watcher autonomo; run fecha com treino ~55% em curso.",
   "target_environment": "dev",
   "tasks": [
     {
@@ -59,6 +61,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "Monitoramento v5-ext ciclos 1-2: @12499 dup 0.036 nao confirmado, @12999 gap 0.751 via trade-off gt->4.32; watcher autonomo; run fecha com treino ~55% em curso."
+  ]
 }

@@ -1,0 +1,4 @@
+{"t":"begin","ts":"2026-11-12T23:43:30Z","d":{"demand":"avaliar se o treinamento pode migrar para o modelo testado no colibri (Qwen3-Coder-Next 80B / 30B)","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-12T23:43:32Z"}
+{"t":"note","ts":"2026-11-12T23:43:37Z","d":{"detail":".agentic/state/runs/RUN-033.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"; run_state field branch_strategy.decision is \"\", want one of [current_branch new_branch]","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-12T23:43:41Z"}
