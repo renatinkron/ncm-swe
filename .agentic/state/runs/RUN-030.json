@@ -1,18 +1,19 @@
 {
   "branch_strategy": {
+    "confirmation_status": "confirmed",
     "decision": "current_branch",
+    "gate_passed": true,
     "name": null,
     "reason": "continuacao de treino+evals, mesmo repo",
-    "confirmation_status": "confirmed",
-    "gate_passed": true
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-030",
   "demand": "continuar treino v5 por +2500 steps com watcher e refazer evals-chave com n=32 e multiplas seeds para fechar limitacao de barras de erro",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -27,20 +28,20 @@
     },
     {
       "actor": "devin",
-      "iteration": 1,
-      "phase": "execute+test",
-      "non_conformities": 0,
-      "summary": "v5-ext lancado (resume v5@11999, +2500 steps, compile-trunk) + watcher; stats n=32x3seeds: intra-chunked NAO replica (0.853 vs v3 0.827 sobrepostos — n=8 era ruido); refinement robusto 0.316+-0.033; paper corrigido",
       "evidence": [
         "artifacts/stats_eval/aggregate.json",
         "artifacts/stats_eval/*.json",
         ".agentic/state/runs/RUN-030.execution_report.md"
       ],
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "v5-ext lancado (resume v5@11999, +2500 steps, compile-trunk) + watcher; stats n=32x3seeds: intra-chunked NAO replica (0.853 vs v3 0.827 sobrepostos — n=8 era ruido); refinement robusto 0.316+-0.033; paper corrigido",
       "timestamp": "2026-11-12T15:53:00Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-030",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -50,6 +51,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-030",
+  "summary": "v5-ext +2500 steps lancado com watcher; stats n=32x3 fecharam limitacao de barras: intra-chunked nao replica (ruido n=8), refinement 0.316+-0.033 robusto; paper corrigido. Treino em curso.",
   "target_environment": "dev",
   "tasks": [
     {
@@ -59,6 +61,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "v5-ext +2500 steps lancado com watcher; stats n=32x3 fecharam limitacao de barras: intra-chunked nao replica (ruido n=8), refinement 0.316+-0.033 robusto; paper corrigido. Treino em curso."
+  ]
 }

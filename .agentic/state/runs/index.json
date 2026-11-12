@@ -264,12 +264,21 @@
     },
     {
       "id": "RUN-030",
+      "status": "completed",
+      "domain": "mixed",
+      "environment": "dev",
+      "summary": "v5-ext +2500 steps lancado com watcher; stats n=32x3 fecharam limitacao de barras: intra-chunked nao replica (ruido n=8), refinement 0.316+-0.033 robusto; paper corrigido. Treino em curso.",
+      "created_at": "2026-11-12T15:32:25Z",
+      "updated_at": "2026-11-12T15:32:25Z"
+    },
+    {
+      "id": "RUN-031",
       "status": "planning",
       "domain": "mixed",
       "environment": "dev",
-      "summary": "continuar treino v5 por +2500 steps com watcher e refazer evals-chave com n=32 e multiplas seeds para fechar limitacao de barras de erro",
-      "created_at": "2026-11-12T15:32:25Z",
-      "updated_at": "2026-11-12T15:32:25Z"
+      "summary": "monitorar treino v5-ext ate o fim, avaliando checkpoints e registrando resultados no paper",
+      "created_at": "2026-11-12T15:57:33Z",
+      "updated_at": "2026-11-12T15:57:33Z"
     }
   ]
 }
