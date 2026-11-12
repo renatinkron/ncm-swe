@@ -24,6 +24,17 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-11-12T23:55:37Z"
+    },
+    {
+      "actor": "devin",
+      "iteration": 1,
+      "phase": "pause-80b-test",
+      "non_conformities": 0,
+      "summary": "treino pausado @13800 (perde ~300 steps, ckpt @13499 intacto); llama-server :8089 morto; 80B topk5 na :8091 a 4.75 t/s; retomada em .agentic/state/resume_v5ext.sh",
+      "evidence": [
+        ".agentic/state/resume_v5ext.sh"
+      ],
+      "timestamp": "2026-11-12T23:57:50Z"
     }
   ],
   "iteration": 1,
@@ -46,5 +57,6 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ]
+  ],
+  "summary": "Pausa total p/ teste 80B: treino @13800 parado (perdeu ~300 steps; ckpt @13499 intacto), llama-server morto, 80B topk5 servindo :8091 a 4.75 t/s. Retomada: .agentic/state/resume_v5ext.sh"
 }
