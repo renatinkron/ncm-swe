@@ -1,38 +1,83 @@
 {
-  "demand": "ciclo-2h-monitoramento-v5-colher-pontos-novos-da-serie-pesquisa-direcionada-decidir-manter-ou-ajustar",
-  "started_at": "2026-11-12T12:48:02Z",
-  "classification": "fast",
-  "run_id": "",
-  "queue": [],
-  "emitted": "execute_fast",
+  "demand": "pesquisa profunda de performance do treino-inferencia ncm: avaliar reescrita em c-rust, otimizacao de calculos, substituicao de implementacoes obsoletas, analisar codigo de ferramentas e extrair maxima performance",
+  "started_at": "2026-11-12T13:04:04Z",
+  "classification": "complex",
+  "run_id": "RUN-027",
+  "queue": [
+    "test",
+    "history",
+    "blind_review",
+    "pentest",
+    "issue_close",
+    "close"
+  ],
+  "emitted": "execute",
   "done": false,
   "trust": {
-    "level": "guided",
-    "clean_streak": 0,
+    "level": "terse",
+    "clean_streak": 4,
     "failures": 0
   },
-  "baselines": {
-    "lines:.agentic/state/fast_log.jsonl": 17
-  },
+  "baselines": {},
   "skips": {},
   "remediations": 0,
   "step_log": [
     {
       "step": "classify",
       "result": "emitted",
-      "at": "2026-11-12T12:48:02Z"
+      "at": "2026-11-12T13:04:04Z"
     },
     {
       "step": "classify",
       "result": "passed",
-      "detail": "fast",
-      "at": "2026-11-12T12:48:04Z"
+      "detail": "complex",
+      "at": "2026-11-12T13:04:12Z"
     },
     {
       "step": "loop",
       "result": "emitted",
-      "detail": "fast path",
-      "at": "2026-11-12T12:48:04Z"
+      "detail": "complex path, run RUN-027",
+      "at": "2026-11-12T13:04:12Z"
+    },
+    {
+      "step": "issue_create",
+      "result": "passed",
+      "at": "2026-11-12T13:04:14Z"
+    },
+    {
+      "step": "research",
+      "result": "emitted",
+      "at": "2026-11-12T13:04:14Z"
+    },
+    {
+      "step": "research",
+      "result": "passed",
+      "at": "2026-11-12T13:29:06Z"
+    },
+    {
+      "step": "arch_eval",
+      "result": "emitted",
+      "at": "2026-11-12T13:29:06Z"
+    },
+    {
+      "step": "arch_eval",
+      "result": "passed",
+      "at": "2026-11-12T13:29:30Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "emitted",
+      "at": "2026-11-12T13:29:30Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "passed",
+      "at": "2026-11-12T13:29:45Z"
+    },
+    {
+      "step": "execute",
+      "result": "emitted",
+      "at": "2026-11-12T13:29:45Z"
     }
   ]
 }

@@ -49,6 +49,9 @@ def main():
                     help="boundary: prefixo L->R | random: subconjunto arbitrário (mask-predict) | mix: 50/50")
     ap.add_argument("--intra-passes", type=int, default=32,
                     help="posições por passe no decode chunked intra")
+    ap.add_argument("--compile-trunk", action="store_true",
+                    help="torch.compile nos 4 blocos (inductor C++; exige g++ "
+                         "na imagem — lcm-infer-gcc; ~14%% no trunk medido)")
     ap.add_argument("--init-from", default="",
                     help="checkpoint p/ warm-start (resume)")
     ap.add_argument("--offset", type=int, default=0,
@@ -91,6 +94,9 @@ def main():
         if missing:
             print(f"init aleatório: {missing}", flush=True)
         print(f"warm-start de {args.init_from}", flush=True)
+    if args.compile_trunk:
+        ok = model.enable_trunk_compile()
+        print(f"compile_trunk: {'on' if ok else 'fallback eager'}", flush=True)
     n_par = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"generator trainable params {n_par/1e6:.2f}M", flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr,

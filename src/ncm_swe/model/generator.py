@@ -97,6 +97,7 @@ class LevelGenerator(nn.Module):
         self.apply(self._init_weights)
         nn.init.normal_(self.q0, std=0.02)
         self.vqvae = vqvae  # frozen tokenizer — registered post-init on purpose
+        self._trunk_fn = None  # set by enable_trunk_compile()
 
     @staticmethod
     def _init_weights(m):
@@ -215,10 +216,7 @@ class LevelGenerator(nn.Module):
         hmain = self.proj_in(x) + self.pos.weight[1:] \
             + self.lvl.weight[self.lvl_ids + 1]
         h = torch.cat([h0, hmain], dim=1)
-        for blk in self.blocks:
-            h, _ = blk(h, self.attn_mask[:, :, : h.shape[1], : h.shape[1]],
-                       self.rope_cos[: h.shape[1]], self.rope_sin[: h.shape[1]])
-        h = self.ln_f(h)
+        h = (self._trunk_fn or self._trunk)(h)
         logits_l0 = self._head_logits(h[:, :1], 0)
         # per-position head with per-level slicing -> gather into padded tensor
         outs = []
@@ -227,6 +225,32 @@ class LevelGenerator(nn.Module):
             outs.append(self._head_logits(h[:, ofs:ofs + l], i + 1))
             ofs += l
         return logits_l0, outs  # outs[i]: (B, L_{i+1}, V_{i+1})
+
+    def _trunk(self, h):
+        """The 4-block transformer trunk + final norm — inductor-safe subset
+        (full forward breaks torch 2.5.1 inductor on the head loop)."""
+        T = h.shape[1]
+        mask = self.attn_mask[:, :, :T, :T]
+        cos, sin = self.rope_cos[:T], self.rope_sin[:T]
+        for blk in self.blocks:
+            h, _ = blk(h, mask, cos, sin)
+        return self.ln_f(h)
+
+    def enable_trunk_compile(self):
+        """Compile the trunk with inductor (needs a C++ toolchain in the
+        image). Returns True if the fwd smoke test compiled, else stays
+        eager and returns False. Training-only lever: generation keeps
+        the eager _forward_partial path (dynamic seq lens)."""
+        try:
+            cand = torch.compile(self._trunk)
+            with torch.no_grad():
+                cand(torch.zeros(1, 1 + self.T, self.n_embd,
+                                 device=self.q0.device))
+            self._trunk_fn = cand
+            return True
+        except Exception:
+            self._trunk_fn = None
+            return False
 
     def _sample_intra_masks(self, idx):
         """Returns (boundaries, decided) for intra training per intra_mask:
