@@ -330,3 +330,35 @@ confiança (prob no tempo de predição) está funcionando — o major do blind
 review estava certo em exigir a correção.
 
 Em voo: sweep ref2 (iters=2) e ref1-f0.5-from5 — curva dose-resposta.
+
+## Ciclo v5-2 — dose-resposta do refinement: não-monotônico (12 nov)
+
+Sweep no ckpt final (n=8, seed 0):
+
+| config | dup | self | gt | gap | passes |
+|---|---|---|---|---|---|
+| chunked (refine=0) | 0.053 | 5.127 | 4.217 | +0.909 | 24 |
+| it1 f0.3 l7 | 0.045 | 4.858 | 4.204 | +0.655 | 29 |
+| it2 f0.3 l7 | 0.054 | 4.777 | 4.225 | +0.552 | 34 |
+| it1 f0.5 l5 | 0.047 | 4.667 | 4.251 | +0.416 | 31 |
+| it2 f0.5 l1 | 0.088 | 4.047 | 4.273 | **−0.226** | 46 |
+
+**Veredito**: o refinement fecha o gap monotonicamente até INVERTÊ-LO
+(−0,23) — mas o dup_rate DOBRA no extremo (0,088). Assinatura de colapso
+de modo: o decode converge a códigos "fáceis" (mais previsíveis, mais
+repetitivos), não a texto melhor. O gap deixa de ser métrica confiável de
+qualidade nesse regime — precisa do par dup/distinct como sanity.
+
+**Ponto ótimo**: refine moderado (it1, f0.3–0.5, l5–l7): gap +0,42–0,66
+(≈40–60% do platô v3), dup ~0,045, custo 29–31 passes vs 11 paralelo.
+
+Conclusão do braço v5:
+1. intra=True + chunked L→R: gap −0,18 (platô rompido, descendo no fim).
+2. Mask-Predict refinement moderado: gap −0,25 a −0,49 adicionais.
+3. Refinement agressivo: colapso de modo — primeiro datapoint do teto
+   da técnica.
+4. dup_rate ~0,05 INVARIANTE em todos os braços → stutter residual é de
+   outra natureza (arco global/l0), não independência intra-nível.
+5. Custo: 24–31 passes vs 11 — a qualidade do gap compra-se com ~2-3×
+   passes. Para TinyStories-word-salad, ainda não há texto coerente; o
+   ganho é na robustez de condicionamento (métrica), não na narrativa.
