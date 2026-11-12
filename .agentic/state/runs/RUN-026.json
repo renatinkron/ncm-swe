@@ -27,13 +27,23 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-11-11T14:40:35Z"
+    },
+    {
+      "actor": "devin",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "executed",
+      "summary": "T001 intra_mask boundary/random/mix + decided masks + trainer flags + warm-start tolerante a mask_emb; T002 mask-predict refinement em generate() (2 passes/rodada); T003 braço v5 lançado (warm v3@9499, mix, 2500 steps) + watcher; T004 pendente aguardando ckpt ~9998.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-11T14:51:45Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "executed",
   "plan_id": "PLAN-026",
   "quality_gates": {
-    "branch_strategy_decision": "pending",
+    "branch_strategy_decision": "passed",
     "integration_tests": "not_applicable",
     "security_checks": "not_applicable",
     "static_analysis": "pending",

@@ -154,6 +154,12 @@ def main():
                            corrupt=cfg.get("corrupt", 0.0))
     model.load_state_dict(ck["model"], strict=True)
     model.eval()
+    if args.refine_iters > 0:
+        if not model.intra:
+            print("AVISO: ckpt intra=False — refine-iters ignorado", flush=True)
+        elif model.intra_mask == "boundary":
+            print("AVISO: ckpt treinado só com prefixos — remáscara esparsa "
+                  "do refinement é OOD (resultado não comparável)", flush=True)
 
     L0 = model.levels[0]
     p = l0_dist(args.l0, args.l0_unigram, int(model.vocab_sizes[0]))

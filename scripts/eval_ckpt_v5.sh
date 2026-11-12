@@ -41,7 +41,7 @@ else
   NAME="$LABEL"
 fi
 SUFFIX=""
-[ "$REFINE_ITERS" != "0" ] && SUFFIX="_ref${REFINE_ITERS}"
+[ "$REFINE_ITERS" != "0" ] && SUFFIX="_ref${REFINE_ITERS}f${REFINE_FRAC}l${REFINE_FROM}"
 SNAP="$EVALDIR/ckpt_step${NAME}${SUFFIX}.pt"
 OUT="$EVALDIR/ckpt_step${NAME}${SUFFIX}.json"
 

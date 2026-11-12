@@ -37,6 +37,8 @@ class LevelGenerator(nn.Module):
         # blind review: assigning here scrambles every Linear/Embedding).
         self.intra = intra
         self.intra_passes = intra_passes
+        assert intra_mask in ('boundary', 'random', 'mix'), \
+            f"intra_mask inválido: {intra_mask}"
         self.intra_mask = intra_mask
         self.corrupt = corrupt
         self.corrupt_schedule = corrupt_schedule
@@ -367,11 +369,14 @@ class LevelGenerator(nn.Module):
         l0=None preserves the default: l0 is sampled from the model head.
 
         Mask-Predict refinement (intra only): after each level k >=
-        refine_from, run refine_iters rounds — score each position by the
-        prob the model assigns to its current code under fully-decided
-        context, remask the lowest-confidence refine_frac fraction, and
-        re-predict pending positions in parallel. Each round costs 2
-        transformer passes. refine_iters=0 disables (default)."""
+        refine_from, run refine_iters rounds — remask the refine_frac
+        positions whose sampled code had the LOWEST probability when it was
+        predicted while pending, then re-predict pending positions in
+        parallel. Confidence is captured at prediction time (positions are
+        genuinely pending then) — scoring under all-decided context would
+        be self-referential since position t's input already carries
+        emb(code_t). Each round costs 1 transformer pass.
+        refine_iters=0 disables (default)."""
         self.eval()
         codes = []
         if l0 is not None:
@@ -409,34 +414,37 @@ class LevelGenerator(nn.Module):
                               device=self.q0.device)
             decided = torch.zeros(batch_size, Lk, dtype=torch.bool,
                                   device=self.q0.device)
+            conf = torch.zeros(batch_size, Lk, device=self.q0.device)
             for s in range(0, Lk, self.intra_passes):
                 h = self._forward_partial(codes, cur, decided)
                 lg = self._head_logits(h[:, -Lk:], k)[:, s:s + self.intra_passes]
                 codes_s = self._sample(
                     lg.reshape(-1, lg.shape[-1]), temperature, top_k,
                     top_p).reshape(batch_size, -1)
-                cur[:, s:s + codes_s.shape[1]] = codes_s
-                decided[:, s:s + codes_s.shape[1]] = True
+                w = codes_s.shape[1]
+                conf[:, s:s + w] = F.softmax(lg, -1).gather(
+                    -1, codes_s.unsqueeze(-1)).squeeze(-1)
+                cur[:, s:s + w] = codes_s
+                decided[:, s:s + w] = True
                 passes += 1
             if refine_iters > 0 and k >= refine_from:
                 n_mask = max(1, int(round(Lk * refine_frac)))
-                all_dec = torch.ones(batch_size, Lk, dtype=torch.bool,
-                                     device=self.q0.device)
                 for _ in range(refine_iters):
-                    h = self._forward_partial(codes, cur, all_dec)
-                    lg = self._head_logits(h[:, -Lk:], k)
-                    conf = F.softmax(lg, -1).gather(
-                        -1, cur.unsqueeze(-1)).squeeze(-1)
                     low = conf.argsort(dim=1)[:, :n_mask]
-                    decided2 = all_dec.clone()
+                    decided2 = torch.ones(batch_size, Lk, dtype=torch.bool,
+                                          device=self.q0.device)
                     decided2.scatter_(1, low, False)
                     h = self._forward_partial(codes, cur, decided2)
                     lg = self._head_logits(h[:, -Lk:], k)
+                    probs = F.softmax(lg, -1)
                     new = self._sample(
                         lg.reshape(-1, lg.shape[-1]), temperature,
                         top_k, top_p).reshape(batch_size, Lk)
+                    new_conf = probs.gather(
+                        -1, new.unsqueeze(-1)).squeeze(-1)
                     cur = torch.where(decided2, cur, new)
-                    passes += 2
+                    conf = torch.where(decided2, conf, new_conf)
+                    passes += 1
             codes.append(cur)
         idx = torch.cat(codes, dim=1)
         self.last_passes = passes + (1 if l0 is None else 0)
