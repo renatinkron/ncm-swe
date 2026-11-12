@@ -21,3 +21,5 @@
 {"timestamp":"2026-11-12T22:21:30Z","demand":"check se treino v5-ext terminou e colher evals finais","files_touched":[],"verdict":"pass"}
 {"timestamp":"2026-11-12T22:33:08Z","demand":"monitoramento continuo v5-ext: colher @13499+","files_touched":[],"verdict":"pass"}
 {"timestamp":"2026-11-12T22:35:04Z","demand":"monitoramento continuo v5-ext: colher @13999","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-12T23:48:45Z","demand":"medir o que ocupa RAM da maquina durante o treino v5-ext","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-12T23:51:51Z","demand":"avaliar pausa total para teste do 80B e retomada sem prejuizo","files_touched":[],"verdict":"pass"}

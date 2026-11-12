@@ -1,18 +1,19 @@
 {
   "branch_strategy": {
-    "mode": "direct",
     "branch": null,
-    "decision": "current_branch",
     "confirmation_status": "confirmed",
-    "gate_passed": true
+    "decision": "current_branch",
+    "gate_passed": true,
+    "mode": "direct",
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-033",
   "demand": "avaliar se o treinamento pode migrar para o modelo testado no colibri (Qwen3-Coder-Next 80B / 30B)",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -27,18 +28,18 @@
     },
     {
       "actor": "devin",
-      "iteration": 1,
-      "phase": "feasibility",
-      "non_conformities": 0,
-      "summary": "modelos colibri nao treinaveis localmente (GGUF inferencia, 60-160GB pesos vs 30GB RAM); alternativa viavel = teacher corpus para braco NCM-code; decisao A vs D delegada ao usuario; v5-ext intocado",
       "evidence": [
         ".agentic/research/ncm-over-llm-colibri.md"
       ],
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "feasibility",
+      "summary": "modelos colibri nao treinaveis localmente (GGUF inferencia, 60-160GB pesos vs 30GB RAM); alternativa viavel = teacher corpus para braco NCM-code; decisao A vs D delegada ao usuario; v5-ext intocado",
       "timestamp": "2026-11-12T23:44:15Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-033",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -48,6 +49,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-033",
+  "summary": "Modelos colibri nao treinaveis (GGUF/60-160GB vs 30GB); caminho viavel = teacher corpus -\u003e braco NCM-code; decisao A vs D pendente do usuario; v5-ext intocado.",
   "target_environment": "dev",
   "tasks": [
     {
@@ -57,6 +59,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "Modelos colibri nao treinaveis (GGUF/60-160GB vs 30GB); caminho viavel = teacher corpus -> braco NCM-code; decisao A vs D pendente do usuario; v5-ext intocado."
+  ]
 }
