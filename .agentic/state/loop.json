@@ -3,22 +3,20 @@
   "started_at": "2026-11-12T14:09:11Z",
   "classification": "complex",
   "run_id": "RUN-028",
-  "queue": [
-    "history",
-    "blind_review",
-    "pentest",
-    "issue_close",
-    "close"
-  ],
-  "emitted": "test",
+  "queue": [],
+  "emitted": "close",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 2,
-    "failures": 1
+    "clean_streak": 3,
+    "failures": 2
   },
-  "baselines": {},
-  "skips": {},
+  "baselines": {
+    "history_len": 1
+  },
+  "skips": {
+    "pentest": "refatoracao numerica pura do path de decode (atenção block-diagonal): sem auth, crypto, input externo novo, IPC, filesystem ou superficie de rede; semantica provada bit-identica"
+  },
   "remediations": 0,
   "step_log": [
     {
@@ -93,6 +91,63 @@
       "step": "test",
       "result": "emitted",
       "at": "2026-11-12T14:20:37Z"
+    },
+    {
+      "step": "test",
+      "result": "passed",
+      "at": "2026-11-12T14:20:48Z"
+    },
+    {
+      "step": "history",
+      "result": "emitted",
+      "at": "2026-11-12T14:20:48Z"
+    },
+    {
+      "step": "history",
+      "result": "failed",
+      "detail": "no new history entry in RUN-028.json",
+      "at": "2026-11-12T14:20:52Z"
+    },
+    {
+      "step": "history",
+      "result": "passed",
+      "at": "2026-11-12T14:20:56Z"
+    },
+    {
+      "step": "blind_review",
+      "result": "emitted",
+      "at": "2026-11-12T14:20:56Z"
+    },
+    {
+      "step": "blind_review",
+      "result": "passed",
+      "at": "2026-11-12T14:21:32Z"
+    },
+    {
+      "step": "pentest",
+      "result": "emitted",
+      "at": "2026-11-12T14:21:32Z"
+    },
+    {
+      "step": "pentest",
+      "result": "skipped",
+      "detail": "refatoracao numerica pura do path de decode (atenção block-diagonal): sem auth, crypto, input externo novo, IPC, filesystem ou superficie de rede; semantica provada bit-identica",
+      "at": "2026-11-12T14:21:37Z"
+    },
+    {
+      "step": "issue_close",
+      "result": "emitted",
+      "at": "2026-11-12T14:21:37Z"
+    },
+    {
+      "step": "issue_close",
+      "result": "passed",
+      "at": "2026-11-12T14:21:42Z"
+    },
+    {
+      "step": "close",
+      "result": "emitted",
+      "at": "2026-11-12T14:21:42Z"
     }
   ]
 }

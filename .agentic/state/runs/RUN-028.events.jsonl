@@ -5,3 +5,9 @@
 {"t":"note","ts":"2026-11-12T14:15:00Z","d":{"detail":".agentic/state/runs/RUN-028.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"","step_failed":"task_plan"}}
 {"t":"task_plan","ts":"2026-11-12T14:15:12Z"}
 {"t":"execute","ts":"2026-11-12T14:20:37Z"}
+{"t":"test","ts":"2026-11-12T14:20:48Z","d":{"nc":0}}
+{"t":"note","ts":"2026-11-12T14:20:52Z","d":{"detail":"no new history entry in RUN-028.json","step_failed":"history"}}
+{"t":"history","ts":"2026-11-12T14:20:56Z"}
+{"t":"blind_review","ts":"2026-11-12T14:21:32Z"}
+{"t":"skip","ts":"2026-11-12T14:21:37Z","d":{"reason":"refatoracao numerica pura do path de decode (atenção block-diagonal): sem auth, crypto, input externo novo, IPC, filesystem ou superficie de rede; semantica provada bit-identica","step":"pentest"}}
+{"t":"issue_close","ts":"2026-11-12T14:21:42Z"}
