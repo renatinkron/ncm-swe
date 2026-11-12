@@ -40,7 +40,7 @@
     }
   ],
   "iteration": 1,
-  "overall_status": "executed",
+  "overall_status": "completed",
   "plan_id": "PLAN-026",
   "quality_gates": {
     "branch_strategy_decision": "passed",
@@ -50,6 +50,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-026",
+  "summary": "v5 intra masked conditioning (boundary/random/mix) + mask-predict refinement implementados e lançados (warm v3@9499, 2500 steps); blind review 1 major corrigido; veredito pendente nos checkpoints.",
   "target_environment": "dev",
   "tasks": [
     {

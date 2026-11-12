@@ -1,18 +1,18 @@
 {
-  "demand": "v5-intra-masked-conditioning-e-mask-predict-refinement",
-  "started_at": "2026-11-11T14:40:33Z",
-  "classification": "standard",
-  "run_id": "RUN-026",
+  "demand": "ciclo-2h-monitoramento-v5-colher-pontos-novos-da-serie-pesquisa-direcionada-decidir-manter-ou-ajustar",
+  "started_at": "2026-11-12T12:48:02Z",
+  "classification": "fast",
+  "run_id": "",
   "queue": [],
-  "emitted": "close",
+  "emitted": "execute_fast",
   "done": false,
   "trust": {
-    "level": "terse",
-    "clean_streak": 6,
-    "failures": 1
+    "level": "guided",
+    "clean_streak": 0,
+    "failures": 0
   },
   "baselines": {
-    "history_len": 1
+    "lines:.agentic/state/fast_log.jsonl": 17
   },
   "skips": {},
   "remediations": 0,
@@ -20,95 +20,19 @@
     {
       "step": "classify",
       "result": "emitted",
-      "at": "2026-11-11T14:40:33Z"
+      "at": "2026-11-12T12:48:02Z"
     },
     {
       "step": "classify",
       "result": "passed",
-      "detail": "standard",
-      "at": "2026-11-11T14:40:35Z"
+      "detail": "fast",
+      "at": "2026-11-12T12:48:04Z"
     },
     {
       "step": "loop",
       "result": "emitted",
-      "detail": "standard path, run RUN-026",
-      "at": "2026-11-11T14:40:35Z"
-    },
-    {
-      "step": "issue_create",
-      "result": "passed",
-      "at": "2026-11-11T14:40:41Z"
-    },
-    {
-      "step": "task_plan",
-      "result": "emitted",
-      "at": "2026-11-11T14:40:41Z"
-    },
-    {
-      "step": "task_plan",
-      "result": "failed",
-      "detail": ".agentic/state/runs/RUN-026.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"; run_state field branch_strategy.decision is \"work-on-current\", want one of [current_branch new_branch]",
-      "at": "2026-11-11T14:42:05Z"
-    },
-    {
-      "step": "task_plan",
-      "result": "passed",
-      "at": "2026-11-11T14:42:13Z"
-    },
-    {
-      "step": "execute",
-      "result": "emitted",
-      "at": "2026-11-11T14:42:13Z"
-    },
-    {
-      "step": "execute",
-      "result": "passed",
-      "at": "2026-11-11T14:51:26Z"
-    },
-    {
-      "step": "test",
-      "result": "emitted",
-      "at": "2026-11-11T14:51:26Z"
-    },
-    {
-      "step": "test",
-      "result": "passed",
-      "at": "2026-11-11T14:51:39Z"
-    },
-    {
-      "step": "history",
-      "result": "emitted",
-      "at": "2026-11-11T14:51:39Z"
-    },
-    {
-      "step": "history",
-      "result": "passed",
-      "at": "2026-11-11T14:52:01Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "emitted",
-      "at": "2026-11-11T14:52:01Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "passed",
-      "at": "2026-11-12T11:18:18Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "emitted",
-      "at": "2026-11-12T11:18:18Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "passed",
-      "at": "2026-11-12T11:18:21Z"
-    },
-    {
-      "step": "close",
-      "result": "emitted",
-      "at": "2026-11-12T11:18:21Z"
+      "detail": "fast path",
+      "at": "2026-11-12T12:48:04Z"
     }
   ]
 }

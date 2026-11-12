@@ -300,3 +300,33 @@ funciona: passes=34, dup 0,050, gap +0,55 (n=4 — indício apenas).
 
 Comparação pré-registrada: v5@9998 (chunked, refine=0) vs v3@9499 (paralelo)
 — e v5@9998 com refine_iters=1 para isolar o efeito do refinement.
+
+## Ciclo v5-1 — série completa + refinement funciona (12 nov)
+
+Treino v5 terminou (2500 steps, ~12,4h). Série chunked intra (refine=0):
+
+| ckpt | dup | dist | self | gt | gap | passes |
+|---|---|---|---|---|---|---|
+| @9998 | 0.052 | 0.69 | 5.36 | 4.26 | +1.101 | 24 |
+| @10498 | 0.055 | 0.59 | 5.37 | 4.30 | +1.079 | 24 |
+| @10998 | 0.066 | 0.68 | 5.35 | 4.25 | +1.104 | 24 |
+| @11498 | 0.044 | 0.70 | 5.26 | 4.28 | +0.980 | 24 |
+| final | 0.053 | 0.67 | 5.13 | 4.22 | **+0.909** | 24 |
+
+vs v3@9499 (paralelo): dup 0.058, gap +1.09, gt 4.22, passes 11.
+
+Leitura:
+- gap −0,18 nats e AINDA descendo no final (2 últimos pontos romperam o
+  platô ~1.10 que o v3 segurou por 4.500 steps) — intra-level conditioning
+  ajuda o modelo a tolerar os próprios códigos.
+- dup_rate não melhora (~0,05 nos dois braços) — o stutter residual NÃO é
+  primariamente independência intra-nível; é algo mais profundo (l0/arco).
+- Custo real: 24 vs 11 passes (2,2×).
+
+**Refinement (final, frac=0.3, from=l7, iters=1):**
+dup 0.0453, self 4.858, gt 4.204, **gap +0.655**, passes 29.
+→ −0,25 nats sobre o chunked puro em 1 rodada, −40% vs v3. O sinal de
+confiança (prob no tempo de predição) está funcionando — o major do blind
+review estava certo em exigir a correção.
+
+Em voo: sweep ref2 (iters=2) e ref1-f0.5-from5 — curva dose-resposta.
