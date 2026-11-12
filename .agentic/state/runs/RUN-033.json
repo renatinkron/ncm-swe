@@ -24,6 +24,17 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-11-12T23:43:30Z"
+    },
+    {
+      "actor": "devin",
+      "iteration": 1,
+      "phase": "feasibility",
+      "non_conformities": 0,
+      "summary": "modelos colibri nao treinaveis localmente (GGUF inferencia, 60-160GB pesos vs 30GB RAM); alternativa viavel = teacher corpus para braco NCM-code; decisao A vs D delegada ao usuario; v5-ext intocado",
+      "evidence": [
+        ".agentic/research/ncm-over-llm-colibri.md"
+      ],
+      "timestamp": "2026-11-12T23:44:15Z"
     }
   ],
   "iteration": 1,
@@ -46,5 +57,6 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ]
+  ],
+  "summary": "Modelos colibri nao treinaveis (GGUF/60-160GB vs 30GB); caminho viavel = teacher corpus -> braco NCM-code; decisao A vs D pendente do usuario; v5-ext intocado."
 }
