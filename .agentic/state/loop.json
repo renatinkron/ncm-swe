@@ -4,18 +4,17 @@
   "classification": "complex",
   "run_id": "RUN-028",
   "queue": [
-    "test",
     "history",
     "blind_review",
     "pentest",
     "issue_close",
     "close"
   ],
-  "emitted": "execute",
+  "emitted": "test",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 1,
+    "clean_streak": 2,
     "failures": 1
   },
   "baselines": {},
@@ -84,6 +83,16 @@
       "step": "execute",
       "result": "emitted",
       "at": "2026-11-12T14:15:12Z"
+    },
+    {
+      "step": "execute",
+      "result": "passed",
+      "at": "2026-11-12T14:20:37Z"
+    },
+    {
+      "step": "test",
+      "result": "emitted",
+      "at": "2026-11-12T14:20:37Z"
     }
   ]
 }
