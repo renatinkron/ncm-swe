@@ -1,0 +1,3 @@
+{"t":"begin","ts":"2026-11-12T15:32:25Z","d":{"demand":"continuar treino v5 por +2500 steps com watcher e refazer evals-chave com n=32 e multiplas seeds para fechar limitacao de barras de erro","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-12T15:32:31Z"}
+{"t":"task_plan","ts":"2026-11-12T15:32:40Z"}

@@ -1,0 +1,50 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "name": null,
+    "reason": "continuacao de treino+evals, mesmo repo",
+    "confirmation_status": "confirmed",
+    "gate_passed": true
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-030",
+  "demand": "continuar treino v5 por +2500 steps com watcher e refazer evals-chave com n=32 e multiplas seeds para fechar limitacao de barras de erro",
+  "github_issue": {
+    "number": null,
+    "url": null,
+    "status": "unavailable"
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-12T15:32:25Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "planning",
+  "plan_id": "PLAN-030",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-030",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

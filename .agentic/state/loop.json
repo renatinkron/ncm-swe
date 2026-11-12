@@ -1,108 +1,62 @@
 {
-  "demand": "continuar otimizacao do decode ncm pos chunk-local: avaliar torch.compile do trunk em decode, head windowing e headroom residual no gen_s",
-  "started_at": "2026-11-12T15:15:39Z",
+  "demand": "continuar treino v5 por +2500 steps com watcher e refazer evals-chave com n=32 e multiplas seeds para fechar limitacao de barras de erro",
+  "started_at": "2026-11-12T15:32:19Z",
   "classification": "standard",
-  "run_id": "RUN-029",
-  "queue": [],
-  "emitted": "close",
+  "run_id": "RUN-030",
+  "queue": [
+    "test",
+    "history",
+    "blind_review",
+    "issue_close",
+    "close"
+  ],
+  "emitted": "execute",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 7,
+    "clean_streak": 2,
     "failures": 0
   },
-  "baselines": {
-    "history_len": 1
-  },
+  "baselines": {},
   "skips": {},
   "remediations": 0,
   "step_log": [
     {
       "step": "classify",
       "result": "emitted",
-      "at": "2026-11-12T15:15:39Z"
+      "at": "2026-11-12T15:32:19Z"
     },
     {
       "step": "classify",
       "result": "passed",
       "detail": "standard",
-      "at": "2026-11-12T15:15:40Z"
+      "at": "2026-11-12T15:32:25Z"
     },
     {
       "step": "loop",
       "result": "emitted",
-      "detail": "standard path, run RUN-029",
-      "at": "2026-11-12T15:15:40Z"
+      "detail": "standard path, run RUN-030",
+      "at": "2026-11-12T15:32:25Z"
     },
     {
       "step": "issue_create",
       "result": "passed",
-      "at": "2026-11-12T15:15:42Z"
+      "at": "2026-11-12T15:32:31Z"
     },
     {
       "step": "task_plan",
       "result": "emitted",
-      "at": "2026-11-12T15:15:42Z"
+      "at": "2026-11-12T15:32:31Z"
     },
     {
       "step": "task_plan",
       "result": "passed",
-      "at": "2026-11-12T15:15:52Z"
+      "at": "2026-11-12T15:32:40Z"
     },
     {
       "step": "execute",
       "result": "emitted",
-      "at": "2026-11-12T15:15:52Z"
-    },
-    {
-      "step": "execute",
-      "result": "passed",
-      "at": "2026-11-12T15:20:06Z"
-    },
-    {
-      "step": "test",
-      "result": "emitted",
-      "at": "2026-11-12T15:20:06Z"
-    },
-    {
-      "step": "test",
-      "result": "passed",
-      "at": "2026-11-12T15:20:10Z"
-    },
-    {
-      "step": "history",
-      "result": "emitted",
-      "at": "2026-11-12T15:20:10Z"
-    },
-    {
-      "step": "history",
-      "result": "passed",
-      "at": "2026-11-12T15:20:14Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "emitted",
-      "at": "2026-11-12T15:20:14Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "passed",
-      "at": "2026-11-12T15:20:43Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "emitted",
-      "at": "2026-11-12T15:20:43Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "passed",
-      "at": "2026-11-12T15:20:46Z"
-    },
-    {
-      "step": "close",
-      "result": "emitted",
-      "at": "2026-11-12T15:20:46Z"
+      "at": "2026-11-12T15:32:40Z"
     }
   ]
 }

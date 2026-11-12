@@ -1,18 +1,19 @@
 {
   "branch_strategy": {
+    "confirmation_status": "confirmed",
     "decision": "current_branch",
+    "gate_passed": true,
     "name": null,
     "reason": "continuacao do decode optimization, mesmo repo",
-    "confirmation_status": "confirmed",
-    "gate_passed": true
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-029",
   "demand": "continuar otimizacao do decode ncm pos chunk-local: avaliar torch.compile do trunk em decode, head windowing e headroom residual no gen_s",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -27,20 +28,20 @@
     },
     {
       "actor": "devin",
-      "iteration": 1,
-      "phase": "execute+test",
-      "non_conformities": 0,
-      "summary": "head windowing adotado (gen_s 13.51->8.29s, bit-identico; acumulado 11.06x); --compile-decode opt-in (quente 7.4s ~12.4x, warmup ~11s so paga multi-geracao); headroom residual ~4x em eficiencia de kernel, int8 fora de escopo",
       "evidence": [
         "artifacts/prof/eval_chunklocal_windowed.json",
         "artifacts/prof/eval_chunklocal_compiled.json",
         ".agentic/state/runs/RUN-029.execution_report.md"
       ],
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "execute+test",
+      "summary": "head windowing adotado (gen_s 13.51-\u003e8.29s, bit-identico; acumulado 11.06x); --compile-decode opt-in (quente 7.4s ~12.4x, warmup ~11s so paga multi-geracao); headroom residual ~4x em eficiencia de kernel, int8 fora de escopo",
       "timestamp": "2026-11-12T15:20:30Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-029",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -50,6 +51,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-029",
+  "summary": "head windowing adotado: gen_s 13.51-\u003e8.29s (acumulado 11.06x, bit-identico); --compile-decode opt-in quente 7.4s (~12.4x); nc=0; docs sincronizados.",
   "target_environment": "dev",
   "tasks": [
     {
@@ -59,6 +61,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "head windowing adotado: gen_s 13.51->8.29s (acumulado 11.06x, bit-identico); --compile-decode opt-in quente 7.4s (~12.4x); nc=0; docs sincronizados."
+  ]
 }
