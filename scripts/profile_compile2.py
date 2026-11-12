@@ -61,31 +61,35 @@ try:
 except Exception as e:
     res["block_compile_error"] = repr(e)[:200]
 
-# 2) trunk-only wrapper
+# 2) trunk-only wrapper — default vs max-autotune
 def trunk(h):
     for b in model.blocks:
         h, _ = b(h, mask, cos, sin)
     return h
-try:
-    ctrunk = torch.compile(trunk)
-    for _ in range(3):
-        ctrunk(x.detach().requires_grad_(True)).sum().backward()
-    ts = []
-    for _ in range(5):
-        xin = x.detach().requires_grad_(True)
-        t = time.perf_counter()
-        ctrunk(xin).sum().backward()
-        ts.append(time.perf_counter() - t)
-    res["trunk_compiled_ms"] = round(sorted(ts)[2] * 1000, 1)
-    ts = []
-    for _ in range(5):
-        xin = x.detach().requires_grad_(True)
-        t = time.perf_counter()
-        trunk(xin).sum().backward()
-        ts.append(time.perf_counter() - t)
-    res["trunk_eager_ms"] = round(sorted(ts)[2] * 1000, 1)
-except Exception as e:
-    res["trunk_compile_error"] = repr(e)[:200]
+for mode in ["default", "max-autotune"]:
+    try:
+        ctrunk = torch.compile(
+            trunk, mode=None if mode == "default" else mode)
+        t0 = time.time()
+        for _ in range(3):
+            ctrunk(x.detach().requires_grad_(True)).sum().backward()
+        res[f"trunk_{mode}_warmup_s"] = round(time.time() - t0, 1)
+        ts = []
+        for _ in range(5):
+            xin = x.detach().requires_grad_(True)
+            t = time.perf_counter()
+            ctrunk(xin).sum().backward()
+            ts.append(time.perf_counter() - t)
+        res[f"trunk_{mode}_ms"] = round(sorted(ts)[2] * 1000, 1)
+    except Exception as e:
+        res[f"trunk_{mode}_error"] = repr(e)[:200]
+ts = []
+for _ in range(5):
+    xin = x.detach().requires_grad_(True)
+    t = time.perf_counter()
+    trunk(xin).sum().backward()
+    ts.append(time.perf_counter() - t)
+res["trunk_eager_ms"] = round(sorted(ts)[2] * 1000, 1)
 
 json.dump(res, open("/repo/artifacts/prof/compile2.json", "w"), indent=2)
 print(json.dumps(res, indent=1))

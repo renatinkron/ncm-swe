@@ -4,6 +4,7 @@
   "classification": "complex",
   "run_id": "RUN-027",
   "queue": [
+    "execute",
     "test",
     "history",
     "blind_review",
@@ -11,16 +12,16 @@
     "issue_close",
     "close"
   ],
-  "emitted": "execute",
+  "emitted": "remediate",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 4,
+    "clean_streak": 6,
     "failures": 0
   },
   "baselines": {},
   "skips": {},
-  "remediations": 0,
+  "remediations": 1,
   "step_log": [
     {
       "step": "classify",
@@ -78,6 +79,32 @@
       "step": "execute",
       "result": "emitted",
       "at": "2026-11-12T13:29:45Z"
+    },
+    {
+      "step": "execute",
+      "result": "passed",
+      "at": "2026-11-12T13:42:25Z"
+    },
+    {
+      "step": "test",
+      "result": "emitted",
+      "at": "2026-11-12T13:42:25Z"
+    },
+    {
+      "step": "test",
+      "result": "passed",
+      "at": "2026-11-12T13:42:44Z"
+    },
+    {
+      "step": "remediate",
+      "result": "emitted",
+      "detail": "non_conformities=1, loop 1",
+      "at": "2026-11-12T13:42:44Z"
+    },
+    {
+      "step": "remediate",
+      "result": "emitted",
+      "at": "2026-11-12T13:42:44Z"
     }
   ]
 }
