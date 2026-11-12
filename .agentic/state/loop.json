@@ -4,17 +4,16 @@
   "classification": "standard",
   "run_id": "RUN-029",
   "queue": [
-    "test",
     "history",
     "blind_review",
     "issue_close",
     "close"
   ],
-  "emitted": "execute",
+  "emitted": "test",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 2,
+    "clean_streak": 3,
     "failures": 0
   },
   "baselines": {},
@@ -57,6 +56,16 @@
       "step": "execute",
       "result": "emitted",
       "at": "2026-11-12T15:15:52Z"
+    },
+    {
+      "step": "execute",
+      "result": "passed",
+      "at": "2026-11-12T15:20:06Z"
+    },
+    {
+      "step": "test",
+      "result": "emitted",
+      "at": "2026-11-12T15:20:06Z"
     }
   ]
 }
