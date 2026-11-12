@@ -273,12 +273,21 @@
     },
     {
       "id": "RUN-031",
+      "status": "completed",
+      "domain": "mixed",
+      "environment": "dev",
+      "summary": "Monitoramento v5-ext ciclo 1: saudavel (~15.4s/step, ETA ~10.4h), watcher armado; run fica aberto como tracking — proximos ciclos reportam @12499+.",
+      "created_at": "2026-11-12T15:57:33Z",
+      "updated_at": "2026-11-12T15:57:33Z"
+    },
+    {
+      "id": "RUN-032",
       "status": "planning",
       "domain": "mixed",
       "environment": "dev",
-      "summary": "monitorar treino v5-ext ate o fim, avaliando checkpoints e registrando resultados no paper",
-      "created_at": "2026-11-12T15:57:33Z",
-      "updated_at": "2026-11-12T15:57:33Z"
+      "summary": "monitoramento continuo v5-ext: ciclos de health check e colheita de evals a cada boundary",
+      "created_at": "2026-11-12T16:54:13Z",
+      "updated_at": "2026-11-12T16:54:13Z"
     }
   ]
 }

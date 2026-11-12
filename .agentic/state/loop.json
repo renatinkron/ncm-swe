@@ -1,108 +1,62 @@
 {
-  "demand": "monitorar treino v5-ext ate o fim, avaliando checkpoints e registrando resultados no paper",
-  "started_at": "2026-11-12T15:57:31Z",
+  "demand": "monitoramento continuo v5-ext: ciclos de health check e colheita de evals a cada boundary",
+  "started_at": "2026-11-12T16:54:11Z",
   "classification": "standard",
-  "run_id": "RUN-031",
-  "queue": [],
-  "emitted": "close",
+  "run_id": "RUN-032",
+  "queue": [
+    "test",
+    "history",
+    "blind_review",
+    "issue_close",
+    "close"
+  ],
+  "emitted": "execute",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 7,
+    "clean_streak": 2,
     "failures": 0
   },
-  "baselines": {
-    "history_len": 1
-  },
+  "baselines": {},
   "skips": {},
   "remediations": 0,
   "step_log": [
     {
       "step": "classify",
       "result": "emitted",
-      "at": "2026-11-12T15:57:31Z"
+      "at": "2026-11-12T16:54:11Z"
     },
     {
       "step": "classify",
       "result": "passed",
       "detail": "standard",
-      "at": "2026-11-12T15:57:33Z"
+      "at": "2026-11-12T16:54:13Z"
     },
     {
       "step": "loop",
       "result": "emitted",
-      "detail": "standard path, run RUN-031",
-      "at": "2026-11-12T15:57:33Z"
+      "detail": "standard path, run RUN-032",
+      "at": "2026-11-12T16:54:13Z"
     },
     {
       "step": "issue_create",
       "result": "passed",
-      "at": "2026-11-12T15:57:36Z"
+      "at": "2026-11-12T16:54:16Z"
     },
     {
       "step": "task_plan",
       "result": "emitted",
-      "at": "2026-11-12T15:57:36Z"
+      "at": "2026-11-12T16:54:16Z"
     },
     {
       "step": "task_plan",
       "result": "passed",
-      "at": "2026-11-12T15:57:42Z"
+      "at": "2026-11-12T16:54:23Z"
     },
     {
       "step": "execute",
       "result": "emitted",
-      "at": "2026-11-12T15:57:42Z"
-    },
-    {
-      "step": "execute",
-      "result": "passed",
-      "at": "2026-11-12T15:57:56Z"
-    },
-    {
-      "step": "test",
-      "result": "emitted",
-      "at": "2026-11-12T15:57:56Z"
-    },
-    {
-      "step": "test",
-      "result": "passed",
-      "at": "2026-11-12T15:58:17Z"
-    },
-    {
-      "step": "history",
-      "result": "emitted",
-      "at": "2026-11-12T15:58:17Z"
-    },
-    {
-      "step": "history",
-      "result": "passed",
-      "at": "2026-11-12T15:58:21Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "emitted",
-      "at": "2026-11-12T15:58:21Z"
-    },
-    {
-      "step": "blind_review",
-      "result": "passed",
-      "at": "2026-11-12T15:58:26Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "emitted",
-      "at": "2026-11-12T15:58:26Z"
-    },
-    {
-      "step": "issue_close",
-      "result": "passed",
-      "at": "2026-11-12T15:58:29Z"
-    },
-    {
-      "step": "close",
-      "result": "emitted",
-      "at": "2026-11-12T15:58:29Z"
+      "at": "2026-11-12T16:54:23Z"
     }
   ]
 }

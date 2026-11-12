@@ -1,18 +1,19 @@
 {
   "branch_strategy": {
+    "confirmation_status": "confirmed",
     "decision": "current_branch",
+    "gate_passed": true,
     "name": null,
     "reason": "monitoramento, mesmo repo",
-    "confirmation_status": "confirmed",
-    "gate_passed": true
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-031",
   "demand": "monitorar treino v5-ext ate o fim, avaliando checkpoints e registrando resultados no paper",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -27,18 +28,18 @@
     },
     {
       "actor": "devin",
-      "iteration": 1,
-      "phase": "monitor-c1",
-      "non_conformities": 0,
-      "summary": "ciclo 1: step 12060/14500 ~14%, ~15.4s/step compile-trunk (melhor que 17s eager), ETA ~10.4h, watcher armado, primeiro boundary @12499 ~1.9h",
       "evidence": [
         "artifacts/gen_ncm_v5ext/metrics.jsonl"
       ],
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "monitor-c1",
+      "summary": "ciclo 1: step 12060/14500 ~14%, ~15.4s/step compile-trunk (melhor que 17s eager), ETA ~10.4h, watcher armado, primeiro boundary @12499 ~1.9h",
       "timestamp": "2026-11-12T15:58:30Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-031",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -48,6 +49,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-031",
+  "summary": "Monitoramento v5-ext ciclo 1: saudavel (~15.4s/step, ETA ~10.4h), watcher armado; run fica aberto como tracking — proximos ciclos reportam @12499+.",
   "target_environment": "dev",
   "tasks": [
     {
@@ -57,6 +59,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "Monitoramento v5-ext ciclo 1: saudavel (~15.4s/step, ETA ~10.4h), watcher armado; run fica aberto como tracking — proximos ciclos reportam @12499+."
+  ]
 }

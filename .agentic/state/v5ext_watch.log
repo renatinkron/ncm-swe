@@ -1,1 +1,202 @@
 [watch] start 2026-11-12T12:34:52-03:00
+ckpt recém-escrito (mtime 1794505762); aguardando estabilizar
+snapshot artifacts/v5ext_eval/ckpt_step12499.pt (metrics step ~12500, refine_iters=0)
+VQVAE, Total parameter count: 36.43M
+VQVAE, Non embedding parameter count: 33.24M
+{
+ "n": 8,
+ "temp": 1.0,
+ "topk": 0,
+ "top_p": 1.0,
+ "seed": 0,
+ "l0_mode": "unigram",
+ "freq": 0.0,
+ "mu": 0.0,
+ "adj": null,
+ "gen_s": 27.52,
+ "passes": 24,
+ "s_per_sample": 3.44,
+ "dup_rate": 0.036,
+ "distinct_ratio": 0.7529,
+ "ce_self_gen": {
+  "l0": 8.1574,
+  "l1": 7.8605,
+  "l2": 7.4782,
+  "l3": 6.7777,
+  "l4": 6.1053,
+  "l5": 4.9079,
+  "l6": 4.2463,
+  "l7": 3.1051,
+  "l8": 3.5236,
+  "l9": 3.4918,
+  "l10": 3.7126,
+  "l11": 1.2326,
+  "total": 5.0499
+ },
+ "ce_held_gt": {
+  "l0": 8.0148,
+  "l1": 7.2512,
+  "l2": 6.4199,
+  "l3": 6.0119,
+  "l4": 4.5516,
+  "l5": 4.1627,
+  "l6": 3.7679,
+  "l7": 1.5983,
+  "l8": 2.6308,
+  "l9": 2.9745,
+  "l10": 2.8886,
+  "l11": 0.5428,
+  "total": 4.2346
+ },
+ "l0_codes": [
+  [
+   2181
+  ],
+  [
+   222
+  ],
+  [
+   439
+  ],
+  [
+   2574
+  ],
+  [
+   1017
+  ],
+  [
+   488
+  ],
+  [
+   260
+  ],
+  [
+   1490
+  ]
+ ]
+}
+---  And you them them. She says, "No,,,, you have. You have your lesson. But you you want to be selfish. tell me. I'm I have to a a cake. You are no have. You can are you.. Why do do you want to do you you?" Mom is still very sad.
+Tom says, "'m'm sorry, Ben,.. I will be next next ".It's okay. You won b
+---  day, a little girl named Sue. Sue Sue went to a trip. and saw a big. He wanted to near the near his top. Sue put on the and and jumped from her home. When they played, Sue when she gray when more fell and fell the hill. Sue and Sue were so they and laughed. They both laughed and ran back to their d
+--- . They feel better so much."
+They run away and hugged each other. They also wave hear a big cake cake. You can take up up you hug again. Now, you have,. let me play with. on your table? I make a cake?"
+Lily and smiled. "I love you, Anna," said said. were a great game. I will help you."
+Anna saw got 
+---  things?" Ben and
+"But then you have to mind. We the mess. You can still now!"
+We have to get to some party. But But we have to the living right right adventure."
+Lily and said, "OKOK, let then just need
+. But you have have have to be, OK, but you only you have to be. And you have to be OK?"
+"Yes,, 
+---  off. Tim was proud of himself. He thanked his and and for helping him. They were very happy happy They had fun fun. The moral of the story not remind good and good
+!
+--- . a ball. Tim was so happy that she would always catch with golf with him.
+Tim and Sam were so impressed were friends. They forgot they about the ball, but it was was time go home. They said goodbye goodbye to the park with her mom.
+---  then on.
+---  Spot wanted to play and have fun day. day, he decided to climb the tree. The bird was very happy.
+As they played too was Lily saw the tree, but. ball did not want to play it it. Lily ran to best fast she. She kicked her ball push the ball, but it was not. She pulled, but it did not give up.
+Then, S
+== artifacts/v5ext_eval/ckpt_step12499.json ==
+{'dup_rate': 0.036, 'distinct_ratio': 0.7529, 's_per_sample': 3.44, 'passes': 24}
+self 5.0499 gt 4.2346
+[watch] avaliado ckpt ~12499 2026-11-12T14:52:26-03:00
+ckpt recém-escrito (mtime 1794513467); aguardando estabilizar
+snapshot artifacts/v5ext_eval/ckpt_step12999.pt (metrics step ~13000, refine_iters=0)
+VQVAE, Total parameter count: 36.43M
+VQVAE, Non embedding parameter count: 33.24M
+{
+ "n": 8,
+ "temp": 1.0,
+ "topk": 0,
+ "top_p": 1.0,
+ "seed": 0,
+ "l0_mode": "unigram",
+ "freq": 0.0,
+ "mu": 0.0,
+ "adj": null,
+ "gen_s": 23.67,
+ "passes": 24,
+ "s_per_sample": 2.958,
+ "dup_rate": 0.0555,
+ "distinct_ratio": 0.6883,
+ "ce_self_gen": {
+  "l0": 8.112,
+  "l1": 7.9087,
+  "l2": 7.6308,
+  "l3": 6.917,
+  "l4": 6.1006,
+  "l5": 4.8104,
+  "l6": 4.3977,
+  "l7": 3.0958,
+  "l8": 3.4312,
+  "l9": 3.4882,
+  "l10": 3.6263,
+  "l11": 1.3353,
+  "total": 5.0712
+ },
+ "ce_held_gt": {
+  "l0": 7.9364,
+  "l1": 7.2872,
+  "l2": 6.497,
+  "l3": 6.0735,
+  "l4": 4.8093,
+  "l5": 4.4977,
+  "l6": 3.9848,
+  "l7": 1.6328,
+  "l8": 2.7623,
+  "l9": 2.9631,
+  "l10": 2.8505,
+  "l11": 0.5439,
+  "total": 4.3199
+ },
+ "l0_codes": [
+  [
+   2181
+  ],
+  [
+   222
+  ],
+  [
+   439
+  ],
+  [
+   2574
+  ],
+  [
+   1017
+  ],
+  [
+   488
+  ],
+  [
+   260
+  ],
+  [
+   1490
+  ]
+ ]
+}
+---  them. She smiles. She said, "Thank you, thanks for Sara. You have to be careful. But you have to store and and back again and, but I have to to a a friend."
+Mom, no. I'm sorry. Lila said. "Why do you doing you you okay?" Mom was Inside their tears.
+"Let's's," Lily said. "It's okay fun." said.
+"'s o
+---  with his friends friends. One day, Tom saw a little girl who had a small meal. He wanted to to help him near his high high Lily showed showed his his mom said, "Mom, Can I help you any milk please?" " ",, can help you."
+TomTom was sad, but they dive into the block. They got the the cheese. They wer
+---  the was very cold and did not feel. The walk because they met, a friendly friendly scary dog.
+"Hi, I am," the bird said. "Hi, little bird. I'm here to play with you it if you.. Do you want to other seem you?"
+The Ben how the he around nodded head paws and smiled and said, "Of course, Ben bird. You 
+---  one rocks and helmets. They were worried. They did not see the the big box. they can open the to do, "Let's go to the park step and go to the ball. They hope we can buy warm and and we should have a boxes or a nail
+ they toys. But you have to tell this things. Maybe sometimes we can have some some 
+---  broke the rocks,, pulled the and two friends. They were were scared and ran away to each other. The other were and laughed. They were always the and became best friends again!
+The end end.
+---  ball ball. The ball ball blue went away. Tim was very happy.
+Tim smiled smiled and asked Ben to Lily were not friends. They forgot about about,, but it important to Tim was his home. They goodbye goodbye and as a home. They went back to the shore the cereal again together hoped they knew sometimes 
+--- . She saw Tom without a picnic trip with her. He felt nervous at Mia! She ran towards her and saw Tom Tom do. She said, "No. I made
+, but Mia didn't mean. He and said, "Wow, ok. should not play with with him. I like you and laugh!"
+Mia and Mia laughed and Mia was thing. They knew they not to like so
+---  was very happy to have a new friend. She saw a tree in a green forest. The tree went very fast. Tim felt very happy and brave. She was warm and happy. Lily wanted to play play together.
+One day, Tim had an idea. He opened her door and found a big was in the safe place. It was dark and. and did see 
+== artifacts/v5ext_eval/ckpt_step12999.json ==
+{'dup_rate': 0.0555, 'distinct_ratio': 0.6883, 's_per_sample': 2.958, 'passes': 24}
+self 5.0712 gt 4.3199
+[watch] avaliado ckpt ~12999 2026-11-12T17:00:41-03:00
