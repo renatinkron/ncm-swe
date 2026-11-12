@@ -2,15 +2,16 @@
   "branch_strategy": {
     "decision": "current_branch",
     "name": null,
-    "reason": "otimização incremental no repo de trabalho"
+    "reason": "otimização incremental no repo de trabalho",
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-027",
   "demand": "pesquisa profunda de performance do treino-inferencia ncm: avaliar reescrita em c-rust, otimizacao de calculos, substituicao de implementacoes obsoletas, analisar codigo de ferramentas e extrair maxima performance",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -22,10 +23,29 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-11-12T13:04:12Z"
+    },
+    {
+      "at": "2026-11-12T13:49:36.039168+00:00",
+      "executed": [
+        "T1 --compile-trunk opt-in + validação 20 steps",
+        "T2 verificação batching (já existente)",
+        "R1 max-autotune (neutro, déficit aceito)"
+      ],
+      "iteration": 1,
+      "key_numbers": {
+        "e2e_gain": "~5%",
+        "gemm_gflops": 360,
+        "peak_util": "~84%",
+        "step_compiled_s": 13.9,
+        "step_eager_s": 14.6,
+        "trunk_gain": "-14%"
+      },
+      "notes": "treino compute-bound MKL; C/Rust não paga no treino; prefix-cache decode aprovado p/ braço futuro",
+      "test_result": "nc=1 -\u003e nc=0 (aceite documentado)"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-027",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -35,6 +55,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-027",
+  "summary": "profiling do treino: FLOP-bound (67% MKL @84% pico Zen2); C/Rust sem headroom; flag --compile-trunk -5% e2e; eval já batelado; prefix-cache decode aprovado p/ braço futuro; paper atualizado (limitação xi)",
   "target_environment": "dev",
   "tasks": [
     {

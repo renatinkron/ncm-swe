@@ -1,10 +1,9 @@
 {
-  "demand": "pesquisa profunda de performance do treino-inferencia ncm: avaliar reescrita em c-rust, otimizacao de calculos, substituicao de implementacoes obsoletas, analisar codigo de ferramentas e extrair maxima performance",
-  "started_at": "2026-11-12T13:04:04Z",
+  "demand": "pesquisa profunda do decode ncm: verificar se chunk-local decode (block-diagonal attention) elimina recompute do prefixo, cache de kv, int8, e extrair maxima performance de inferencia",
+  "started_at": "2026-11-12T14:09:11Z",
   "classification": "complex",
-  "run_id": "RUN-027",
+  "run_id": "RUN-028",
   "queue": [
-    "execute",
     "test",
     "history",
     "blind_review",
@@ -12,99 +11,79 @@
     "issue_close",
     "close"
   ],
-  "emitted": "remediate",
+  "emitted": "execute",
   "done": false,
   "trust": {
     "level": "terse",
-    "clean_streak": 6,
-    "failures": 0
+    "clean_streak": 1,
+    "failures": 1
   },
   "baselines": {},
   "skips": {},
-  "remediations": 1,
+  "remediations": 0,
   "step_log": [
     {
       "step": "classify",
       "result": "emitted",
-      "at": "2026-11-12T13:04:04Z"
+      "at": "2026-11-12T14:09:11Z"
     },
     {
       "step": "classify",
       "result": "passed",
       "detail": "complex",
-      "at": "2026-11-12T13:04:12Z"
+      "at": "2026-11-12T14:09:15Z"
     },
     {
       "step": "loop",
       "result": "emitted",
-      "detail": "complex path, run RUN-027",
-      "at": "2026-11-12T13:04:12Z"
+      "detail": "complex path, run RUN-028",
+      "at": "2026-11-12T14:09:15Z"
     },
     {
       "step": "issue_create",
       "result": "passed",
-      "at": "2026-11-12T13:04:14Z"
+      "at": "2026-11-12T14:09:18Z"
     },
     {
       "step": "research",
       "result": "emitted",
-      "at": "2026-11-12T13:04:14Z"
+      "at": "2026-11-12T14:09:18Z"
     },
     {
       "step": "research",
       "result": "passed",
-      "at": "2026-11-12T13:29:06Z"
+      "at": "2026-11-12T14:14:24Z"
     },
     {
       "step": "arch_eval",
       "result": "emitted",
-      "at": "2026-11-12T13:29:06Z"
+      "at": "2026-11-12T14:14:24Z"
     },
     {
       "step": "arch_eval",
       "result": "passed",
-      "at": "2026-11-12T13:29:30Z"
+      "at": "2026-11-12T14:14:49Z"
     },
     {
       "step": "task_plan",
       "result": "emitted",
-      "at": "2026-11-12T13:29:30Z"
+      "at": "2026-11-12T14:14:49Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "failed",
+      "detail": ".agentic/state/runs/RUN-028.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"",
+      "at": "2026-11-12T14:15:00Z"
     },
     {
       "step": "task_plan",
       "result": "passed",
-      "at": "2026-11-12T13:29:45Z"
+      "at": "2026-11-12T14:15:12Z"
     },
     {
       "step": "execute",
       "result": "emitted",
-      "at": "2026-11-12T13:29:45Z"
-    },
-    {
-      "step": "execute",
-      "result": "passed",
-      "at": "2026-11-12T13:42:25Z"
-    },
-    {
-      "step": "test",
-      "result": "emitted",
-      "at": "2026-11-12T13:42:25Z"
-    },
-    {
-      "step": "test",
-      "result": "passed",
-      "at": "2026-11-12T13:42:44Z"
-    },
-    {
-      "step": "remediate",
-      "result": "emitted",
-      "detail": "non_conformities=1, loop 1",
-      "at": "2026-11-12T13:42:44Z"
-    },
-    {
-      "step": "remediate",
-      "result": "emitted",
-      "at": "2026-11-12T13:42:44Z"
+      "at": "2026-11-12T14:15:12Z"
     }
   ]
 }

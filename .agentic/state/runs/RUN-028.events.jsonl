@@ -1,0 +1,6 @@
+{"t":"begin","ts":"2026-11-12T14:09:15Z","d":{"demand":"pesquisa profunda do decode ncm: verificar se chunk-local decode (block-diagonal attention) elimina recompute do prefixo, cache de kv, int8, e extrair maxima performance de inferencia","level":"complex"}}
+{"t":"issue_create","ts":"2026-11-12T14:09:18Z"}
+{"t":"research","ts":"2026-11-12T14:14:24Z"}
+{"t":"arch_eval","ts":"2026-11-12T14:14:49Z"}
+{"t":"note","ts":"2026-11-12T14:15:00Z","d":{"detail":".agentic/state/runs/RUN-028.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-12T14:15:12Z"}

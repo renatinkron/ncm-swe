@@ -94,6 +94,12 @@ class LevelGenerator(nn.Module):
         self.register_buffer("attn_mask", m.reshape(1, 1, T + 1, T + 1),
                              persistent=False)
         self.register_buffer("lvl_ids", lvl_ids, persistent=False)
+        # global seq offset of each predicted level's chunk ([q0] + chunks)
+        self._gofs = [1] * len(self.levels)
+        acc = 1
+        for i in range(1, len(self.levels)):
+            self._gofs[i] = acc
+            acc += self.levels[i]
         self.apply(self._init_weights)
         nn.init.normal_(self.q0, std=0.02)
         self.vqvae = vqvae  # frozen tokenizer — registered post-init on purpose
@@ -341,6 +347,57 @@ class LevelGenerator(nn.Module):
                         mode="area").transpose(-1, -2))
         return chunks  # chunks[k] predicts level k+1
 
+    def _level_contrib(self, codes_j, j):
+        """z_hat contribution of level-j codes — mirrors
+        _chunks_from_codes (emb + up_to_full + quant_resi)."""
+        vq = self.vqvae.vq
+        z_q = vq.embeddings[j](codes_j)
+        if j != len(self.levels) - 1:
+            z_q = vq._up_to_full(z_q, j, self.levels[-1])
+        return vq._apply_quant_resi(z_q, j)
+
+    def _interp_chunk(self, z_hat, L):
+        """Chunk input = interp of accumulated z_hat to L positions."""
+        vq = self.vqvae.vq
+        if hasattr(vq, "_interp"):
+            return vq._interp(z_hat, L)
+        return F.interpolate(z_hat.transpose(-1, -2), size=(L,),
+                             mode="area").transpose(-1, -2)
+
+    def _forward_chunk(self, base_chunk, k_next, cur=None, decided=None):
+        """Trunk over [q0 + chunk predicting level k_next] ONLY.
+
+        Block-diagonal attention never lets code chunks see each other
+        (cross-level conditioning rides inside chunk input embeddings),
+        so earlier chunks are dead weight in decode — the official
+        upstream generate() exploits the same fact. Pos/level/RoPE are
+        indexed at GLOBAL sequence positions (RoPE is absolute; the
+        q0↔chunk distance must match training layout)."""
+        B = base_chunk.shape[0]
+        ch = base_chunk
+        if self.intra and cur is not None:
+            ce = self.vqvae.vq.embeddings[k_next](cur)
+            ch = ch + torch.where(
+                decided.unsqueeze(-1), ce,
+                self.mask_emb[k_next].view(1, 1, -1))
+        L = ch.shape[1]
+        gofs = self._gofs[k_next]
+        h0 = self.q0.expand(B, -1, -1) + self.pos.weight[0] \
+            + self.lvl.weight[0]
+        hc = self.proj_in(ch) + self.pos.weight[gofs:gofs + L] \
+            + self.lvl.weight[k_next]
+        h = torch.cat([h0, hc], dim=1)
+        m = torch.zeros(1, 1, 1 + L, 1 + L, device=h.device)
+        m[0, 0, 0, 1:] = float("-inf")
+        pos_ids = torch.cat(
+            [torch.zeros(1, dtype=torch.long, device=h.device),
+             torch.arange(gofs, gofs + L, device=h.device)])
+        cos = self.rope_cos[pos_ids]
+        sin = self.rope_sin[pos_ids]
+        for blk in self.blocks:
+            h, _ = blk(h, m, cos, sin)
+        return self.ln_f(h)
+
     def _forward_partial(self, codes_by_level, cur=None, decided=None):
         """Run the stack over [q0] + chunks predicting levels 1..len(codes).
 
@@ -421,55 +478,67 @@ class LevelGenerator(nn.Module):
             h = self.ln_f(h)
             l0_logits = self._head_logits(h, 0).squeeze(1)
             codes.append(self._sample(l0_logits, temperature, top_k, top_p))
-        # levels 1..K-1
+        # levels 1..K-1 — chunk-local decode: each pass runs the trunk
+        # over [q0 + current chunk] only (block-diagonal attention makes
+        # earlier chunks dead weight; upstream generate() does the same).
+        # z_hat accumulated incrementally across levels.
         passes = 0
+        z_hat_acc = base_chunk = None
         for k in range(1, len(self.levels)):
             Lk = self.levels[k]
+            if base_chunk is None:
+                z_hat_acc = self._level_contrib(codes[-1], k - 1)
+                base_chunk = self._interp_chunk(z_hat_acc, Lk)
             if not self.intra:
-                h = self._forward_partial(codes)
-                logits = self._head_logits(h[:, -Lk:], k)
-                codes.append(self._sample(
+                h = self._forward_chunk(base_chunk, k)
+                logits = self._head_logits(h[:, 1:], k)
+                cur = self._sample(
                     logits.reshape(batch_size * Lk, -1), temperature,
-                    top_k, top_p).reshape(batch_size, Lk))
+                    top_k, top_p).reshape(batch_size, Lk)
                 passes += 1
-                continue
-            # intra: causal chunks within the level (left→right)
-            cur = torch.zeros(batch_size, Lk, dtype=torch.long,
-                              device=self.q0.device)
-            decided = torch.zeros(batch_size, Lk, dtype=torch.bool,
+                codes.append(cur)
+            else:
+                # intra: causal chunks within the level (left→right)
+                cur = torch.zeros(batch_size, Lk, dtype=torch.long,
                                   device=self.q0.device)
-            conf = torch.zeros(batch_size, Lk, device=self.q0.device)
-            for s in range(0, Lk, self.intra_passes):
-                h = self._forward_partial(codes, cur, decided)
-                lg = self._head_logits(h[:, -Lk:], k)[:, s:s + self.intra_passes]
-                codes_s = self._sample(
-                    lg.reshape(-1, lg.shape[-1]), temperature, top_k,
-                    top_p).reshape(batch_size, -1)
-                w = codes_s.shape[1]
-                conf[:, s:s + w] = F.softmax(lg, -1).gather(
-                    -1, codes_s.unsqueeze(-1)).squeeze(-1)
-                cur[:, s:s + w] = codes_s
-                decided[:, s:s + w] = True
-                passes += 1
-            if refine_iters > 0 and k >= refine_from:
-                n_mask = max(1, int(round(Lk * refine_frac)))
-                for _ in range(refine_iters):
-                    low = conf.argsort(dim=1)[:, :n_mask]
-                    decided2 = torch.ones(batch_size, Lk, dtype=torch.bool,
-                                          device=self.q0.device)
-                    decided2.scatter_(1, low, False)
-                    h = self._forward_partial(codes, cur, decided2)
-                    lg = self._head_logits(h[:, -Lk:], k)
-                    probs = F.softmax(lg, -1)
-                    new = self._sample(
-                        lg.reshape(-1, lg.shape[-1]), temperature,
-                        top_k, top_p).reshape(batch_size, Lk)
-                    new_conf = probs.gather(
-                        -1, new.unsqueeze(-1)).squeeze(-1)
-                    cur = torch.where(decided2, cur, new)
-                    conf = torch.where(decided2, conf, new_conf)
+                decided = torch.zeros(batch_size, Lk, dtype=torch.bool,
+                                      device=self.q0.device)
+                conf = torch.zeros(batch_size, Lk, device=self.q0.device)
+                for s in range(0, Lk, self.intra_passes):
+                    h = self._forward_chunk(base_chunk, k, cur, decided)
+                    lg = self._head_logits(h[:, 1:], k)[:, s:s + self.intra_passes]
+                    codes_s = self._sample(
+                        lg.reshape(-1, lg.shape[-1]), temperature, top_k,
+                        top_p).reshape(batch_size, -1)
+                    w = codes_s.shape[1]
+                    conf[:, s:s + w] = F.softmax(lg, -1).gather(
+                        -1, codes_s.unsqueeze(-1)).squeeze(-1)
+                    cur[:, s:s + w] = codes_s
+                    decided[:, s:s + w] = True
                     passes += 1
-            codes.append(cur)
+                if refine_iters > 0 and k >= refine_from:
+                    n_mask = max(1, int(round(Lk * refine_frac)))
+                    for _ in range(refine_iters):
+                        low = conf.argsort(dim=1)[:, :n_mask]
+                        decided2 = torch.ones(batch_size, Lk, dtype=torch.bool,
+                                              device=self.q0.device)
+                        decided2.scatter_(1, low, False)
+                        h = self._forward_chunk(base_chunk, k, cur, decided2)
+                        lg = self._head_logits(h[:, 1:], k)
+                        probs = F.softmax(lg, -1)
+                        new = self._sample(
+                            lg.reshape(-1, lg.shape[-1]), temperature,
+                            top_k, top_p).reshape(batch_size, Lk)
+                        new_conf = probs.gather(
+                            -1, new.unsqueeze(-1)).squeeze(-1)
+                        cur = torch.where(decided2, cur, new)
+                        conf = torch.where(decided2, conf, new_conf)
+                        passes += 1
+                codes.append(cur)
+            if k + 1 < len(self.levels):
+                z_hat_acc = z_hat_acc + self._level_contrib(cur, k)
+                base_chunk = self._interp_chunk(z_hat_acc,
+                                                self.levels[k + 1])
         idx = torch.cat(codes, dim=1)
         self.last_passes = passes + (1 if l0 is None else 0)
         if return_per_level:
