@@ -24,6 +24,19 @@
       "summary": "Run created by agentloop classify.",
       "target_environment": "dev",
       "timestamp": "2026-11-12T15:32:25Z"
+    },
+    {
+      "actor": "devin",
+      "iteration": 1,
+      "phase": "execute+test",
+      "non_conformities": 0,
+      "summary": "v5-ext lancado (resume v5@11999, +2500 steps, compile-trunk) + watcher; stats n=32x3seeds: intra-chunked NAO replica (0.853 vs v3 0.827 sobrepostos — n=8 era ruido); refinement robusto 0.316+-0.033; paper corrigido",
+      "evidence": [
+        "artifacts/stats_eval/aggregate.json",
+        "artifacts/stats_eval/*.json",
+        ".agentic/state/runs/RUN-030.execution_report.md"
+      ],
+      "timestamp": "2026-11-12T15:53:00Z"
     }
   ],
   "iteration": 1,
@@ -46,5 +59,6 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ]
+  ],
+  "summary": "v5-ext +2500 steps lancado com watcher; stats n=32x3 fecharam limitacao de barras: intra-chunked nao replica (ruido n=8), refinement 0.316+-0.033 robusto; paper corrigido. Treino em curso."
 }
