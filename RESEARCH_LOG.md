@@ -305,8 +305,128 @@ ncm_codetrain.py           → pipeline pronto, aceita EPOCHS/N_ROWS/MAX_T
 método curriculum+snapshot → mesma disciplina de experimento
 ```
 
-**O teste que falta** (a tese disruptiva de fato): `ncm_codetrain.py` com
-bound curto (EPOCHS=2, MAX_T=3600) → LevelGenerator aprende código no
-espaço VQ? Se o canal VQ é o teto (~25%), a pergunta certa é VQ-VAE
-treinado DO zero em código (`train_vqvae.py`) em vez de reaproveitar o
-de texto. Duas variantes, probes de ~1h cada antes de qualquer run longo.
+**Probes executados (sessão atual, ~1h cada):**
+
+- **Probe 1 — `ncm_codetrain.py` bound** (EPOCHS=2, MAX_T=3600, ~220 steps
+  a 16s/step): LevelGenerator oficial + VQ estrangeiro afinado. Loss
+  desceu 6.36→5.71, mas parse 4/32→2/32 (ruído; ambos sopa de tokens).
+  Confirma: **o gargalo é o canal VQ, não o gerador**.
+- **Probe 2 — `train_vqvae.py` nativo de código** (config laptop5, dim 192,
+  resume step 500→2100+, corpus tarefa→código): **held_ce 0.66 em step
+  1200 e caindo** — o VQ-VAE nativo reconstrói código quase tão bem
+  quanto o BPE prevê (0.92). `per_lvl_util[0]≈0.01` — l0 quase morto,
+  casa com o achado anterior. **Veredito: o canal abre quando o encoder
+  é nativo; o teto de 25% era encoder estrangeiro, não arquitetura.**
+
+Próximo passo que isso destrava: LevelGenerator sobre os códigos DESTE
+VQ (não o estrangeiro) — aí o `ncm_panel.py` vira renderizador de código
+real, não de TinyStories.
+
+### 9.9 Geração não-autoregressiva em escala (lacuna de prior art, 2026-02)
+
+Análise externa (~/.gemini/antigravity-cli/.../analise-ncm-swe.md) apontou
+omissão real: o log não tinha diffusion LMs em escala, que são o prior art
+mais próximo da visão "renderizador de texto".
+
+- Nie et al., *Large Language Diffusion with mAsking (LLaDA)*, 2025
+  (arXiv:2502.09992) — LM de difusão mascarada 8B, 2.3T tokens; iguala/
+  supera LLaMA3-8B em vários benchmarks; geração por refinamento
+  iterativo com passes ajustáveis; edição não-monotônica; contorna a
+  "reversal curse" de AR. Weights abertos (GSAI-ML/LLaDA-8B-Base).
+- iLLaDA (2026, citado na análise externa; verificar fonte) — escala de
+  ~12T tokens, competitivo com Qwen2.5-7B.
+- *Diffusion of Thought* / MDLM / SEDD — difusão discreta de texto como
+  linha acadêmica (a análise as cita como contexto).
+- **Implicação para a tese**: o componente "geração por refinamento em
+  passes" já existe em escala competitiva e roda em 8B Q4 (cabível na
+  máquina). O diferencial original do projeto não é a matemática, é o
+  **paradigma de controle**: painel com preview por nível, N amostras,
+  samplers como "filtros", CFG, early-exit — `ncm_panel.py` implementa
+  isso sobre NCM; portá-lo sobre LLaDA é alternativa com base pré-treinada.
+
+### 9.10 Reframing da contribuição (análise externa, validado parcialmente)
+
+O que o relatório externo acertou: (a) resultados negativos medidos do
+log são o ativo publicável (parede DDR4 ~52GB/s, KD cross-vocab inviável,
+posição-da-dose > tamanho-da-dose); (b) o nó "control paradigm" é o
+diferencial, não a arquitetura; (c) zero artefato publicado/remoto é o
+gargalo institucional; (d) cerimônia de governança desproporcional para
+pesquisa solo.
+
+Onde estava desatualizado ao ser lido: (a) baseline "decisivo" Qwen pequeno
+já medido — 0.6B=83%, 30B=81% vs 55M=61%; (b) "teto VQ 25%" já falsificado
+pelo VQ nativo (held_ce 0.42); (c) o "Caminho 3" recomendado é exatamente o
+probe 3 em execução (LevelGenerator sobre códigos nativos).
+
+Gap ainda aberto (concordância): eval por EXECUÇÃO do código gerado
+(rodar testes), não apenas ast.parse — métrica correta para relevância.
+
+### 9.9a Ecossistema dLLM verificado (pesquisa agy + checagem independente)
+
+- **diffuse-cpp** (github.com/iafiscal1212/diffuse-cpp, Apache-2.0, base
+  GGML): motor C++ de inferência para dLLMs mascaradas. GGUF F16/Q8_0/
+  Q4_K_M para LLaDA-8B-Instruct e Dream-v0-Instruct-7B (org `diffuse-cpp`
+  no HF). Entropy-exit (passes adaptativos 3–16) + inter-step KV cache.
+  Sem tokenizer embutido (wrapper Python de ~15 linhas). Thread scaling
+  medido pelo autor: **7.4× de 1→12 cores vs 2.4× do AR** — inferência de
+  difusão é compute-bound (matriz×matriz), contornando a parede DDR4
+  ~52GB/s medida aqui (§hardware). 14–28 tok/s em prompts fáceis num
+  EPYC 12-core; prompts de código ~5 tok/s (16 passes).
+- **Dream-7B** (arXiv:2508.15487, HKU+Noah's Ark, Apache-2.0): inicializado
+  do Qwen2.5-7B, 580B tokens, CART (noise rescheduling adaptativo);
+  melhor dLLM aberto em código/raciocínio. Q4_K_M ≈ 4.5GB → cabível.
+- **LLaDA-8B** (arXiv:2502.09992, Apache-2.0): edição não-monotônica,
+  infilling; Q4_K_M ≈ 5.2GB.
+- DiffusionGemma (25B MoE): sem runtime CPU utilizável [unverified].
+  Mercury/Gemini Diffusion: fechados.
+- **Protocolo eval não-AR** (LLaDA §4, Dream §3): eixo X = NFE (passes de
+  denoise; análogo a "passes de render"); eixo Y = pass@1 HumanEval/MBPP.
+  Curva típica: S∈{16,32} colapso → {64,128} transição → {256,512}
+  convergência. Análogo direto samples×ruído em ray tracing.
+- Implicação estratégica: o "renderizador de texto" existe pronto em 7B
+  Q4. O diferencial do projeto vira (a) painel de controle sobre esse
+  motor e (b) medições qualidade×passes×tempo em CPU de consumo —
+  contribuição ausente na literatura pública.
+
+### Probe 3 — LevelGenerator sobre canal VQ nativo (veredito)
+
+Setup: 62M params, codes_probe (11514×249, VQ nativo CE 0.42), 800 steps
+batch 16, CPU, 4134s (~5.2s/step). loss 7.91→~5.35; l0 8.27→4.5;
+níveis finos l2-l4 estagnados ~6.2-6.5 (perto de uniforme sobre 2048
+códigos ≈ 7.6 bits).
+
+Geração (final.pt, temp 0.8 topk40 e temp 0.3 topk10, l0 pela cabeça do
+modelo): **0/32 ast.parse nas duas** — sopa de tokens, mesma falha do
+canal estrangeiro MAS com diferença de mecanismo: **0.11s/amostra**
+(6 passes de nível vs ~249 passos AR). O render paralelo funciona
+mecanicamente; a coerência conjunta não emergiu em 800 steps/11.5k segs.
+
+Leitura honesta: (a) canal nativo abriu (recon 0.42) — gargalo do encoder
+resolvido; (b) o bottleneck passou a ser o LevelGenerator: níveis finos
+carregam entropia local que 62M/1h não capturou (AR equivalente convergiu
+a loss ~1.5-2.0 em 2000+ steps); (c) 800 steps é janela curta — veredito
+é "insuficiente neste bound", não "arquitetura impossível".
+
+Correções pendentes (receita agy, literatura SoundStream/EnCodec/
+ViT-VQGAN): dead-code replacement + L2-norm de embeddings/codebook no
+VQ (l0 util 0.01), depois retreino. Alternativa produto: painel sobre
+Dream-7B/diffuse-cpp (compute-bound, foge da parede DDR4).
+
+### Bound 1 — Overfit sanity check (veredito que fecha a linha NCM-from-scratch)
+
+Setup: mesmo LevelGenerator 62M, mas 160 segmentos de código, 400 steps,
+batch 32, 3905s. loss treino 7.84→0.83 (memorização profunda).
+
+Geração: 0/32 ast.parse (temp 0.5). Amostras contêm fragmentos reais
+("else :", "= mid - 1", "return - 1", "assert busca") em posições
+incoerentes — o modelo reproduz estatísticas locais dos códigos, não
+trajetórias latentes válidas.
+
+Conclusão científica: (a) o render paralelo funciona mecanicamente
+(0.11s/amostra, 6 passes); (b) a falha NÃO é de escala de dados/compute —
+nem sob memorização total a geração produz código; (c) o defeito é
+estrutural: níveis paralelos geram z fora do manifold do VQ (decoder só
+vê códigos reais no treino) OU generate() diverge do condicionamento de
+treino. Fechar linha NCM-from-scratch como resultado negativo
+documentado; produto segue via diffuse-cpp/Dream-7B (§9.9a) que gerou
+código AST-OK no primeiro disparo.

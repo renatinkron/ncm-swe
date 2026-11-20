@@ -767,3 +767,65 @@ anotadas (arXiv IDs) + reprodução-do-zero + impossibilidades resolvidas.
 **Pendente**: curriculum v4 (elite + synth v3 + qwen_units); remediações
 blind-review; buracos `class `/`def test_`; server Qwen 30B ainda no ar
 (~11GB RSS, matar com `pkill -x llama-server` se não for usar).
+
+---
+
+## Probes NCM-code (usuário retomou a tese disruptiva, sessão atual)
+
+Contexto: frustração legítima do usuário — pivot RUN-046 (BPE) foi apresentado
+como troca de ferramenta, mas era troca de TESE. Dois probes lançados pra
+reabrir a pergunta NCM-on-code com bound curto.
+
+**Probe 1 — `ncm_codetrain.py` bound** (EPOCHS=2 N_ROWS=20000 MAX_T=3600,
+~220 steps a 16s/step, ckpt oficial + VQ estrangeiro afinado):
+loss 6.36→5.71 mas parse 4/32→2/32 (ruído; ambos sopa de tokens).
+Confirmação: o gargalo é o canal VQ, não o LevelGenerator.
+
+**Probe 2 — `train_vqvae.py` NATIVO de código** (config laptop5 dim 192,
+resume vqvae5.pt step 600→2100, 23min, corpus tarefa→código):
+**held_ce 0.42 final** — reconstrução quase perfeita vs canal estrangeiro
+(teto ~25%). per_lvl_util[0]≈0.01 (l0 morto no encoder, consistente com
+achados anteriores). `tokenizer_probe.pt` salvo.
+Veredito: **o canal abre com encoder nativo — teto 25% era encoder
+estrangeiro, não arquitetura.**
+
+**Probe 3 — `train_generator.py --model ncm`** (61.95M, codes_probe
+11514×249, 800 steps, ~5s/step): loss 7.9→6.6 @step 80, l0 caindo mais
+rápido (4.7) que l4/l5 (~7.4). Em curso — veredito = samples→parse.
+
+**Repo commitado** (4534bdf): 179 arquivos, corpus dirs gitignored —
+o risco de 150 arquivos soltos morreu. Remote ainda inexistente.
+
+**REPL NCM**: `ncm_repl.sh` — painel interativo sobre ckpt oficial
+(TinyStories), preview por nível (12 passes), knobs ao vivo; 4 threads,
+não disputa com treino.
+
+**Probe 3 — LevelGenerator nativo (final)**: 800 steps/69min, loss 7.91→5.35.
+Geração 0/32 ast.parse (temp 0.8 e 0.3) — render paralelo funciona
+(0.11s/amostra, 6 passes) mas coerência conjunta não emergiu no bound.
+l2-l4 estagnados ~6.2-6.5 ≈ uniforme/2048. Bottleneck migrou do canal
+(resolvido, CE 0.42) para capacidade/dados do gerador.
+
+**Colaboração agy (antigravity, Gemini)**: artigo A escrito
+(articles/cpu_inference_walls.md — paredes DDR4/compute); dossiê
+docs/llada_cpu_integration.md verificado independentemente: diffuse-cpp
+REAL (GGML, Apache-2.0), Dream-7B e LLaDA-8B GGUF. Insight-chave:
+difusão é compute-bound → escala 7.4x em threads vs 2.4x AR → foge da
+parede DDR4.
+
+**Bound 2 EXECUTADO**: diffuse-cpp buildado em container llbuild (falha
+só em dump-logits, não crítico); Dream-7B Q4_K_M baixado (5.0GB em
+models/diffusion/). PRIMEIRO render: def is_prime() AST-OK em 28
+passes entropy_exit — 0.47 tok/s sob contenção de CPU.
+scripts/dream_render.py = wrapper (tokenize Qwen→cli→decode+trim).
+Preset agy: -t8 físicos, -n justo, -s24 entropy_exit, keep-active 1.
+
+**Bound 1 em curso**: overfit sanity check — gen_ncm_overfit, 160 segs,
+400 steps. loss 7.84→1.82 em 50 steps (memorizando). Veredito: se
+parse>0 → capacidade ok, gargalo=escala de dados; se 0 → desalinhamento
+de condicionamento inter-nível.
+
+Pendente: veredito overfit; curva passes×qualidade do Dream (NFE eval);
+eval por execução (receita agy: JSONL+asserts, subprocess timeout 2s);
+correções VQ (dead-code replacement + L2-norm) se linha NCM continuar;
+git remote/push ainda não autorizado.
