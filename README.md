@@ -70,3 +70,12 @@ python scripts/dream_render.py \
 
 Active research. Repo went public 2025-11; negative results are documented
 rather than deleted. See `RESEARCH_LOG.md` §9–10 for what doesn't work and why.
+
+## The live renderer
+
+```bash
+python scripts/dream_preview.py 'Write "def fizzbuzz(n)"...' -n 96 -s 12 -t 8
+```
+
+Watch masked positions (`░`) resolve into code pass by pass — `def` →
+skeleton → branches — the progressive-preview metaphor made literal.
