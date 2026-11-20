@@ -880,3 +880,22 @@ l0 real (encoder) + l1..l5 gerados: 0/32. Falha localizada no
 acoplamento entre niveis GERADOS. Literatura confirma: nenhum sistema
 faz codebooks residuais 100% paralelos (MusicGen/VALL-E/RQ-T usam AR).
 NCM-from-scratch: encerrado com veredito documentado.
+
+## Agente de codigo local — testes com Dream e AR
+
+- dream_panel.py: agora salva codigo extraido em dream_output.py +
+  fallback pro ultimo STEP quando FINAL vem truncado em end-token;
+  eval nao aceita mais codigo vazio como AST OK.
+- dream_server.py: OpenAI-compatible minimo em :8095 (chat/completions
+  -> podman diffuse-cli). Bug corrigido: stdout do diffuse-cli = regiao
+  gerada apenas (sem prompt); extracao anterior fatiava ids[plen:] e
+  comia o inicio do codigo.
+- Teste agente Dream: request do opencode chegou (~4-5k tokens de
+  system prompt) mas ~100s/pass x 16 = 15-30min/turno -> INVIAVEL.
+  Difusao em CPU e renderer de respostas curtas, nao agente.
+- Alternativa AR: llama-master-nomp + Qwen3-Coder-30B-A3B IQ2_M-topk6
+  (ja em disco) com -fa on --cache-type-* q4_0 -t 8 -lm mlock: funcionou
+  (opencode recebeu READY), MAS prefill ~8-13 tok/s -> ~12min pra
+  prompt de 6.3k; cada sessao nova = cold prefill. Inviavel interativo.
+- Em teste: Qwen2.5-Coder-7B-Instruct Q4_K_M (download em curso) —
+  denso ~4.7GB, prefill estimado muito maior; e o candidato principal.
