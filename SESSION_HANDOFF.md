@@ -849,3 +849,18 @@ git remote/push ainda não autorizado.
 - Pendente sugerido pelo agy: divulgação (r/LocalLLaMA, HN), sweep
   temp>0 na curva, portar ncm_panel pro Dream. Colaboração agy segue
   disponível via: agy --conversation=f0618ca3-067b-49fa-b394-128f6fd65465
+
+## Sessao (cont.) — temp sweep + remasking + semi-AR
+
+- Temp s=16 (5 prompts): argmax 3/5 p@1 · t0.3 3/5 · t0.7 1/5 -> T<=0.3
+  e a regiao certa pra codigo (confirma literatura).
+- topk_margin COLAPSA em codigo: 160 eot seguidos no binary_search.
+  entropy_exit continua sendo o remasking padrao.
+- semiar-cli implementado e funciona (12s/bloco32 vs 55s canvas cheio),
+  MAS "Fixed Canvas Dilemma": modelo comprime resposta ao span ->
+  blocos pequenos truncam semanticamente. Semi-AR em Dream-7B (nao
+  block-trained) nao ancora causalidade. Arquivado como ferramenta.
+- binary_search: 0/N em toda config (argmax/t0.3/t0.7, s8-32, semi-AR,
+  ambos remaskings). Caso-limite do modelo nesta quantizacao.
+- Config recomendada Dream-7B CPU: n=128-160, s=16, entropy_exit,
+  T<=0.3, corte no primeiro EOS.

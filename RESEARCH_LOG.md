@@ -468,3 +468,20 @@ mascarado — block_size vira orçamento de resposta; emitiu eot e fechou
 em 32 tok. binary_search comprimido = busca linear + except sem try
 (errado mas coerente como bloco). Semi-AR não resolveu o invariante de
 loop — precisa bloco maior ou geração multi-bloco real.
+
+### Remasking showdown + fecho do semi-AR
+
+binary_search n=160 s=16 t=8 (o pior caso, 0/N antes):
+- topk_margin: COLAPSO — 160 tokens endoftext, zero código. O critério
+  de margem máxima escolhe eot "confiante" em todas as posições ->
+  span degenerado. topk_margin INUTILIZAVEL nesse modelo/engine.
+- entropy_exit: gerou cauda de loop correta (elif arr[mid]<target...
+  return -1) mas SEM a cabeca def/while -> AST-fail. Incoerencia
+  estrutural persiste em canvas unico tambem.
+
+"Fixed Canvas Dilemma" (literatura, via agy): dLLMs mascarados tratam o
+span como o documento inteiro -> bloco pequeno induz compressao/
+termino prematuro; Dream-7B nao e block-diffusion nativo, entao semi-AR
+sem fine-tune nao ancora causalidade real. Config otima confirmada pra
+codigo nesta maquina: canvas unico n~128-160 + entropy_exit + T<=0.3.
+binary_search permanece 0/N em TODA configuracao testada.
