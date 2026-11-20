@@ -454,3 +454,17 @@ nesta CPU (~8 tok/s para 7-8B Q4); qualidade argmax abaixo do AR
 equivalente. Caminhos de melhora: Q8_0, temp>0+n>1, prompt tuning,
 LLaDA-8B. O valor hoje é o paradigma de controle + infilling, não
 velocidade bruta — e é compute-bound (escala com cores futuros).
+
+### Extensão — sampling + semi-AR no Dream-7B
+
+Temp sweep s=16 (5 prompts): argmax 3/5 p@1 · t0.3 3/5 (prompts
+diferentes) · t0.7 1/5. Confirma literatura: temp baixa pra código.
+
+semiar-cli (novo): AR entre blocos de 32, difusão dentro (8 passes,
+topk_margin). Mecânica funciona — 11.6-12.1s/bloco vs ~55s bloco
+completo (forward sobre span curto é ~5x mais barato).
+ACHADO MECANÍSTICO: o modelo COMPRIME a resposta pro tamanho do span
+mascarado — block_size vira orçamento de resposta; emitiu eot e fechou
+em 32 tok. binary_search comprimido = busca linear + except sem try
+(errado mas coerente como bloco). Semi-AR não resolveu o invariante de
+loop — precisa bloco maior ou geração multi-bloco real.
