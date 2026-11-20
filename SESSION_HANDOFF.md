@@ -899,3 +899,19 @@ NCM-from-scratch: encerrado com veredito documentado.
   prompt de 6.3k; cada sessao nova = cold prefill. Inviavel interativo.
 - Em teste: Qwen2.5-Coder-7B-Instruct Q4_K_M (download em curso) —
   denso ~4.7GB, prefill estimado muito maior; e o candidato principal.
+
+## Agente local FUNCIONAL — Qwen2.5-Coder-7B
+
+- ACHADO: --cache-type-k q4_0 --cache-type-v q4_0 CORROMPE a saida
+  nesse build (master-nomp) — geracao degenerada confirmada por
+  isolamento. -fa on sozinho e seguro. KV fica em f16.
+- Config final (qwen_agent_server.sh): Qwen2.5-Coder-7B Q4_K_M,
+  -t 8 -c 32768 -b 512 -ub 256 -fa on --load-mode mlock --jinja :8085
+- Medido: chat direto 12s p/ funcao; opencode run respondeu READY em
+  4min com prompt de ~9k FRIA (prefill ~35-40 tok/s); turnos seguintes
+  reutilizam KV do slot e saem em segundos. Decode ~8.4 tok/s.
+- Comparado: 30B-A3B IQ2_M prefill ~8-13 tok/s (~12min p/ 6.3k) —
+  descartado p/ agente. Dream-7B difusao ~15-30min/turno — demo apenas.
+- opencode.jsonc + pi models.json apontam p/ llamacpp @ :8085,
+  model id qwen2.5-coder-7b (o id e cosmetico; o servidor ignora).
+- Arquivo 7B verificado por sha256 (x-linked-etag) — integro.
