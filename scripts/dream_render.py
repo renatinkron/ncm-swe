@@ -15,7 +15,7 @@ ENGINE = "/home/kron/Documents/projects/diffuse-cpp"
 MODEL = "/models/dream-7b-q4km.gguf"
 MODELS_DIR = "/home/kron/models/diffusion"
 IMAGE = "localhost/llbuild:latest"
-END_ID = 151645  # <|im_end|>
+END_IDS = {151643, 151645}  # <|endoftext|>, <|im_end|>
 
 
 def tokenize(prompt: str) -> list[int]:
@@ -47,11 +47,14 @@ def render(prompt: str, n: int, steps: int, threads: int, remasking: str,
     wall = time.time() - t0
     out = res.stdout + res.stderr
 
-    m = re.search(r"Generated token IDs:.*?(\n[\d,\s]+)", out, re.S)
-    gen_ids = [int(x) for x in re.findall(r"\d+", m.group(1))] if m else []
-    real_steps = len(re.findall(r"step \d+/\d+", out))
-    if END_ID in gen_ids:
-        gen_ids = gen_ids[:gen_ids.index(END_ID)]
+    num_lines = [ln for ln in res.stdout.splitlines()
+                 if re.fullmatch(r"[\d,\s]+", ln)]
+    gen_ids = [int(x) for ln in num_lines for x in re.findall(r"\d+", ln)]
+    real_steps = len(set(re.findall(r"step (\d+)/\d+", out)))
+    for i, t in enumerate(gen_ids):
+        if t in END_IDS:
+            gen_ids = gen_ids[:i]
+            break
     text = ""
     if gen_ids:
         from transformers import AutoTokenizer

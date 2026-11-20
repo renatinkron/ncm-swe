@@ -430,3 +430,27 @@ vê códigos reais no treino) OU generate() diverge do condicionamento de
 treino. Fechar linha NCM-from-scratch como resultado negativo
 documentado; produto segue via diffuse-cpp/Dream-7B (§9.9a) que gerou
 código AST-OK no primeiro disparo.
+
+### Bound 2 — diffuse-cpp + Dream-7B no 4750U (primeira curva passes×qualidade)
+
+Build em container llbuild (falha só em dump-logits, não crítico).
+dream-7b-q4km.gguf 5.0GB. Wrapper scripts/dream_render.py (tokeniza
+Dream/Qwen2.5 → cli --tokens → decode + trim em endoftext/im_end).
+
+Primeiro disparo (is_prime, 4 threads sob contenção): AST-OK em 28
+passes entropy_exit — mecanismo do renderizador validado.
+
+Curva s∈{8,16,32} sobre prompt binary_search (-n160 -t8 temp0 argmax,
+CPU livre, n=1/config → ruído):
+- s=8: 8 passes reais, 73 tok, 47.5s, 1.54 tok/s — AST-OK mas bug
+  semântico (left=left=mid+1, sem retorno de igualdade).
+- s=16: 11 passes, 53.9s, 1.36 tok/s — AST-FAIL (tuple-assign bug).
+- s=32: 11 passes, 53.4s, 1.37 tok/s — AST-FAIL (idem + token "&gt;").
+entropy_exit termina antes do teto (8/11/11 passes reais).
+
+Veredito honesto: pipeline funciona e é controlável, mas em código
+Q4_K_M ~1.4-1.5 tok/s é 5-6× mais lento que AR denso de porte similar
+nesta CPU (~8 tok/s para 7-8B Q4); qualidade argmax abaixo do AR
+equivalente. Caminhos de melhora: Q8_0, temp>0+n>1, prompt tuning,
+LLaDA-8B. O valor hoje é o paradigma de controle + infilling, não
+velocidade bruta — e é compute-bound (escala com cores futuros).
