@@ -23,3 +23,5 @@ __pycache__/
 # derived corpora (regenerable via scripts/code_corpus.py, too large for git)
 data/corpus_code/
 data/corpus_teach/
+data/tinystories/
+data/corpus_ts/
