@@ -864,3 +864,12 @@ git remote/push ainda não autorizado.
   ambos remaskings). Caso-limite do modelo nesta quantizacao.
 - Config recomendada Dream-7B CPU: n=128-160, s=16, entropy_exit,
   T<=0.3, corte no primeiro EOS.
+
+## dream_panel.py entregue
+
+REPL interativo do renderer (scripts/dream_panel.py): intencao livre
+renderiza com preview vivo passe a passe; knobs :steps :n :temp
+:remasking :threads :seed :preview :eval :knobs. Demo validada:
+reverse_words renderizou em 14 passes/67s; o drift semantico
+(reversed_words -> reverse_words_words) ficou VISIVEL durante o render
+— o painel expoe o erro nascendo, feature do paradigma.
