@@ -829,3 +829,23 @@ Pendente: veredito overfit; curva passes×qualidade do Dream (NFE eval);
 eval por execução (receita agy: JSONL+asserts, subprocess timeout 2s);
 correções VQ (dead-code replacement + L2-norm) se linha NCM continuar;
 git remote/push ainda não autorizado.
+
+**Sessão colaborativa Devin×agy (fechamento)**:
+- Repo PÚBLICO: github.com/renatinkron/ncm-swe (purgados 2.1GB de corpus
+  do histórico; push ok).
+- Artigo A (articles/cpu_inference_walls.md) + Artigo B
+  (articles/non_autoregressive_reality_check.md) escritos pelo agy,
+  revisados com dados reais — aprovados em auditoria de claims.
+- Micro-curva Dream-7B: 5 prompts × s∈{8,16,24,32}, AST+pass@1(exec):
+  6/20 pass@1, NÃO-MONOTÔNICA — sweet spot s=16 (3/5, 58s); over-render
+  s=32 mais lento E pior (1/5, 97s). artifacts/dream_curve.json.
+- Renderizador vivo: tools/preview-cli.cpp (callback por passe) +
+  scripts/dream_preview.py — máscaras ░ resolvem em código passe a
+  passe. Drift observável ao vivo.
+- Veredito final documentado: AR+MoE soberano em CPU (bandwidth wall);
+  difusão coerente mas compute-wall (5-8× mais lento); NCM 40× mais
+  rápido mas incoerente (manifold mismatch, falha estrutural nem sob
+  overfit).
+- Pendente sugerido pelo agy: divulgação (r/LocalLLaMA, HN), sweep
+  temp>0 na curva, portar ncm_panel pro Dream. Colaboração agy segue
+  disponível via: agy --conversation=f0618ca3-067b-49fa-b394-128f6fd65465

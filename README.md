@@ -68,7 +68,7 @@ python scripts/dream_render.py \
 
 ## Status
 
-Active research. Repo went public 2025-11; negative results are documented
+Active research. Repo went public 2026-11; negative results are documented
 rather than deleted. See `RESEARCH_LOG.md` §9–10 for what doesn't work and why.
 
 ## The live renderer
