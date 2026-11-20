@@ -1,64 +1,72 @@
-# ncm_swe — Next-Concept Modeling on a conventional laptop
+# ncm-swe — Non-Autoregressive Code Generation on Consumer CPU
 
-An experiment testing whether **NCM** (Next-Concept Modeling,
-HazyResearch/Together) — coarse-to-fine parallel generation over multiscale
-discrete codes — beats an equally-sized autoregressive baseline on ordinary
-CPU hardware (i5-1235U, 23 GB RAM, no GPU).
+**Can code generation escape the autoregressive memory-bandwidth wall on ordinary
+hardware?** We measured, on a Ryzen 7 PRO 4750U (8-core Zen2, 32 GB DDR4, no GPU),
+the two leading non-AR paradigms — and characterized exactly where each one breaks.
 
-## Architecture
+| Paradigm | Mechanism | Speed measured | Verdict |
+|---|---|---|---|
+| **Autoregressive** (llama.cpp, 7–8B Q4) | 1 token / forward | ~8–10 tok/s | **sovereign** (bandwidth-bound) |
+| **Masked diffusion** (Dream-7B, `diffuse-cpp` Q4_K_M) | parallel unmasking, S passes | 0.3–1.7 tok/s | coherent but compute-wall: 5–8× slower |
+| **Hierarchical VQ / NCM** (62M, native code VQ) | 6 level-passes / segment | **0.11 s/sample** | 40× faster than AR — but structurally incoherent |
 
-```
-text ──BPE(8k)──> 128-token segments ──VQ-VAE──> 8-level code pyramid
-                                              [1,8,16,32,48,64,96,128]
-NCM generator: transformer w/ block-diagonal attention; each level's codes
-predicted in parallel, conditioned on z_hat of coarser levels (K=8 passes).
-AR baseline:   same transformer core, causal mask, KV-cache decode, same
-               param count, same data (L=128 sequential steps).
-```
+## Headline results
 
-Key properties:
+- **First published quality×passes curve for masked diffusion on consumer CPU**
+  (5 code tasks × S∈{8,16,24,32}, argmax, `ast.parse` + executed `pass@1`):
 
-- Stage-1 VQ-VAE vendored from upstream (`vendor/ncm-upstream`, MIT).
-- Stage-2 generator built here (`src/ncm_swe/model/`), dims matched to
-  Qwen2.5-Coder-0.5B (embd 896, 14q/2kv GQA, SwiGLU 4864) so real pretrained
-  weights transplant 1:1 for the warm-start arm.
-- Teacher corpus: Python stdlib code + PT-BR seed/template records +
-  Qwen3-0.6B (llama.cpp GGUF) + Qwen2.5-Coder-1.5B (HF) + Qwen3-Coder-30B
-  (GGUF, small slice).
+  | S | median wall | pass@1 |
+  |---|---|---|
+  | 8  | 58 s | 0/5 |
+  | 16 | 58 s | **3/5** ← sweet spot |
+  | 24 | 90 s | 2/5 |
+  | 32 | 97 s | 1/5 |
 
-## Pipeline
+  **Non-monotonic**: more passes = slower *and* worse (over-rendering drift).
+  `sort_list` saturated (3/4); `binary_search` collapsed everywhere (0/4) —
+  loop invariants are the hard case for parallel unmasking.
+
+- **NCM reality check**: a native code VQ-VAE reaches held-out reconstruction
+  CE **0.42** (channel open), and the level-renderer generates a full segment in
+  **6 passes / 0.11 s** — yet produces 0/32 parseable samples **even trained to
+  memorization** (loss 0.83). Discrete manifold mismatch between levels is the
+  structural blocker, not data or capacity.
+
+- **The Two Walls**: AR decode on this machine is capped by ~52 GB/s DDR4
+  (measured); diffusion escapes it but hits a compute wall — each 7B dense
+  forward pass costs ~4.9 s on Zen2.
+
+## Articles
+
+- [`articles/cpu_inference_walls.md`](articles/cpu_inference_walls.md) —
+  characterization of the bandwidth and compute walls, quantization sweet spots,
+  OpenMP measurements.
+- [`articles/non_autoregressive_reality_check.md`](articles/non_autoregressive_reality_check.md) —
+  NCM vs masked-diffusion on this hardware, with the measured curve above.
+
+## Layout
+
+- `src/ncm_swe/` — BPE, VQ-VAE, level/AR generators, encode/decode
+- `scripts/` — training (`train_vqvae.py`, `train_generator.py`), eval
+  (`_gen_probe_eval.py`, `_dream_curve.py`), Dream-7B wrapper
+  (`dream_render.py`), live panel (`ncm_panel.py`, `ncm_repl.sh`)
+- `data/` — code corpora (intent→unit), LoRA knowledge dump
+- `docs/` — render-panel design, LLaDA/diffuse-cpp CPU dossier
+- `RESEARCH_LOG.md` — full academic chronicle: every probe, number, dead end,
+  ~30 annotated references. **The negative results are the point.**
+- `SESSION_HANDOFF.md` — operational state for continuing agents
+
+## Reproduce the diffusion render
 
 ```bash
-# 1. corpus (resumable; teachers time-boxed)
-python scripts/build_corpus.py --corpus-dir artifacts/corpus
-
-# 2. train stage-1 VQ-VAE (trains BPE first, cached at artifacts/bpe.json)
-python scripts/train_vqvae.py --corpus-dir artifacts/corpus --steps 3000
-
-# 3. encode corpus -> multi-level codes (artifacts/codes/{train,held}.npy)
-python scripts/encode_corpus.py
-
-# 4. train stage-2 (two arms; --warmstart transplants Qwen weights)
-python scripts/train_generator.py --model ncm --warmstart --out artifacts/gen_ncm
-python scripts/train_generator.py --model ar  --out artifacts/gen_ar
-
-# 5. benchmark
-python scripts/bench_generate.py --ncm artifacts/gen_ncm/final.pt \
-    --ar artifacts/gen_ar/final.pt --out artifacts/bench.json
+git clone --recursive https://github.com/iafiscal1212/diffuse-cpp
+cmake -B build -DCMAKE_BUILD_TYPE=Release diffuse-cpp && cmake --build build -j
+huggingface-cli download diffuse-cpp/Dream-v0-Instruct-7B-GGUF dream-7b-q4km.gguf
+python scripts/dream_render.py \
+  "Write def binary_search(arr, target), index or -1. Code only." -n 160 -s 16 -t 8
 ```
 
-## Tests
+## Status
 
-```bash
-python -m pytest tests/   # vq, corpus, infra, generator, train-resume
-```
-
-## Hardware constraints observed
-
-- PyTorch CPU-only (`cuda: False`). Full fine-tuning of any real Qwen is not
-  feasible; warm-start (weight transplant into N arch) is the reuse path.
-- llama.cpp `llama-cli` needs `-cnv -st` for single-shot generation.
-- transformers 5.x: `apply_chat_template` returns `BatchEncoding` — call
-  `model.generate(**enc)`.
-
-See `artifacts/report.md` for measured results.
+Active research. Repo went public 2025-11; negative results are documented
+rather than deleted. See `RESEARCH_LOG.md` §9–10 for what doesn't work and why.
