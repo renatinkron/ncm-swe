@@ -1,0 +1,58 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "decision": "current_branch",
+    "gate_passed": true,
+    "name": "main",
+    "rationale": "experimento de scripts na main, sem release",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-041",
+  "demand": "prototipo de grammar-constrained decode na saida do decoder VQ: reranking token-a-token de top-K BPE mantendo prefixo parseavel (codeop), medir taxa de codigo real compilavel vs argmax baseline",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-16T16:58:20Z"
+    },
+    {
+      "iteration": 1,
+      "non_conformities": 0,
+      "summary": "constrained decode prototipado e medido: gen 4/32 parse (vs argmax 0/32) mas hits degenerados (oraculo exploravel via comments/strings); forced_avg~80-90/128; gold 0/32 ambos modos (fragments nao sao prefixo); veredito: constraint sozinho nao fecha gap, proximo degrau = end-score best-of-N ou repair head",
+      "ts": "2026-11-16T17:03:11Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-041",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-041",
+  "summary": "constrained decode no decoder VQ: gen 4/32 parse vs argmax 0/32, hits degenerados; oraculo incremental exploravel — proximo degrau = best-of-N c/ end-score ou repair head",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-11-20T14:30:00Z",
+    "decision": "current_branch",
+    "evidence_ref": "RUN-048.task_plan.md",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-20T14:30:00Z",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-048",
+  "demand": "beleza, pesquise e desenhe isso para que eu possa implementar, inclusive os testes e gere um dump de conhecimentos avançados sobre lógica, programação e texto em ptBR e enUS que são os mais comuns para mim aqui a programação pode ser só em inglês mesmo, a capacidade textual pode ser nos dois idiomas que te pedi, preciso disso para ativar no LoRA. E quero continuar com o NCM, preciso que me ajude a viabilizar isso. Mas nosso saldo está acabando então tente terminar o projeto nessa passada",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-20T14:25:00Z"
+    },
+    {
+      "entry": "Painel NCM sobre ckpt oficial entregue: ncm_panel.py com knobs l0/temp/top_k/top_p/cfg/freq-mu-adj/preview; smoke real 0.527 s/sample (12 passes), CFG+penalties validados. Dump LoRA 91 entradas (prog EN; lógica/texto EN+PT) + validador. 21 testes verdes. docs/ncm-render-panel.md com mapeamento renderizador→NCM e limites. nc=0.",
+      "step": "execute+test",
+      "ts": "2026-11-20T14:38:10Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-048",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-048",
+  "summary": "NCM render-panel no ckpt oficial (0.53 s/sample, knobs l0/temp/topk/topp/cfg/freq-mu-adj/preview) + dump LoRA 91 entradas pt/en + 21 testes + doc de design; nc=0",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

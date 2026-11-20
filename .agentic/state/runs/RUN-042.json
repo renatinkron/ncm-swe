@@ -1,0 +1,57 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "decision": "current_branch",
+    "gate_passed": true,
+    "name": "main",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-042",
+  "demand": "relaunch treino do gerador com N_ROWS=19000 (holdout 19000:20000), warm-start de gen_code2.pt, saida em gen_code3.pt, apos overfit confirmado em held-out (fine acc 11.8-\u003e9.3)",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-17T11:49:38Z"
+    },
+    {
+      "iteration": 1,
+      "non_conformities": 0,
+      "summary": "run anterior matado tras overfit confirmado (held-out fine acc 9.3% vs 11.8% peak); snapshot gen_code2.ep17-ce0.93.bak.pt; relanzado pid 844317 con N_ROWS=19000, warm-start gen_code2.pt, GEN_OUT=gen_code3.pt, sin COMPILE (dynamo sin g++); nuevo holdout 19000:20000; baseline pre 2/32 parse",
+      "ts": "2026-11-17T11:56:45Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-042",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-042",
+  "summary": "relaunch del trainer con 19k rows (anti-overfit): pid 844317, warm-start CE 0.93, GEN_OUT=gen_code3.pt, holdout 19000:20000",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

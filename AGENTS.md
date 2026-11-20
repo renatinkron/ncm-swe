@@ -209,6 +209,18 @@ closes, so the same mistake can't break the project twice.)*
   registered but nothing captured. `agentloop companions setup` applies the
   fixup automatically; manually: merge the hooks object into the user config.
 
+- **Never launch a training/tuning run that writes to an existing model
+  checkpoint without a timestamped snapshot first, and never save except on
+  improvement.** Found live (RUN-039, 2026-11-14): a decoder-boost run with
+  dropout accidentally enabled overwrote `vq_code_tune.pt` (96.37% recovery →
+  90.24%) because it saved unconditionally every 500 steps — hours of compute
+  lost, best weights destroyed. Protocol: (1) `cp <ckpt> <ckpt>.<ts>.pt` before
+  relaunching anything that touches it; (2) checkpoint writes must be gated by
+  `if metric > best` — never periodic blind overwrites; (3) keep `*.bak` and
+  `*.best_*` siblings in the artifact dir; (4) `vq.eval()` when fine-tuning
+  decoder/embedding — `vq.train()` enables dropout that corrupts the loss and
+  poisons checkpoints.
+
 - **A `.claude/agents/*.md` tools-frontmatter fix does not hot-reload into an
   already-running Claude Code session.** Found live (RUN-publish-to-github,
   2026-07-09): the `research` subagent's `Write` fix (previous rule above) was

@@ -1,0 +1,54 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "initial": "main",
+    "selected": "main",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-043",
+  "demand": "probe plano B: treinar transformer BPE direto (sem VQ-641) com mesmo orcamento de tempo/dados, eval no mesmo harness endurecido, para decidir se a representacao VQ e o gargalo",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-17T20:50:22Z"
+    },
+    {
+      "at": "2026-11-18T00:33:22.468446Z",
+      "entry": "probe BPE direto 55M 3h: train CE 2.54, heldout_ce 3.26 top1 39.34%, argmax/sampled 0/32 — VQ-641 nao confirmado como gargalo; forma da tarefa (mid-file slices + geracao incondicional) domina. remediation: handoff+filler+1000-row heldout+launch logs; nc 4-\u003e0"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-043",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-043",
+  "summary": "BPE-direto probe 55M/3h: heldout CE 3.26 top1 39%, gen 0/32 — VQ-641 nao confirmado como gargalo; forma da tarefa domina",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-11-13T18:30:21.313157+00:00",
+    "decision": "current_branch",
+    "evidence_ref": "plan RUN-037",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-13T18:30:21.313157+00:00",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-037",
+  "demand": "cartuchos de dominio plugaveis: professor 30B gera pack de licoes de regex python; aluno 0.5B treina LoRA por dominio; provar plug/unplug — especialista com cartucho, generalista intacto sem ele; rubrica por execucao real do regex em casos de teste",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T18:30:03Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "verification",
+      "summary": "domcart: LoRA regex cartridge 0.500-\u003e0.765 plugged, exact unplugged reversibility, 17.7MB",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T18:52:57Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-037",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-037",
+  "summary": "domain cartridge: LoRA regex pack plugs 0.5B -\u003e 0.765 exec-rubric; unplug restores base exactly; 17.7MB",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

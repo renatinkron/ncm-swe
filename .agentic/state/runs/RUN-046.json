@@ -1,0 +1,62 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "initial": "main",
+    "selected": "main",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-046",
+  "demand": "Escalar o probe BPE vencedor (RUN-045, 18/32 parse): ctx 256 + BOS in-distribution + re-extrair func_units com cap 255 tokens + budget maior (~6h) com CPU dedicada, medir parse/real vs baseline 18/32",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-19T14:39:32Z"
+    },
+    {
+      "iteration": 1,
+      "non_conformities": 0,
+      "result": "SCALE-UP CONFIRMADO: sampled [0]+def = 26/32 parse+real (baseline RUN-045 18/32); heldout_ce 0.9162 top1 0.8243; 4266 steps ~1.9ep; argmax determinístico 0/32 (1 linha corrompida); bug BOS-prefix em eval detectado e corrigido; VQ ncmtrain2 parado em ep8 por decisão do usuário",
+      "tasks": [
+        "T001",
+        "T002",
+        "T003",
+        "T004"
+      ],
+      "ts": "2026-11-19T21:40:00Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-046",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-046",
+  "summary": "BPE ctx256+BOS scale-up confirmado: 26/32 parse+real sampled (recorde), heldout CE 0.9162/top1 82.4%, 4266 steps; VQ ncmtrain2 parado ep8 por decisão",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

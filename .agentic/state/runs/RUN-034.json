@@ -1,18 +1,19 @@
 {
   "branch_strategy": {
-    "mode": "direct",
     "branch": null,
-    "decision": "current_branch",
     "confirmation_status": "confirmed",
-    "gate_passed": true
+    "decision": "current_branch",
+    "gate_passed": true,
+    "mode": "direct",
+    "selected_branch": "main"
   },
   "change_domain": "mixed",
   "contract_id": "CONTRACT-034",
   "demand": "pausar treino e llama-server para teste do Qwen3-Coder-Next 80B",
   "github_issue": {
     "number": null,
-    "url": null,
-    "status": "unavailable"
+    "status": "unavailable",
+    "url": null
   },
   "history": [
     {
@@ -27,18 +28,18 @@
     },
     {
       "actor": "devin",
-      "iteration": 1,
-      "phase": "pause-80b-test",
-      "non_conformities": 0,
-      "summary": "treino pausado @13800 (perde ~300 steps, ckpt @13499 intacto); llama-server :8089 morto; 80B topk5 na :8091 a 4.75 t/s; retomada em .agentic/state/resume_v5ext.sh",
       "evidence": [
         ".agentic/state/resume_v5ext.sh"
       ],
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "pause-80b-test",
+      "summary": "treino pausado @13800 (perde ~300 steps, ckpt @13499 intacto); llama-server :8089 morto; 80B topk5 na :8091 a 4.75 t/s; retomada em .agentic/state/resume_v5ext.sh",
       "timestamp": "2026-11-12T23:57:50Z"
     }
   ],
   "iteration": 1,
-  "overall_status": "planning",
+  "overall_status": "completed",
   "plan_id": "PLAN-034",
   "quality_gates": {
     "branch_strategy_decision": "pending",
@@ -48,6 +49,7 @@
     "unit_tests": "not_applicable"
   },
   "run_id": "RUN-034",
+  "summary": "Pausa total p/ teste 80B: treino @13800 parado (perdeu ~300 steps; ckpt @13499 intacto), llama-server morto, 80B topk5 servindo :8091 a 4.75 t/s. Retomada: .agentic/state/resume_v5ext.sh",
   "target_environment": "dev",
   "tasks": [
     {
@@ -57,6 +59,5 @@
       "status": "pending",
       "target_environment": "dev"
     }
-  ],
-  "summary": "Pausa total p/ teste 80B: treino @13800 parado (perdeu ~300 steps; ckpt @13499 intacto), llama-server morto, 80B topk5 servindo :8091 a 4.75 t/s. Retomada: .agentic/state/resume_v5ext.sh"
+  ]
 }

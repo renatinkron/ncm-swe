@@ -23,3 +23,5 @@
 {"timestamp":"2026-11-12T22:35:04Z","demand":"monitoramento continuo v5-ext: colher @13999","files_touched":[],"verdict":"pass"}
 {"timestamp":"2026-11-12T23:48:45Z","demand":"medir o que ocupa RAM da maquina durante o treino v5-ext","files_touched":[],"verdict":"pass"}
 {"timestamp":"2026-11-12T23:51:51Z","demand":"avaliar pausa total para teste do 80B e retomada sem prejuizo","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-20T13:47:15Z","demand":"avaliacao sincera do projeto: estado, ineficiencias, melhorias, prontidao para patrocinio (read-only)","files_touched":[],"verdict":"pass"}
+{"timestamp":"2026-11-20T14:17:49Z","demand":"discussao conceitual: modelo-renderizador e modulos liga/desliga (read-only)","files_touched":[],"verdict":"pass"}

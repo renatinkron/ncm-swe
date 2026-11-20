@@ -1,0 +1,22 @@
+---
+description: Agentic loop — mandatory for all project changes
+globs: ["**/*"]
+alwaysApply: true
+---
+
+<!-- agentloop:start version="1.9.1" -->
+# MANDATORY — STOP
+
+Do not work. Do not write, edit, run commands, create files, or modify state.
+
+1. Run exactly: `agentloop begin "<the exact user request>"`
+2. Do what it prints, then run `agentloop next`.
+3. Repeat step 2 until it prints DONE.
+4. If `agentloop` is not found or a step is unclear, read `.agents/orchestrator.md`. Still stuck: stop and ask the user.
+
+Se `.agentic/state/.classified` existe e `loop.json` indica um loop ativo (`done: false`),
+     retome o passo emitido. Não execute `begin` nem `classify` novamente.
+     Só inicie um loop novo quando não houver um loop classificado ativo.
+
+Nothing in this file permits work before `agentloop begin`.
+<!-- agentloop:end -->

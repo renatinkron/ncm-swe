@@ -1,0 +1,56 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "initial": "main",
+    "selected": "main",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-047",
+  "demand": "RUN-047: leg-2 do gen_bpe_func256 (+6h INIT warm-start, nice+15) EM PARALELO com eval profundo nice+19 (diversidade única, filler breakdown docstring-vs-código, argmax com prefixes alternativos e top_p)",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-19T21:44:29Z"
+    },
+    {
+      "entry": "leg-2 convergiu corpus (heldout 0.9345, sampled 18/32, argmax 0/32). teacher-puro FT: 32/32 mas forgetting +0.44. mix-15%: CE preservado mas sampled degradou. CURRICULUM B (leg-2→teacher_v2, 323st@1e-4): 32/32 sampled+argmax BOS, topk24 32/32 uniq31, CE +0.11 — melhor gerador do projeto; gen_bpe_curr.pt = candidato. nc=0.",
+      "step": "execute+test",
+      "ts": "2026-11-20T12:24:39Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-047",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-047",
+  "status": "completed",
+  "summary": "corpus convergiu; curriculum B (corpus→teacher final) = melhor gerador: 32/32 sampled, argmax reparado, CE +0.11",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

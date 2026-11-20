@@ -1,0 +1,55 @@
+{
+  "branch_strategy": {
+    "decision": "current_branch",
+    "initial": "main",
+    "selected": "main",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-045",
+  "demand": "probe BPE direto treinado em func_units.txt (unidades def/class standalone): adaptar _bpe_probe.py com loader LESSONS + holdout, rodar bounded ~3h e medir parse/real/filler vs RUN-043",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-18T22:35:52Z"
+    },
+    {
+      "facts": "loader UNITS + decode fix (id_to_token+_BMAP); probe 1379 steps/3h; held-out CE 1.30 top1 76.68%; prefix-seeded sampled 18/32 parse+real (barra \u003e=6 superada); argmax+uncond 0/32 (start OOD, colapso); RUN-043 re-medido 0/32 confirmado; nc=0",
+      "step": "execute+test",
+      "ts": "2026-11-19T02:34:06.837949+00:00"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-045",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-045",
+  "summary": "BPE×func_units: POSITIVO — held-out top1 76.7%, sampled prefix 18/32 parse+real; decode bug corrigido; gargalos remanescentes: start OOD, ctx-128, argmax colapso",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

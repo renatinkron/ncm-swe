@@ -1,0 +1,12 @@
+{"t":"begin","ts":"2026-11-18T22:35:52Z","d":{"demand":"probe BPE direto treinado em func_units.txt (unidades def/class standalone): adaptar _bpe_probe.py com loader LESSONS + holdout, rodar bounded ~3h e medir parse/real/filler vs RUN-043","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-18T22:35:52Z"}
+{"t":"note","ts":"2026-11-18T22:35:55Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-045.task_plan.md; expected artifact missing: .agentic/state/runs/RUN-045.task_plan.md; expected artifact missing: .agentic/state/runs/RUN-045.task_plan.md; run_state field branch_strategy.decision is \"pending\", want one of [current_branch new_branch]","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-18T22:36:11Z"}
+{"t":"execute","ts":"2026-11-19T02:33:59Z"}
+{"t":"test","ts":"2026-11-19T02:34:04Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-19T02:34:06Z"}
+{"t":"blind_review","ts":"2026-11-19T02:34:13Z"}
+{"t":"issue_close","ts":"2026-11-19T02:34:15Z"}
+{"t":"close","ts":"2026-11-19T02:34:18Z"}
+{"t":"close","ts":"2026-11-19T02:34:18Z","d":{"failures":1,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-19T02:34:19Z","d":{"memory_publish":"runs/RUN-045.md"}}

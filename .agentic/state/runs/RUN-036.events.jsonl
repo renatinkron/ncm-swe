@@ -1,0 +1,19 @@
+{"t":"begin","ts":"2026-11-13T16:17:08Z","d":{"demand":"experimento conversacional: 0.5B (pesos abertos, fine-tune online) conversa com 30B professor via llama-server; o 0.5B aprende por SFT das respostas do professor a cada rodada; medir melhora via CE em respostas-held-out do professor + rubrica em tasks fixas + drift de pesos","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-13T16:17:15Z"}
+{"t":"note","ts":"2026-11-13T16:17:42Z","d":{"detail":".agentic/state/runs/RUN-036.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"; run_state field branch_strategy.decision is \"pending\", want one of [current_branch new_branch]","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-13T16:18:55Z"}
+{"t":"execute","ts":"2026-11-13T17:08:21Z"}
+{"t":"test","ts":"2026-11-13T17:12:17Z","d":{"contract_ac_pass":"3","contract_ac_total":"4","heldout_pass":"10","heldout_total":"10","major":"1","minor":"1","nc":"2","path":".agentic/state/runs/RUN-036.compliance_report.md","verdict":"non_compliant"}}
+{"t":"test","ts":"2026-11-13T17:12:53Z","d":{"nc":2}}
+{"t":"remediate","ts":"2026-11-13T17:12:54Z"}
+{"t":"execute","ts":"2026-11-13T17:12:58Z"}
+{"t":"test","ts":"2026-11-13T17:14:12Z","d":{"heldout_spot":"5/5","nc":"0","nc1":"resolved","nc2":"resolved","path":".agentic/state/runs/RUN-036.compliance_report.md","verdict":"compliant"}}
+{"t":"test","ts":"2026-11-13T17:14:21Z","d":{"nc":0}}
+{"t":"note","ts":"2026-11-13T17:14:26Z","d":{"detail":"no new history entry in RUN-036.json","step_failed":"history"}}
+{"t":"history","ts":"2026-11-13T17:14:44Z"}
+{"t":"blind_review","ts":"2026-11-13T17:22:35Z"}
+{"t":"issue_close","ts":"2026-11-13T17:22:49Z"}
+{"t":"note","ts":"2026-11-13T17:22:52Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-036.docs_update_report.md","step_failed":"close"}}
+{"t":"close","ts":"2026-11-13T17:22:59Z"}
+{"t":"close","ts":"2026-11-13T17:22:59Z","d":{"failures":3,"remediations":1,"status":"completed"}}
+{"t":"note","ts":"2026-11-13T17:23:00Z","d":{"memory_publish":"runs/RUN-036.md"}}

@@ -1,0 +1,24 @@
+{"t":"begin","ts":"2026-11-13T14:25:16Z","d":{"demand":"sim, e pode testar — experimento: LevelGenerator com tokenizer oficial + condicionamento de l0 via features do trunk congelado (estilo RUN-005) em vez de q0 aprendido, medindo se l0 sai do uniforme mantendo a qualidade dos níveis finos","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-13T14:25:49Z"}
+{"t":"task_plan","ts":"2026-11-13T14:30:19Z","d":{"mode":"sequential","phases":"2","tasks":"5"}}
+{"t":"note","ts":"2026-11-13T14:30:19Z","d":{"detail":"run_state field branch_strategy.decision is \"main\", want one of [current_branch new_branch]","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-13T14:30:21Z"}
+{"t":"execute","ts":"2026-11-13T15:14:52Z","d":{"done":"5","tasks":"5","verdict":"negative_result"}}
+{"t":"execute","ts":"2026-11-13T15:14:52Z"}
+{"t":"test","ts":"2026-11-13T15:19:23Z","d":{"ac":"4of4","failed":"heldout4_empty_texts","heldout":"6of7","path":".agentic/state/runs/RUN-035.compliance_report.md","severity":"minor","verdict":"non_conformities_1"}}
+{"t":"test","ts":"2026-11-13T15:19:31Z","d":{"nc":1}}
+{"t":"reconcile","ts":"2026-11-13T15:19:56Z","d":{"nc":"1","rework":"T4,T5"}}
+{"t":"remediate","ts":"2026-11-13T15:19:56Z"}
+{"t":"execute","ts":"2026-11-13T15:20:00Z","d":{"rework_done":"T4,T5"}}
+{"t":"execute","ts":"2026-11-13T15:20:00Z"}
+{"t":"test","ts":"2026-11-13T15:22:24Z","d":{"contract":"4/4","heldout":"7/7","nc1_resolved":"1","non_conformities":"0","pass":"2","report":".agentic/state/runs/RUN-035.compliance_report.md","verdict":"pass"}}
+{"t":"test","ts":"2026-11-13T15:22:32Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-13T15:22:42Z"}
+{"t":"execute","ts":"2026-11-13T15:37:30Z","d":{"rework_done":"bench,probe,docs","verdict":"negative_maintained"}}
+{"t":"blind_review","ts":"2026-11-13T15:37:30Z"}
+{"t":"issue_close","ts":"2026-11-13T15:37:32Z"}
+{"t":"note","ts":"2026-11-13T15:37:38Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-035.docs_update_report.md; run_state field not set: summary","step_failed":"close"}}
+{"t":"note","ts":"2026-11-13T15:37:40Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-035.docs_update_report.md; run_state field not set: summary","step_failed":"close"}}
+{"t":"close","ts":"2026-11-13T15:37:48Z"}
+{"t":"close","ts":"2026-11-13T15:37:48Z","d":{"failures":3,"remediations":1,"status":"completed"}}
+{"t":"note","ts":"2026-11-13T15:37:48Z","d":{"memory_publish":"runs/RUN-035.md"}}

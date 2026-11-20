@@ -1,0 +1,73 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-11-13T16:18:55.185268+00:00",
+    "decision": "current_branch",
+    "evidence_ref": "task_plan RUN-036: convenção do projeto — runs comitam em main",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-13T16:18:55.185279+00:00",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-036",
+  "demand": "experimento conversacional: 0.5B (pesos abertos, fine-tune online) conversa com 30B professor via llama-server; o 0.5B aprende por SFT das respostas do professor a cada rodada; medir melhora via CE em respostas-held-out do professor + rubrica em tasks fixas + drift de pesos",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T16:17:08Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "verification",
+      "summary": "convdistill: 24-round teacher-\u003e0.5B SFT + kpack transplant; retention 0.5-\u003e0.667, docs+NCs remediated",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T17:14:37Z"
+    }
+  ],
+  "implementation_history": [
+    {
+      "at": "2026-11-13T17:14:26.226884+00:00",
+      "event": "execute+test complete",
+      "iter": 2,
+      "nc": 0,
+      "note": "24-round teacher-\u003estudent conversational SFT + kpack transplant test + live agent-student chat; docs+transcript NCs remediated; compliance clean"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-036",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-036",
+  "summary": "conversational meta-teaching SFT 0.5B\u003c-30B + portable knowledge pack; retention+33%, reward-hacking finding, docs+NCs closed",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

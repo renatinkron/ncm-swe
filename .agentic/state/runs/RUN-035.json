@@ -1,0 +1,64 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-11-13T14:32:00Z",
+    "decision": "current_branch",
+    "evidence_ref": "git log RUN-032..034 — convenção: run work committed on main",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-13T14:32:00Z",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-035",
+  "demand": "sim, e pode testar — experimento: LevelGenerator com tokenizer oficial + condicionamento de l0 via features do trunk congelado (estilo RUN-005) em vez de q0 aprendido, medindo se l0 sai do uniforme mantendo a qualidade dos níveis finos",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T14:25:16Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 2,
+      "non_conformities": 0,
+      "phase": "verification",
+      "summary": "l0cond probe+bench: frozen-LLM features do not predict official VQ l0; verdict negative, docs updated",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T15:22:42Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-035",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-035",
+  "summary": "l0cond experiment: frozen-Qwen prefix features do not predict official VQ l0 (probe==shuffle); adapter l0 generation == unigram. Scripts+pipeline added, verdict documented.",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

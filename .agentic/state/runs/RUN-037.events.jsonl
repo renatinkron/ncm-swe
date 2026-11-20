@@ -1,0 +1,17 @@
+{"t":"begin","ts":"2026-11-13T18:30:03Z","d":{"demand":"cartuchos de dominio plugaveis: professor 30B gera pack de licoes de regex python; aluno 0.5B treina LoRA por dominio; provar plug/unplug — especialista com cartucho, generalista intacto sem ele; rubrica por execucao real do regex em casos de teste","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-13T18:30:05Z"}
+{"t":"task_plan","ts":"2026-11-13T18:30:21Z"}
+{"t":"execute","ts":"2026-11-13T18:48:09Z"}
+{"t":"test","ts":"2026-11-13T18:50:26Z","d":{"heldout_pass":"8/8","independence":"cold-context","non_conformities":"1","report":".agentic/state/runs/RUN-037.compliance_report.md","verdict":"compliant"}}
+{"t":"test","ts":"2026-11-13T18:50:40Z","d":{"nc":1}}
+{"t":"remediate","ts":"2026-11-13T18:50:43Z"}
+{"t":"execute","ts":"2026-11-13T18:50:43Z"}
+{"t":"test","ts":"2026-11-13T18:52:47Z","d":{"diff_scope":"single-constant","nc":"0","py_compile":"ok","report":".agentic/state/runs/RUN-037.compliance_report.md","scope":"NC-1-reverif","timeout":"5","verdict":"compliant"}}
+{"t":"test","ts":"2026-11-13T18:52:53Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-13T18:52:57Z"}
+{"t":"blind_review","ts":"2026-11-13T18:57:42Z"}
+{"t":"issue_close","ts":"2026-11-13T18:57:42Z"}
+{"t":"note","ts":"2026-11-13T18:57:43Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-037.docs_update_report.md","step_failed":"close"}}
+{"t":"close","ts":"2026-11-13T18:57:47Z"}
+{"t":"close","ts":"2026-11-13T18:57:47Z","d":{"failures":1,"remediations":1,"status":"completed"}}
+{"t":"note","ts":"2026-11-13T18:57:48Z","d":{"memory_publish":"runs/RUN-037.md"}}

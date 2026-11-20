@@ -1,0 +1,17 @@
+{"t":"begin","ts":"2026-11-16T16:58:20Z","d":{"demand":"prototipo de grammar-constrained decode na saida do decoder VQ: reranking token-a-token de top-K BPE mantendo prefixo parseavel (codeop), medir taxa de codigo real compilavel vs argmax baseline","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-16T16:58:23Z"}
+{"t":"note","ts":"2026-11-16T16:58:36Z","d":{"detail":".agentic/state/runs/RUN-041.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"; run_state field branch_strategy.decision is \"\", want one of [current_branch new_branch]","step_failed":"task_plan"}}
+{"t":"note","ts":"2026-11-16T16:58:42Z","d":{"detail":".agentic/state/runs/RUN-041.task_plan.md lacks required content matching \"(?i)acceptance|quality.?gate|gates\"","step_failed":"task_plan"}}
+{"t":"task_plan","ts":"2026-11-16T16:59:03Z"}
+{"t":"execute","ts":"2026-11-16T17:02:59Z"}
+{"t":"note","ts":"2026-11-16T17:03:01Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-041.compliance_report.md; .agentic/state/runs/RUN-041.compliance_report.md lacks a 'non_conformities: N' line","step_failed":"test"}}
+{"t":"test","ts":"2026-11-16T17:03:06Z","d":{"nc":0}}
+{"t":"note","ts":"2026-11-16T17:03:07Z","d":{"detail":"no new history entry in RUN-041.json","step_failed":"history"}}
+{"t":"history","ts":"2026-11-16T17:03:11Z"}
+{"t":"note","ts":"2026-11-16T17:03:12Z","d":{"detail":"expected artifact missing: .agentic/reviews/RUN-041-blind-review.md","step_failed":"blind_review"}}
+{"t":"blind_review","ts":"2026-11-16T17:03:28Z"}
+{"t":"issue_close","ts":"2026-11-16T17:03:30Z"}
+{"t":"note","ts":"2026-11-16T17:03:31Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-041.docs_update_report.md; run_state field not set: summary","step_failed":"close"}}
+{"t":"close","ts":"2026-11-16T17:03:35Z"}
+{"t":"close","ts":"2026-11-16T17:03:35Z","d":{"failures":6,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-16T17:03:36Z","d":{"memory_publish":"runs/RUN-041.md"}}

@@ -1,0 +1,13 @@
+{"t":"begin","ts":"2026-11-19T21:44:29Z","d":{"demand":"RUN-047: leg-2 do gen_bpe_func256 (+6h INIT warm-start, nice+15) EM PARALELO com eval profundo nice+19 (diversidade única, filler breakdown docstring-vs-código, argmax com prefixes alternativos e top_p)","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-19T21:44:29Z"}
+{"t":"task_plan","ts":"2026-11-19T21:44:35Z"}
+{"t":"execute","ts":"2026-11-20T12:24:24Z"}
+{"t":"test","ts":"2026-11-20T12:24:35Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-20T12:24:39Z"}
+{"t":"blind_review","ts":"2026-11-20T12:30:17Z","d":{"nc":"0","verdict":"4 majors, 0 blockers — majors: decode() não inverte byte-level BPE p/ non-ASCII (mojibake em ~165k chars corpus; parse metrics conservadores); CE/top1 inflado por pads (conhecido); cache .npy stale se UNITS_FILE regenera mesmo nome (não afetou runs — nomes únicos); _teacher_gen stats clobber sem .txt suffix"}}
+{"t":"blind_review","ts":"2026-11-20T12:30:17Z"}
+{"t":"issue_close","ts":"2026-11-20T12:30:19Z","d":{"reason":"sem git remote — issue lifecycle indisponível (padrão dos runs anteriores)","status":"unavailable"}}
+{"t":"issue_close","ts":"2026-11-20T12:30:19Z"}
+{"t":"close","ts":"2026-11-20T12:30:26Z"}
+{"t":"close","ts":"2026-11-20T12:30:26Z","d":{"failures":0,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-20T12:30:27Z","d":{"memory_publish":"runs/RUN-047.md"}}

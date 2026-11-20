@@ -1,0 +1,13 @@
+{"t":"begin","ts":"2026-11-19T14:39:32Z","d":{"demand":"Escalar o probe BPE vencedor (RUN-045, 18/32 parse): ctx 256 + BOS in-distribution + re-extrair func_units com cap 255 tokens + budget maior (~6h) com CPU dedicada, medir parse/real vs baseline 18/32","level":"standard"}}
+{"t":"issue_create","ts":"2026-11-19T14:39:37Z"}
+{"t":"task_plan","ts":"2026-11-19T14:40:01Z"}
+{"t":"execute","ts":"2026-11-19T15:01:56Z"}
+{"t":"test","ts":"2026-11-19T21:37:49Z","d":{"nc":0}}
+{"t":"history","ts":"2026-11-19T21:37:52Z"}
+{"t":"blind_review","ts":"2026-11-19T21:38:20Z","d":{"infos":"6","minors":"2","nc":"0","verdict":"clean"}}
+{"t":"blind_review","ts":"2026-11-19T21:38:20Z"}
+{"t":"issue_close","ts":"2026-11-19T21:38:22Z"}
+{"t":"note","ts":"2026-11-19T21:38:36Z","d":{"detail":"expected artifact missing: .agentic/state/runs/RUN-046.docs_update_report.md; run_state field not set: summary","step_failed":"close"}}
+{"t":"close","ts":"2026-11-19T21:38:39Z"}
+{"t":"close","ts":"2026-11-19T21:38:39Z","d":{"failures":1,"remediations":0,"status":"completed"}}
+{"t":"note","ts":"2026-11-19T21:38:40Z","d":{"memory_publish":"runs/RUN-046.md"}}

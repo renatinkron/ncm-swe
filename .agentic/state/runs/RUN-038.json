@@ -1,0 +1,64 @@
+{
+  "branch_strategy": {
+    "confirmation_status": "confirmed",
+    "confirmed_at_utc": "2026-11-13T18:58:31.500762+00:00",
+    "decision": "current_branch",
+    "evidence_ref": "plan RUN-038",
+    "gate_passed": true,
+    "initial_branch": "main",
+    "requested_at_utc": "2026-11-13T18:58:31.500762+00:00",
+    "selected_branch": "main"
+  },
+  "change_domain": "mixed",
+  "contract_id": "CONTRACT-038",
+  "demand": "NCM como estudante do mesmo knowledge pack: codificar pack_regex em codigos VQ oficiais, fine-tune do LevelGenerator, avaliar se geracao decodificada produz regex correto — prova de portabilidade cross-arquitetura",
+  "github_issue": {
+    "number": null,
+    "status": "unavailable",
+    "url": null
+  },
+  "history": [
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "planning",
+      "summary": "Run created by agentloop classify.",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T18:57:53Z"
+    },
+    {
+      "actor": "orchestrator",
+      "change_domain": "mixed",
+      "iteration": 1,
+      "non_conformities": 0,
+      "phase": "verification",
+      "summary": "ncm_packtrain: regex pack shifts NCM distribution 0-\u003e0.38 hits, 4/16 compilable patterns",
+      "target_environment": "dev",
+      "timestamp": "2026-11-13T19:13:02Z"
+    }
+  ],
+  "iteration": 1,
+  "overall_status": "completed",
+  "plan_id": "PLAN-038",
+  "quality_gates": {
+    "branch_strategy_decision": "pending",
+    "integration_tests": "not_applicable",
+    "security_checks": "not_applicable",
+    "static_analysis": "pending",
+    "unit_tests": "not_applicable"
+  },
+  "run_id": "RUN-038",
+  "summary": "NCM trained on 30B regex pack: distribution shifted to regex domain (4/16 compilable), tokenizer shown to corrupt code tokens",
+  "target_environment": "dev",
+  "tasks": [
+    {
+      "domain": "mixed",
+      "id": "T001",
+      "last_result": "",
+      "status": "pending",
+      "target_environment": "dev"
+    }
+  ]
+}

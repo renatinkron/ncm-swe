@@ -1,0 +1,127 @@
+{
+  "demand": "cartuchos de dominio plugaveis: professor 30B gera pack de licoes de regex python; aluno 0.5B treina LoRA por dominio; provar plug/unplug — especialista com cartucho, generalista intacto sem ele; rubrica por execucao real do regex em casos de teste",
+  "started_at": "2026-11-13T18:30:01Z",
+  "classification": "standard",
+  "run_id": "RUN-037",
+  "queue": [
+    "issue_close",
+    "close"
+  ],
+  "emitted": "blind_review",
+  "done": false,
+  "trust": {
+    "level": "terse",
+    "clean_streak": 8,
+    "failures": 0
+  },
+  "baselines": {
+    "history_len": 1
+  },
+  "skips": {},
+  "remediations": 1,
+  "step_log": [
+    {
+      "step": "classify",
+      "result": "emitted",
+      "at": "2026-11-13T18:30:01Z"
+    },
+    {
+      "step": "classify",
+      "result": "passed",
+      "detail": "standard",
+      "at": "2026-11-13T18:30:03Z"
+    },
+    {
+      "step": "loop",
+      "result": "emitted",
+      "detail": "standard path, run RUN-037",
+      "at": "2026-11-13T18:30:03Z"
+    },
+    {
+      "step": "issue_create",
+      "result": "passed",
+      "at": "2026-11-13T18:30:05Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "emitted",
+      "at": "2026-11-13T18:30:05Z"
+    },
+    {
+      "step": "task_plan",
+      "result": "passed",
+      "at": "2026-11-13T18:30:21Z"
+    },
+    {
+      "step": "execute",
+      "result": "emitted",
+      "at": "2026-11-13T18:30:21Z"
+    },
+    {
+      "step": "execute",
+      "result": "passed",
+      "at": "2026-11-13T18:48:09Z"
+    },
+    {
+      "step": "test",
+      "result": "emitted",
+      "at": "2026-11-13T18:48:09Z"
+    },
+    {
+      "step": "test",
+      "result": "passed",
+      "at": "2026-11-13T18:50:40Z"
+    },
+    {
+      "step": "remediate",
+      "result": "emitted",
+      "detail": "non_conformities=1, loop 1",
+      "at": "2026-11-13T18:50:40Z"
+    },
+    {
+      "step": "remediate",
+      "result": "emitted",
+      "at": "2026-11-13T18:50:40Z"
+    },
+    {
+      "step": "remediate",
+      "result": "passed",
+      "at": "2026-11-13T18:50:43Z"
+    },
+    {
+      "step": "execute",
+      "result": "emitted",
+      "at": "2026-11-13T18:50:43Z"
+    },
+    {
+      "step": "execute",
+      "result": "passed",
+      "at": "2026-11-13T18:50:43Z"
+    },
+    {
+      "step": "test",
+      "result": "emitted",
+      "at": "2026-11-13T18:50:43Z"
+    },
+    {
+      "step": "test",
+      "result": "passed",
+      "at": "2026-11-13T18:52:53Z"
+    },
+    {
+      "step": "history",
+      "result": "emitted",
+      "at": "2026-11-13T18:52:53Z"
+    },
+    {
+      "step": "history",
+      "result": "passed",
+      "at": "2026-11-13T18:52:57Z"
+    },
+    {
+      "step": "blind_review",
+      "result": "emitted",
+      "at": "2026-11-13T18:52:57Z"
+    }
+  ]
+}
