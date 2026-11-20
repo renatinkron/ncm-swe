@@ -485,3 +485,21 @@ termino prematuro; Dream-7B nao e block-diffusion nativo, entao semi-AR
 sem fine-tune nao ancora causalidade real. Config otima confirmada pra
 codigo nesta maquina: canvas unico n~128-160 + entropy_exit + T<=0.3.
 binary_search permanece 0/N em TODA configuracao testada.
+
+### FECHO DEFINITIVO NCM — Oracle Conditioning Probe + literatura
+
+Oracle probe (l0 ground-truth do encoder -> gerador so preve l1..l5):
+**0/32 parseable.** Combinado com overfit 0.83 -> 0/32, prova que a
+falha e o ACOPLAMENTO entre niveis gerados (manifold discreto), nao a
+predicao do l0. Detalhe: L0 = 1 unica coluna (codigo de conceito global).
+
+Literatura (pesquisa agy): NCM oficial e AR ENTRE niveis (nao-AR so
+dentro de cada nivel) + "conditioning corruption" (15-30% ruido em
+niveis anteriores no treino) — exatamente anti-mismatch. MusicGen
+falhou em codebooks paralelos puros -> delay pattern AR. VALL-E: AR no
+l0. RQ-Transformer: 100% AR. ZERO casos publicados de VQ+gen nao-AR
+gerando codigo em escala pequena. Veredito: para codigo coerente via
+NCM a literatura exige conditioning corruption em escala, l0 AR (estilo
+VALL-E) ou treino end-to-end acoplado — nenhuma via fecha em bound
+domestico. Vertente NCM-from-scratch encerrada como primeiro estudo
+empirico de limites; visao de renderer continua via Dream/diffusao.

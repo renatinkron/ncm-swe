@@ -873,3 +873,10 @@ renderiza com preview vivo passe a passe; knobs :steps :n :temp
 reverse_words renderizou em 14 passes/67s; o drift semantico
 (reversed_words -> reverse_words_words) ficou VISIVEL durante o render
 — o painel expoe o erro nascendo, feature do paradigma.
+
+## Oracle probe — FECHO NCM
+
+l0 real (encoder) + l1..l5 gerados: 0/32. Falha localizada no
+acoplamento entre niveis GERADOS. Literatura confirma: nenhum sistema
+faz codebooks residuais 100% paralelos (MusicGen/VALL-E/RQ-T usam AR).
+NCM-from-scratch: encerrado com veredito documentado.
