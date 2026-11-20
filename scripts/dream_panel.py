@@ -53,12 +53,16 @@ def render(prompt, cfg):
         print(f"\033[2J\033[H[render] '{prompt[:50]}' | s={cfg['steps']} "
               f"T={cfg['temp']} {cfg['remasking']}\n")
     final = None
+    last_buf = None
     for line in proc.stdout:
         line = line.strip()
-        if line.startswith("STEP ") and cfg["preview"]:
+        if line.startswith("STEP "):
             hdr, _, body = line.partition(" ")
             step_tag, _, body = body.partition(" ")
             buf = [int(x) for x in body.split(",") if x]
+            last_buf = buf
+            if not cfg["preview"]:
+                continue
             masked = sum(1 for t in buf[plen:] if t == MASK_ID)
             txt = detokenize(buf, plen)
             n_unm = len(buf[plen:]) - masked
@@ -74,23 +78,35 @@ def render(prompt, cfg):
         print("[render] sem saída do engine")
         return
     txt = detokenize(final, plen)
+    if not txt.strip() and last_buf:
+        # FINAL trunca no primeiro end-token; o ultimo STEP tem o buffer cheio
+        txt = detokenize(last_buf, plen)
     if cfg["preview"]:
         print(f"\n[final] {wall:.0f}s\n{txt}")
     else:
         print(f"[final] {wall:.0f}s\n{txt}")
+    m = re.search(r"```(?:python)?\n(.*?)```", txt, re.S)
+    code = (m.group(1) if m else txt).strip()
+    if code:
+        out_path = cfg.get("save", "dream_output.py")
+        with open(out_path, "w") as f:
+            f.write(code + "\n")
+        print(f"[saved] {out_path}")
     if cfg["eval"]:
-        m = re.search(r"```(?:python)?\n(.*?)```", txt, re.S)
-        code = (m.group(1) if m else txt).strip()
-        try:
-            ast.parse(code)
-            print("[eval] AST OK")
-        except SyntaxError as e:
-            print(f"[eval] AST-FAIL: {e}")
+        if not code:
+            print("[eval] saída vazia — nada a avaliar")
+        else:
+            try:
+                ast.parse(code)
+                print("[eval] AST OK")
+            except SyntaxError as e:
+                print(f"[eval] AST-FAIL: {e}")
 
 
 def main():
     cfg = {"steps": 16, "n": 160, "temp": 0.3, "remasking": "entropy_exit",
-           "threads": 8, "seed": -1, "preview": True, "eval": True}
+           "threads": 8, "seed": -1, "preview": True, "eval": True,
+           "save": "dream_output.py"}
     print(__doc__.strip().splitlines()[0])
     print("intenção = renderiza | :knobs mostra config | :quit sai")
     while True:

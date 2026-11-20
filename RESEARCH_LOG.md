@@ -503,3 +503,18 @@ NCM a literatura exige conditioning corruption em escala, l0 AR (estilo
 VALL-E) ou treino end-to-end acoplado — nenhuma via fecha em bound
 domestico. Vertente NCM-from-scratch encerrada como primeiro estudo
 empirico de limites; visao de renderer continua via Dream/diffusao.
+
+### CORRECAO — bug de extracao ad-hoc
+
+O stdout do diffuse-cli imprime SOMENTE a regiao gerada (sem prompt).
+Decodes ad-hoc que fatiavam ids[plen:] comiam os primeiros tokens do
+codigo. Correcao do registro anterior:
+- topk_margin NAO colapsou: gerou 'def binary_search...: left i in
+  range(0,len(arr):' — tentativa real com erro de sintaxe (faltou for).
+  O "160 eot" era meu slice lendo apenas a cauda de eot.
+- entropy_exit gerou binary search quase perfeito — 1 unico token
+  errado: 'mid = (left ( right) // 2' (faltou +). AST-fail por 1 tok.
+- A curva publicada (dream_curve.json) usava dream_render.py, que
+  extrai corretamente — resultados do artigo B permanecem validos.
+- binary_search segue 0/N mas agora sabemos que chega a ~1 token de
+  distancia — e o caso mais proximo do limiar, nao um colapso.
